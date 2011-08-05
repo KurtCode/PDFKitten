@@ -1,15 +1,14 @@
 //
-//  DocumentView.m
-//  PDFDemo
+//  PageViewController.m
+//  PDFKitten
 //
-//  Created by Marcus Hedenström on 2011-04-24.
+//  Created by Marcus Hedenström on 2011-07-31.
 //  Copyright 2011 Chalmers Göteborg. All rights reserved.
 //
 
-#import "DocumentView.h"
-#import "PageView.h"
+#import "PageViewController.h"
 
-@implementation DocumentView
+@implementation PageViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -18,20 +17,6 @@
         // Custom initialization
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [super dealloc];
-}
-
-- (void)tilePages
-{
-//	CGRect visibleBounds = scrollView.bounds;
-//	int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
-//	int lastNeededPageIndex  = floorf(CGRectGetMaxX(visibleBounds) / CGRectGetWidth(visibleBounds));
-//	firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
-	
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,7 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self tilePages];
+    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)viewDidUnload

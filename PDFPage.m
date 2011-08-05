@@ -1,15 +1,14 @@
 //
-//  DocumentView.m
-//  PDFDemo
+//  PDFPage.m
+//  PDFKitten
 //
-//  Created by Marcus Hedenström on 2011-04-24.
+//  Created by Marcus Hedenström on 2011-08-01.
 //  Copyright 2011 Chalmers Göteborg. All rights reserved.
 //
 
-#import "DocumentView.h"
-#import "PageView.h"
+#import "PDFPage.h"
 
-@implementation DocumentView
+@implementation PDFPage
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -18,20 +17,6 @@
         // Custom initialization
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [super dealloc];
-}
-
-- (void)tilePages
-{
-//	CGRect visibleBounds = scrollView.bounds;
-//	int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
-//	int lastNeededPageIndex  = floorf(CGRectGetMaxX(visibleBounds) / CGRectGetWidth(visibleBounds));
-//	firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
-	
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,11 +29,20 @@
 
 #pragma mark - View lifecycle
 
+/*
+// Implement loadView to create a view hierarchy programmatically, without using a nib.
+- (void)loadView
+{
+}
+*/
+
+/*
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self tilePages];
 }
+*/
 
 - (void)viewDidUnload
 {

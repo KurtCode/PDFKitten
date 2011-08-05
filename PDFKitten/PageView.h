@@ -1,5 +1,5 @@
 //
-//  PageView.h
+//  DocumentView.h
 //  PDFDemo
 //
 //  Created by Marcus Hedenström on 2011-04-24.
@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface PageView : UIView {
-    
+@interface DocumentView : UIViewController <UIScrollViewDelegate> {
+	IBOutlet UIScrollView *scrollView;
 }
 
 @end
