@@ -14,6 +14,11 @@
 		recycledPages = [[NSMutableSet alloc] init];
 		visiblePages = [[NSMutableSet alloc] init];
 		
+//        self.maximumZoomScale = 1.0;
+//        self.minimumZoomScale = 1.0;
+//        self.bouncesZoom = NO;
+        
+        self.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 	return self;
@@ -23,6 +28,19 @@
 {
 	numberOfPages = [dataSource numberOfPagesInPageView:self];
 	[self setNeedsLayout];
+}
+
+/* True if the page with given index is showing */
+- (BOOL)isShowingPageForIndex:(NSInteger)index
+{
+    for (Page *page in visiblePages)
+    {
+        if (page.pageNumber == index)
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)layoutSubviews
@@ -47,12 +65,16 @@
 	
 	for (int i = firstNeededPageIndex; i <= lastNeededPageIndex; i++)
 	{
+        if ([self isShowingPageForIndex:i]) continue;
+        
 		Page *page = [dataSource pageView:self viewForPage:i];
 		CGRect rect = self.frame;
 		rect.origin.y = 0;
 		rect.origin.x = CGRectGetWidth(rect) * i;
 		page.frame = rect;
 		
+        [visiblePages addObject:page];
+        
 		[self addSubview:page];
 	}
 }

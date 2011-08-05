@@ -6,28 +6,19 @@
 - (void)drawRect:(CGRect)rect
 {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	
-	CGRect cropBox = CGPDFPageGetBoxRect(pdfPage, kCGPDFCropBox);
-//	CGFloat hScale = cropBox.size.width / rect.size.width;
-//	CGFloat vScale = cropBox.size.height / rect.size.height;
-//	CGFloat scale = MAX(hScale, vScale);
-	
+	CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+	CGContextFillRect(ctx, rect);
 	CGContextTranslateCTM(ctx, 0.0, rect.size.height);
 	CGContextScaleCTM(ctx, 1.0, -1.0);
-	
-	
 	NSInteger rotationAngle = CGPDFPageGetRotationAngle(pdfPage);
-	CGAffineTransform transform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFMediaBox, rect, -rotationAngle, true);
+	CGAffineTransform transform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, rect, -rotationAngle, YES);
 	CGContextConcatCTM(ctx, transform);
-	
-	CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
-	CGContextFillRect(ctx, cropBox);
-	
 	CGContextDrawPDFPage(ctx, pdfPage);
 }
 
 - (void)setPage:(CGPDFPageRef)page
 {
+    CGPDFPageRelease(pdfPage);
 	pdfPage = CGPDFPageRetain(page);
 }
 
@@ -36,6 +27,14 @@
 
 @implementation PDFPage
 
+- (void)setPage:(CGPDFPageRef)page
+{
+    CGPDFPageRelease(pdfPage);
+    pdfPage = CGPDFPageRetain(page);
+
+    CGRect rect = CGPDFPageGetBoxRect(pdfPage, kCGPDFCropBox);
+    self.contentView.frame = rect;
+}
 
 - (UIView *)contentView
 {

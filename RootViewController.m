@@ -30,6 +30,7 @@
 		page = [[[PDFPage alloc] initWithFrame:CGRectZero] autorelease];
 	}
 	page.pageNumber = aPage;
+    [page setPage:CGPDFDocumentGetPage(document, aPage+1)];
 	[(PDFContentView *)page.contentView setPage:CGPDFDocumentGetPage(document, aPage+1)];
 	
 	return page;
