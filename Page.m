@@ -1,31 +1,64 @@
-//
-//  Page.m
-//  PDFKitten
-//
-//  Created by Marcus Hedenström on 2011-07-31.
-//  Copyright 2011 Chalmers Göteborg. All rights reserved.
-//
-
 #import "Page.h"
+
+
+@implementation PageContentView
+
+- (void)drawRect:(CGRect)rect
+{
+	
+}
+
+@end
 
 @implementation Page
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+    if ((self = [super initWithFrame:frame]))
+	{
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		
+		UIView *view = [self contentView];
+		view.frame = frame;
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.contentView = view;
+		[self addSubview:view];
+		
+		self.delegate = self;
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
+- (UIView *)contentView
+{
+	if (!contentView)
+	{
+		contentView = [[UIView alloc] initWithFrame:CGRectZero];
+	}
+	return contentView;
+}
+
+#pragma mark - UIScrollView delegate
+
+/* Make the content view center on screen when zoomed out */
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+	CGRect frame = self.contentView.frame;
+	// Calculate how much of the content view is outside the screen
+	CGSize totalInset = CGSizeMake(CGRectGetWidth(contentView.frame) - CGRectGetWidth(self.bounds), 
+								   CGRectGetHeight(contentView.frame) - CGRectGetHeight(self.bounds));
+	if (totalInset.width < 0)
+	{
+		frame.origin.x = totalInset.width / 2;
+	}
+	if (totalInset.height < 0)
+	{
+		frame.origin.y = totalInset.height / 2;
+	}
+	self.contentView.frame = frame;
+}
+
+
+@synthesize pageNumber, contentView;
 @end

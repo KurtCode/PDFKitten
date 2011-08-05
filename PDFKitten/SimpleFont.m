@@ -11,7 +11,10 @@
 		// Set encoding for any font
 		[self setEncodingWithFontDictionary:dict];
 	}
+	
+	NSLog(@"Encoding: %d", self.encoding);
 	return self;
+	
 }
 
 /* Custom implementation for all simple fonts */

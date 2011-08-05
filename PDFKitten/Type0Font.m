@@ -25,6 +25,8 @@
 				const char *subtype;
 				if (!CGPDFDictionaryGetName(fontDict, "Subtype", &subtype)) continue;
 
+				NSLog(@"Descendant font type %s", subtype);
+
 				if (strcmp(subtype, "CIDFontType0") == 0)
 				{
 					// Add descendant font of type 0
@@ -56,6 +58,11 @@
 	return 0;
 }
 
+- (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
+{
+	Font *descendantFont = [self.descendantFonts lastObject];
+	return [descendantFont stringWithPDFString:pdfString];
+}
 
 #pragma mark -
 #pragma mark Memory Management

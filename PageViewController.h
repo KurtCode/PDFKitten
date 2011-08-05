@@ -1,13 +1,9 @@
-//
-//  PageViewController.h
-//  PDFKitten
-//
-//  Created by Marcus Hedenström on 2011-07-31.
-//  Copyright 2011 Chalmers Göteborg. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
+#import "PageView.h"
 
-@interface PageViewController : UIViewController
+@interface PageViewController : UIViewController <PageViewDelegate> {
+	IBOutlet PageView *pageView;
+}
 
+@property (nonatomic, readonly) PageView *pageView;
 @end

@@ -1,13 +1,16 @@
-//
-//  Page.h
-//  PDFKitten
-//
-//  Created by Marcus Hedenström on 2011-07-31.
-//  Copyright 2011 Chalmers Göteborg. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
-@interface Page : UIView
 
+@interface PageContentView : UIView {
+}
+@end
+
+@interface Page : UIScrollView <UIScrollViewDelegate> {
+	NSInteger pageNumber;
+	UIView *contentView;
+}
+- (UIView *)contentView;
+
+@property (nonatomic, retain) UIView *contentView;
+@property (nonatomic, assign) NSInteger pageNumber;
 @end

@@ -14,6 +14,7 @@
 	if ((self = [super init]))
 	{
 		self.keyword = str;
+		unicodeContent = [[NSMutableString alloc] init];
 	}
 	return self;
 }
@@ -21,6 +22,8 @@
 /* Reset the state machine */
 - (void)reset
 {
+	[unicodeContent release];
+	unicodeContent = [[NSMutableString alloc] init];
 	self.keywordPosition = 0;
 }
 
@@ -100,9 +103,15 @@
 {
 	// Use CID string for font-related computations.
 	NSString *cidString = (NSString *) CGPDFStringCopyTextString(string);
-		
+	
+	NSLog(@">> %@", [font class]);
+	
 	// Use Unicode string to compare with user input.
 	NSString *unicodeString = [[font stringWithPDFString:string] lowercaseString];
+	
+	NSLog(@"%@", unicodeString);
+	
+	[unicodeContent appendString:unicodeString];
 	
 	for (int i = 0; i < [unicodeString length]; i++)
 	{
@@ -169,6 +178,11 @@
 
 #pragma mark -
 #pragma mark Memory Management
+
+- (NSString *)unicodeContent
+{
+	return [NSString stringWithString:unicodeContent];
+}
 
 - (void)dealloc
 {

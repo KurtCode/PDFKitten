@@ -31,6 +31,7 @@
 @interface StringDetector : NSObject {
 	NSString *keyword;
 	NSUInteger keywordPosition;
+	NSMutableString *unicodeContent;
 	id<StringDetectorDelegate> delegate;
 }
 
@@ -45,4 +46,5 @@
 
 @property (nonatomic, retain) NSString *keyword;
 @property (nonatomic, assign) id<StringDetectorDelegate> delegate;
+@property (nonatomic, readonly) NSString *unicodeContent;
 @end

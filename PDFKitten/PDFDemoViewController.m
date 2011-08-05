@@ -34,8 +34,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *name = [[[self.files objectAtIndex:indexPath.row] lastPathComponent] stringByDeletingPathExtension];
-	NSURL *pdfURL = [[NSBundle mainBundle] URLForResource:name withExtension:@"pdf"];
+//	NSString *name = [[[self.files objectAtIndex:indexPath.row] lastPathComponent] stringByDeletingPathExtension];
+//	NSURL *pdfURL = [[NSBundle mainBundle] URLForResource:name withExtension:@"pdf"];
+	
+	NSString *name = [self.files objectAtIndex:indexPath.row];
+	NSArray *documentsFolders = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *path = [[documentsFolders lastObject] stringByAppendingPathComponent:name];
+	NSURL *pdfURL = [NSURL fileURLWithPath:path];
+	
 	CGPDFDocumentRef pdfDocument = CGPDFDocumentCreateWithURL((CFURLRef)pdfURL);
 	[pdfView setDocument:pdfDocument];
 	CGPDFDocumentRelease(pdfDocument); pdfDocument = nil;
@@ -241,13 +247,17 @@
 {
 	if (!files)
 	{
-	 	NSArray *paths = [[NSBundle mainBundle] pathsForResourcesOfType:@"pdf" inDirectory:nil];
-		NSMutableArray *arr = [NSMutableArray array];
-		for (NSString *s in paths)
-		{
-			[arr addObject:[[s lastPathComponent] stringByDeletingPathExtension]];
-		}
-		files = [arr retain];
+//	 	NSArray *paths = [[NSBundle mainBundle] pathsForResourcesOfType:@"pdf" inDirectory:nil];
+//		NSMutableArray *arr = [NSMutableArray array];
+//		for (NSString *s in paths)
+//		{
+//			[arr addObject:[[s lastPathComponent] stringByDeletingPathExtension]];
+//		}
+//		files = [arr retain];
+		
+		NSArray *documentsFolders = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSArray *filesInFolder = [[NSFileManager defaultManager] subpathsAtPath:[documentsFolders lastObject]];
+		files = [filesInFolder retain];
 	}
 	return files;
 }

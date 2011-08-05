@@ -1,22 +1,23 @@
-//
-//  PageViewController.m
-//  PDFKitten
-//
-//  Created by Marcus Hedenström on 2011-07-31.
-//  Copyright 2011 Chalmers Göteborg. All rights reserved.
-//
-
 #import "PageViewController.h"
 
 @implementation PageViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+	if ((self = [super initWithCoder:aDecoder]))
+	{
+	}
+	return self;
+}
+
+- (NSInteger)numberOfPagesInPageView:(PageView *)pageView
+{
+	return 0;
+}
+
+- (Page *)pageView:(PageView *)pageView viewForPage:(NSInteger)page
+{
+	return nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,10 +30,16 @@
 
 #pragma mark - View lifecycle
 
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	[pageView reloadData];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+	self.pageView.dataSource = self;
 }
 
 - (void)viewDidUnload
@@ -48,4 +55,5 @@
 	return YES;
 }
 
+@synthesize pageView;
 @end

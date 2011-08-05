@@ -1,25 +1,13 @@
-//
-//  PDFDemoAppDelegate.m
-//  PDFDemo
-//
-//  Created by Marcus Hedenström on 2011-04-15.
-//  Copyright 2011 Chalmers Göteborg. All rights reserved.
-//
-
 #import "PDFDemoAppDelegate.h"
-
-#import "PDFDemoViewController.h"
 
 @implementation PDFDemoAppDelegate
 
  
 @synthesize window=_window;
 
-@synthesize viewController=_viewController;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	self.window.rootViewController = self.viewController;
+	self.window.rootViewController = rootViewController;
 	[self.window makeKeyAndVisible];
     return YES;
 }
@@ -66,7 +54,6 @@
 - (void)dealloc
 {
 	[_window release];
-	[_viewController release];
     [super dealloc];
 }
 

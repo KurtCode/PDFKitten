@@ -121,11 +121,21 @@ void BT(CGPDFScannerRef scanner, void *info);
 - (FontCollection *)fontCollectionWithPage:(CGPDFPageRef)page
 {
 	CGPDFDictionaryRef dict = CGPDFPageGetDictionary(page);
+	if (!dict)
+	{
+		NSLog(@"Scanner: fontCollectionWithPage: page dictionary missing");
+		return nil;
+	}
 	CGPDFDictionaryRef resources;
-	if (!CGPDFDictionaryGetDictionary(dict, "Resources", &resources)) return nil;
+	if (!CGPDFDictionaryGetDictionary(dict, "Resources", &resources))
+	{
+		NSLog(@"Scanner: fontCollectionWithPage: page dictionary missing Resources dictionary");
+		return nil;	
+	}
 	CGPDFDictionaryRef fonts;
 	if (!CGPDFDictionaryGetDictionary(resources, "Font", &fonts)) return nil;
 	FontCollection *collection = [[FontCollection alloc] initWithFontDictionary:fonts];
+	NSLog(@"Extracted %d fonts", [[collection fontsByName] count]);
 	return [collection autorelease];
 }
 
@@ -430,6 +440,9 @@ void Tf(CGPDFScannerRef scanner, void *info)
 	const char *fontName;
 	if (!CGPDFScannerPopNumber(scanner, &fontSize)) return;
 	if (!CGPDFScannerPopName(scanner, &fontName)) return;
+	
+	NSLog(@"Using font %s", fontName);
+	
 	RenderingState *state = [(Scanner *)info currentRenderingState];
 	Font *font = [[(Scanner *)info fontCollection] fontNamed:[NSString stringWithUTF8String:fontName]];
 	[state setFont:font];

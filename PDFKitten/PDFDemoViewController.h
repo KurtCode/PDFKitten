@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "PDFView.h"
 #import "Scanner.h"
-#import "DocumentView.h"
 
 @interface PDFDemoViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate> {
 	NSString *filename;

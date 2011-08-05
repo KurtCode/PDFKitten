@@ -1,66 +1,141 @@
-//
-//  DocumentView.m
-//  PDFDemo
-//
-//  Created by Marcus Hedenström on 2011-04-24.
-//  Copyright 2011 Chalmers Göteborg. All rights reserved.
-//
-
-#import "DocumentView.h"
 #import "PageView.h"
 
-@implementation DocumentView
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@implementation PageView
+
+#pragma mark - View layout
+
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+	if ((self = [super initWithCoder:aDecoder]))
+	{
+		self.delegate = self;
+		self.pagingEnabled = YES;
+		recycledPages = [[NSMutableSet alloc] init];
+		visiblePages = [[NSMutableSet alloc] init];
+		
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	}
+	return self;
 }
+
+- (void)reloadData
+{
+	numberOfPages = [dataSource numberOfPagesInPageView:self];
+	[self setNeedsLayout];
+}
+
+- (void)layoutSubviews
+{
+	self.contentSize = CGSizeMake(CGRectGetWidth(self.bounds) * numberOfPages, CGRectGetWidth(self.bounds));
+	
+	CGRect visibleBounds = self.bounds;
+	int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
+	int lastNeededPageIndex  = floorf((CGRectGetMaxX(visibleBounds)-1) / CGRectGetWidth(visibleBounds));
+	firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
+	lastNeededPageIndex = MIN(numberOfPages-1, lastNeededPageIndex);
+	
+	for (Page *page in visiblePages)
+	{
+		if (page.pageNumber < firstNeededPageIndex || page.pageNumber > lastNeededPageIndex)
+		{
+			[recycledPages addObject:page];
+			[page removeFromSuperview];
+		}
+	}
+	[visiblePages minusSet:recycledPages];
+	
+	for (int i = firstNeededPageIndex; i <= lastNeededPageIndex; i++)
+	{
+		Page *page = [dataSource pageView:self viewForPage:i];
+		CGRect rect = self.frame;
+		rect.origin.y = 0;
+		rect.origin.x = CGRectGetWidth(rect) * i;
+		page.frame = rect;
+		
+		[self addSubview:page];
+	}
+}
+
+- (UIView *)dequeueRecycledPage
+{
+	@synchronized (self)
+	{
+		UIView *page = [recycledPages anyObject];
+		if (page)
+		{
+			[[page retain] autorelease];
+			[recycledPages removeObject:page];
+		}
+		return page;
+	}
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	[self setNeedsLayout];
+}
+
+/* Animated scrolling did stop */
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+	if ([dataSource respondsToSelector:@selector(pageView:didScrollToPage:)])
+	{
+		[dataSource pageView:self didScrollToPage:self.page];
+	}
+}
+
+/* User touch scrolling did stop */
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+	if ([dataSource respondsToSelector:@selector(pageView:didScrollToPage:)])
+	{
+		[dataSource pageView:self didScrollToPage:self.page];
+	}
+}
+
+
+#pragma mark - Page numbers
+
+/* Scrolls to the given page */
+- (void)setPage:(NSInteger)page animated:(BOOL)animated
+{
+	CGRect rect = self.frame;
+	rect.origin.x = CGRectGetWidth(self.frame) * page;
+	[self scrollRectToVisible:rect animated:YES];
+	if (!animated)
+	{
+		if ([dataSource respondsToSelector:@selector(pageView:didScrollToPage:)])
+		{
+			[dataSource pageView:self didScrollToPage:self.page];
+		}
+	}
+}
+
+/* Scrolls to the given page */
+- (void)setPage:(NSInteger)page
+{
+	[self setPage:page animated:YES];
+}
+
+/* Returns the current page number */
+- (NSInteger)page
+{
+	CGFloat minimumVisibleX = CGRectGetMinX(self.bounds);
+	return floorf(minimumVisibleX / CGRectGetWidth(self.frame));
+}
+
+
+#pragma mark - Memory Management
 
 - (void)dealloc
 {
-    [super dealloc];
+	[recycledPages release];
+	[visiblePages release];
+	[super dealloc];
 }
 
-- (void)tilePages
-{
-//	CGRect visibleBounds = scrollView.bounds;
-//	int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
-//	int lastNeededPageIndex  = floorf(CGRectGetMaxX(visibleBounds) / CGRectGetWidth(visibleBounds));
-//	firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
-	
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	[self tilePages];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-	return YES;
-}
-
+@synthesize page, dataSource;
 @end
