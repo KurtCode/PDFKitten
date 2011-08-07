@@ -1,16 +1,11 @@
 #import "FontCollection.h"
 
 
-@interface FontCollection ()
-@property (nonatomic, retain) NSMutableDictionary *fonts;
-@end
-
 @implementation FontCollection
 
 /* Applier function for font dictionaries */
 void didScanFont(const char *key, CGPDFObjectRef object, void *collection)
 {
-	NSLog(@"%s", key);
 	if (!CGPDFObjectGetType(object) == kCGPDFObjectTypeDictionary) return;
 	CGPDFDictionaryRef dict;
 	if (!CGPDFObjectGetValue(object, kCGPDFObjectTypeDictionary, &dict)) return;
@@ -24,8 +19,9 @@ void didScanFont(const char *key, CGPDFObjectRef object, void *collection)
 {
 	if ((self = [super init]))
 	{
+		fonts = [[NSMutableDictionary alloc] init];
 		// Enumerate the Font resource dictionary
-		CGPDFDictionaryApplyFunction(dict, didScanFont, self.fonts);
+		CGPDFDictionaryApplyFunction(dict, didScanFont, fonts);
 	}
 	return self;
 }
@@ -33,27 +29,17 @@ void didScanFont(const char *key, CGPDFObjectRef object, void *collection)
 /* Returns a copy of the font dictionary */
 - (NSDictionary *)fontsByName
 {
-	return [NSDictionary dictionaryWithDictionary:self.fonts];
+	return [NSDictionary dictionaryWithDictionary:fonts];
 }
 
 /* Return the specified font */
 - (Font *)fontNamed:(NSString *)fontName
 {
-	return [self.fonts objectForKey:fontName];
+	return [fonts objectForKey:fontName];
 }
 
 
-#pragma mark - 
-#pragma mark Memory Management
-
-- (NSMutableDictionary *)fonts
-{
-	if (!fonts)
-	{
-		fonts = [[NSMutableDictionary alloc] init];
-	}
-	return fonts;
-}
+#pragma mark - Memory Management
 
 - (void)dealloc
 {
@@ -61,5 +47,4 @@ void didScanFont(const char *key, CGPDFObjectRef object, void *collection)
 	[super dealloc];
 }
 
-@synthesize fonts;
 @end

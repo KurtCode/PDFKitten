@@ -135,76 +135,7 @@ void BT(CGPDFScannerRef scanner, void *info);
 	CGPDFDictionaryRef fonts;
 	if (!CGPDFDictionaryGetDictionary(resources, "Font", &fonts)) return nil;
 	FontCollection *collection = [[FontCollection alloc] initWithFontDictionary:fonts];
-	NSLog(@"Extracted %d fonts", [[collection fontsByName] count]);
 	return [collection autorelease];
-}
-
-void embeddedObject(const char *key, CGPDFObjectRef object, void *info)
-{
-	if (!CGPDFObjectGetType(object) == kCGPDFObjectTypeStream) return;
-	
-	CGPDFStreamRef stream = nil;
-	if (!CGPDFObjectGetValue(object, kCGPDFObjectTypeStream, &stream)) return;
-	
-	CGPDFDictionaryRef meta = CGPDFStreamGetDictionary(stream);
-	
-	const char *subtype;
-	if (!CGPDFDictionaryGetName(meta, "Subtype", &subtype)) return;
-	
-	if (strcmp(subtype, "Image") != 0) return;
-
-	NSString *keyString = [NSString stringWithCString:key encoding:NSUTF8StringEncoding];
-	if (!keyString)
-	{
-		keyString = [NSString stringWithFormat:@"Object%d", [(NSMutableDictionary *)info count]];
-	}
-
-	CGPDFArrayRef colorSpace;
-	if (!CGPDFDictionaryGetArray(meta, "ColorSpace", &colorSpace)) return;
-	
-	CGPDFStreamRef csStream;
-	if (!CGPDFArrayGetStream(colorSpace, 1, &csStream)) return;
-	
-	CFDataRef csData = CGPDFStreamCopyData(csStream, nil);
-	
-	CGDataProviderRef csProvider = CGDataProviderCreateWithCFData(csData);
-	CFRelease(csData);
-	
-	NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
-	
-	CGDataProviderRef provider = CGDataProviderCreateWithCFData((CFDataRef)data);
-	
-	CGColorSpaceRef rgbSpace = CGColorSpaceCreateDeviceRGB();
-	
-	const CGFloat range[8] = {0, 255, 0, 255, 0, 255};
-	
-	CGColorSpaceRef cs = CGColorSpaceCreateICCBased(3, range, csProvider, rgbSpace);
-	const CGFloat decodeValues[6] = {0.0, 1.0, 0.0, 1.0, 0.0, 1.0};
-	CGImageRef sourceImage = CGImageCreate(505, 185, 8, 8 * 3, 1515, cs, 0, provider, decodeValues, NO, kCGRenderingIntentDefault);
-	UIImage *image = [UIImage imageWithCGImage:sourceImage];
-	CGImageRelease(sourceImage);
-	CGDataProviderRelease(provider);
-	CGColorSpaceRelease(rgbSpace);
-	CGColorSpaceRelease(cs);
-	CGDataProviderRelease(csProvider);
-
-	[(NSMutableDictionary *)info setObject:image forKey:keyString];
-	
-	
-	[data release];
-}
-
-- (NSDictionary *)embeddedImages:(CGPDFPageRef)page
-{
-	CGPDFDictionaryRef dict = CGPDFPageGetDictionary(page);
-	CGPDFDictionaryRef resources;
-	if (!CGPDFDictionaryGetDictionary(dict, "Resources", &resources)) return nil;
-	CGPDFDictionaryRef objects;
-	if (!CGPDFDictionaryGetDictionary(resources, "XObject", &objects)) return nil;
-	
-	NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-	CGPDFDictionaryApplyFunction(objects, embeddedObject, mutableDict);
-	return mutableDict;
 }
 
 /* Scan the given page of the current document */
@@ -219,16 +150,7 @@ void embeddedObject(const char *key, CGPDFObjectRef object, void *info)
 
 	// Initialize font collection (per page)
 	self.fontCollection = [self fontCollectionWithPage:page];
-	
-//	NSDictionary *images = [self embeddedImages:page];
-//	for (NSString *str in [images allKeys])
-//	{
-//		UIImage *image = [images objectForKey:str];
-//		NSArray *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//		NSString *path = [[docs lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", str]];
-//		[UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
-//	}
-		
+			
 	CGPDFContentStreamRef content = CGPDFContentStreamCreateWithPage(page);
 	CGPDFScannerRef scanner = CGPDFScannerCreate(content, self.operatorTable, self);
 	CGPDFScannerScan(scanner);

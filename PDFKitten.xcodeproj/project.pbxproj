@@ -24,10 +24,6 @@
 		2CE7BC9D13896EF0009784B9 /* PageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BC9B13896EF0009784B9 /* PageView.m */; };
 		2CE7BCAF13896EFB009784B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA013896EFB009784B9 /* main.m */; };
 		2CE7BCB113896EFB009784B9 /* PDFDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA413896EFB009784B9 /* PDFDemoAppDelegate.m */; };
-		2CE7BCB213896EFB009784B9 /* PDFDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA613896EFB009784B9 /* PDFDemoViewController.m */; };
-		2CE7BCB313896EFB009784B9 /* PDFDocView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA813896EFB009784B9 /* PDFDocView.m */; };
-		2CE7BCB613896EFB009784B9 /* PDFPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCAC13896EFB009784B9 /* PDFPageView.m */; };
-		2CE7BCB713896EFB009784B9 /* PDFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCAE13896EFB009784B9 /* PDFView.m */; };
 		2CE7BCC413897135009784B9 /* CIDType0Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCBD13897135009784B9 /* CIDType0Font.m */; };
 		2CE7BCC513897135009784B9 /* CIDType2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCBF13897135009784B9 /* CIDType2Font.m */; };
 		2CE7BCC613897135009784B9 /* CMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCC113897135009784B9 /* CMap.m */; };
@@ -73,16 +69,8 @@
 		2CE7BCA013896EFB009784B9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PDFKitten/main.m; sourceTree = SOURCE_ROOT; };
 		2CE7BCA313896EFB009784B9 /* PDFDemoAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFDemoAppDelegate.h; path = PDFKitten/PDFDemoAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		2CE7BCA413896EFB009784B9 /* PDFDemoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFDemoAppDelegate.m; path = PDFKitten/PDFDemoAppDelegate.m; sourceTree = SOURCE_ROOT; };
-		2CE7BCA513896EFB009784B9 /* PDFDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFDemoViewController.h; path = PDFKitten/PDFDemoViewController.h; sourceTree = SOURCE_ROOT; };
-		2CE7BCA613896EFB009784B9 /* PDFDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFDemoViewController.m; path = PDFKitten/PDFDemoViewController.m; sourceTree = SOURCE_ROOT; };
-		2CE7BCA713896EFB009784B9 /* PDFDocView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFDocView.h; path = PDFKitten/PDFDocView.h; sourceTree = SOURCE_ROOT; };
-		2CE7BCA813896EFB009784B9 /* PDFDocView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFDocView.m; path = PDFKitten/PDFDocView.m; sourceTree = SOURCE_ROOT; };
 		2CE7BCA913896EFB009784B9 /* PDFDocView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PDFDocView.xib; path = PDFKitten/PDFDocView.xib; sourceTree = SOURCE_ROOT; };
 		2CE7BCAA13896EFB009784B9 /* PDFKitten-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "PDFKitten-Info.plist"; path = "PDFKitten/PDFKitten-Info.plist"; sourceTree = SOURCE_ROOT; };
-		2CE7BCAB13896EFB009784B9 /* PDFPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFPageView.h; path = PDFKitten/PDFPageView.h; sourceTree = SOURCE_ROOT; };
-		2CE7BCAC13896EFB009784B9 /* PDFPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFPageView.m; path = PDFKitten/PDFPageView.m; sourceTree = SOURCE_ROOT; };
-		2CE7BCAD13896EFB009784B9 /* PDFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFView.h; path = PDFKitten/PDFView.h; sourceTree = SOURCE_ROOT; };
-		2CE7BCAE13896EFB009784B9 /* PDFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFView.m; path = PDFKitten/PDFView.m; sourceTree = SOURCE_ROOT; };
 		2CE7BCBC13897135009784B9 /* CIDType0Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDType0Font.h; path = PDFKitten/CIDType0Font.h; sourceTree = SOURCE_ROOT; };
 		2CE7BCBD13897135009784B9 /* CIDType0Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDType0Font.m; path = PDFKitten/CIDType0Font.m; sourceTree = SOURCE_ROOT; };
 		2CE7BCBE13897135009784B9 /* CIDType2Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDType2Font.h; path = PDFKitten/CIDType2Font.h; sourceTree = SOURCE_ROOT; };
@@ -165,11 +153,7 @@
 		2C0E15B113589B0B004096C7 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2CE7BCE413897225009784B9 /* Scanner */,
-				2CE7BCBB13897129009784B9 /* Font */,
-				2CE7BCE81389724B009784B9 /* RenderingState */,
-				2CDC3F61138972D4006CC6FB /* StringDetector */,
-				2CE7BCEC13897264009784B9 /* Selection */,
+				2CA0FCA713EEB32D0028DCCD /* PDF Core */,
 				2C0E15B213589B0B004096C7 /* Root View Controller */,
 			);
 			name = Classes;
@@ -182,18 +166,8 @@
 				2C12935213E585F00090C70F /* PageViewController */,
 				2CA0FC9213EEB11B0028DCCD /* RootViewController.h */,
 				2CA0FC9313EEB11B0028DCCD /* RootViewController.m */,
-				2CA0FC9513EEB1210028DCCD /* PDFPage.h */,
-				2CA0FC9613EEB1210028DCCD /* PDFPage.m */,
 				2CE7BCA313896EFB009784B9 /* PDFDemoAppDelegate.h */,
 				2CE7BCA413896EFB009784B9 /* PDFDemoAppDelegate.m */,
-				2CE7BCA513896EFB009784B9 /* PDFDemoViewController.h */,
-				2CE7BCA613896EFB009784B9 /* PDFDemoViewController.m */,
-				2CE7BCA713896EFB009784B9 /* PDFDocView.h */,
-				2CE7BCA813896EFB009784B9 /* PDFDocView.m */,
-				2CE7BCAB13896EFB009784B9 /* PDFPageView.h */,
-				2CE7BCAC13896EFB009784B9 /* PDFPageView.m */,
-				2CE7BCAD13896EFB009784B9 /* PDFView.h */,
-				2CE7BCAE13896EFB009784B9 /* PDFView.m */,
 			);
 			name = "Root View Controller";
 			sourceTree = "<group>";
@@ -201,6 +175,8 @@
 		2C12935213E585F00090C70F /* PageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2CA0FC9513EEB1210028DCCD /* PDFPage.h */,
+				2CA0FC9613EEB1210028DCCD /* PDFPage.m */,
 				2CE7BC9A13896EF0009784B9 /* PageView.h */,
 				2CE7BC9B13896EF0009784B9 /* PageView.m */,
 				2CA0FC9F13EEB1B80028DCCD /* Page.h */,
@@ -234,6 +210,18 @@
 			);
 			name = "Other Sources";
 			path = PDFDemo;
+			sourceTree = "<group>";
+		};
+		2CA0FCA713EEB32D0028DCCD /* PDF Core */ = {
+			isa = PBXGroup;
+			children = (
+				2CE7BCE413897225009784B9 /* Scanner */,
+				2CE7BCBB13897129009784B9 /* Font */,
+				2CE7BCE81389724B009784B9 /* RenderingState */,
+				2CDC3F61138972D4006CC6FB /* StringDetector */,
+				2CE7BCEC13897264009784B9 /* Selection */,
+			);
+			name = "PDF Core";
 			sourceTree = "<group>";
 		};
 		2CDC3F61138972D4006CC6FB /* StringDetector */ = {
@@ -398,10 +386,6 @@
 				2CE7BC9D13896EF0009784B9 /* PageView.m in Sources */,
 				2CE7BCAF13896EFB009784B9 /* main.m in Sources */,
 				2CE7BCB113896EFB009784B9 /* PDFDemoAppDelegate.m in Sources */,
-				2CE7BCB213896EFB009784B9 /* PDFDemoViewController.m in Sources */,
-				2CE7BCB313896EFB009784B9 /* PDFDocView.m in Sources */,
-				2CE7BCB613896EFB009784B9 /* PDFPageView.m in Sources */,
-				2CE7BCB713896EFB009784B9 /* PDFView.m in Sources */,
 				2CE7BCC413897135009784B9 /* CIDType0Font.m in Sources */,
 				2CE7BCC513897135009784B9 /* CIDType2Font.m in Sources */,
 				2CE7BCC613897135009784B9 /* CMap.m in Sources */,

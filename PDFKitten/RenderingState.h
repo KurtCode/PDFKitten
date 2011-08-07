@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "Font.h"
 
-@class Font;
-
 @interface RenderingState : NSObject <NSCopying> {
 	CGAffineTransform lineMatrix;
 	CGAffineTransform textMatrix;
@@ -27,20 +25,26 @@
 - (void)newLineWithLineHeight:(CGFloat)lineHeight save:(BOOL)save;
 - (void)newLine;
 
+/* Converts a size from text space to user space */
+- (CGSize)convertSizeToUserSpace:(CGSize)aSize;
 
-/* Matrixes */
+/* Converts a float to user space */
+- (CGFloat)convertToUserSpace:(CGFloat)value;
+
+
+/* Matrixes (line-, text- and global) */
 @property (nonatomic, assign) CGAffineTransform lineMatrix;
 @property (nonatomic, assign) CGAffineTransform textMatrix;
 @property (nonatomic, assign) CGAffineTransform ctm;
 
-/* Text size, spacing and scaling */
+/* Text size, spacing, scaling etc. */
 @property (nonatomic, assign) CGFloat characterSpacing;
 @property (nonatomic, assign) CGFloat wordSpacing;
 @property (nonatomic, assign) CGFloat leadning;
 @property (nonatomic, assign) CGFloat textRise;
 @property (nonatomic, assign) CGFloat horizontalScaling;
 
-/* Font */
+/* Font and font size */
 @property (nonatomic, retain) Font *font;
 @property (nonatomic, assign) CGFloat fontSize;
 
@@ -51,8 +55,13 @@
 	NSMutableArray *stack;
 }
 
-- (RenderingState *)popRenderingState;
+/* Push a rendering state to the stack */
 - (void)pushRenderingState:(RenderingState *)state;
 
+/* Pops the top rendering state off the stack */
+- (RenderingState *)popRenderingState;
+
+/* The rendering state currently on top of the stack */
 @property (nonatomic, readonly) RenderingState *topRenderingState;
+
 @end

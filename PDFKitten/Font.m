@@ -23,8 +23,6 @@
 	const char *subtype = nil;
 	CGPDFDictionaryGetName(dictionary, "Subtype", &subtype);
 
-	NSLog(@"FONT TYPE: %s", subtype);
-	
 	if (strcmp(subtype, "Type0") == 0)
 	{
 		return [[[Type0Font	alloc] initWithFontDictionary:dictionary] autorelease];
@@ -72,10 +70,6 @@
 		
 		// NOTE: Any furhter initialization is performed by the appropriate subclass
 	}
-	
-	NSLog(@"Font: %@", [self.fontDescriptor fontName]);
-	NSLog(@"Has ToUnicode: %d", self.toUnicode != nil);
-	
 	return self;
 }
 

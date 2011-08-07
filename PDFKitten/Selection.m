@@ -1,9 +1,6 @@
 #import "Selection.h"
+#import "RenderingState.h"
 
-
-@interface Selection ()
-@property (nonatomic, copy) RenderingState *startState;
-@end
 
 @implementation Selection
 
@@ -12,7 +9,7 @@
 {
 	if ((self = [super init]))
 	{
-		self.startState = state;
+		initialState = [state retain];
 	}
 	return self;
 }
@@ -21,29 +18,43 @@
 - (void)finalizeWithState:(RenderingState *)state
 {
 	// Concatenate CTM onto text matrix
-	transform = CGAffineTransformConcat([startState textMatrix], [startState ctm]);
+	transform = CGAffineTransformConcat([initialState textMatrix], [initialState ctm]);
 
-	Font *openingFont = [startState font];
+	Font *openingFont = [initialState font];
 	Font *closingFont = [state font];
 	
 	// Width (difference between caps) with text transformation removed
-	CGFloat width = [state textMatrix].tx - [startState textMatrix].tx;	
+	CGFloat width = [state textMatrix].tx - [initialState textMatrix].tx;	
 	width /= [state textMatrix].a;
 
 	// Use tallest cap for entire selection
 	CGFloat startHeight = [openingFont maxY] - [openingFont minY];
 	CGFloat finishHeight = [closingFont maxY] - [closingFont minY];
-	RenderingState *s = (startHeight > finishHeight) ? startState : state;
+	RenderingState *s = (startHeight > finishHeight) ? initialState : state;
+
+	Font *font = [s font];
+	FontDescriptor *descriptor = [font fontDescriptor];
 	
 	// Height is ascent plus (negative) descent
-	CGFloat height = ([[s font] maxY] - [[s font] minY]) / 1000 * s.fontSize;
+	CGFloat height = [s convertToUserSpace:(font.maxY - font.minY)];
 
 	// Descent
-	CGFloat descent = [[[s font] fontDescriptor] descent] / 1000 * [s fontSize];
+	CGFloat descent = [s convertToUserSpace:descriptor.descent];
 
 	// Selection frame in text space
 	frame = CGRectMake(0, descent, width, height);
+	
+	[initialState release]; initialState = nil;
 }
 
-@synthesize startState, frame, transform;
+
+#pragma mark - Memory Management
+
+- (void)dealloc
+{
+	[initialState release];
+	[super dealloc];
+}
+
+@synthesize frame, transform;
 @end

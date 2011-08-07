@@ -104,12 +104,8 @@
 	// Use CID string for font-related computations.
 	NSString *cidString = (NSString *) CGPDFStringCopyTextString(string);
 	
-	NSLog(@">> %@", [font class]);
-	
 	// Use Unicode string to compare with user input.
 	NSString *unicodeString = [[font stringWithPDFString:string] lowercaseString];
-	
-	NSLog(@"%@", unicodeString);
 	
 	[unicodeContent appendString:unicodeString];
 	

@@ -1,19 +1,23 @@
 #import <Foundation/Foundation.h>
-#import "RenderingState.h"
 
+@class RenderingState;
 
 @interface Selection : NSObject {
-	RenderingState *startState;
-	CGRect frame;
+	RenderingState *initialState;
 	CGAffineTransform transform;
+	CGRect frame;
 }
 
-/* Initalize with rendering state */
+/* Initalize with rendering state (starting marker) */
 - (id)initWithStartState:(RenderingState *)state;
 
-/* Finalize the selection */
+/* Finalize the selection (ending marker) */
 - (void)finalizeWithState:(RenderingState *)state;
 
+/* The frame with zero origin covering the selection */
 @property (nonatomic, readonly) CGRect frame;
+
+/* The transformation needed to position the selection */
 @property (nonatomic, readonly) CGAffineTransform transform;
+
 @end
