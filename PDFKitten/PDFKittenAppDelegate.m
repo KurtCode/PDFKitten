@@ -1,6 +1,6 @@
-#import "PDFDemoAppDelegate.h"
+#import "PDFKittenAppDelegate.h"
 
-@implementation PDFDemoAppDelegate
+@implementation PDFKittenAppDelegate
 
  
 @synthesize window=_window;

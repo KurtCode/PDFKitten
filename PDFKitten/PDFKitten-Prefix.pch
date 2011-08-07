@@ -1,7 +1,3 @@
-//
-// Prefix header for all source files of the 'PDFDemo' target in the 'PDFDemo' project
-//
-
 #import <Availability.h>
 
 #ifndef __IPHONE_3_0

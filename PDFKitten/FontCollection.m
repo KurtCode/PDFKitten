@@ -38,7 +38,6 @@ void didScanFont(const char *key, CGPDFObjectRef object, void *collection)
 	return [fonts objectForKey:fontName];
 }
 
-
 #pragma mark - Memory Management
 
 - (void)dealloc

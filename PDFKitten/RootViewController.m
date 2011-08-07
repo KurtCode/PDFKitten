@@ -1,51 +1,61 @@
-#import "RootViewController.h"
+#import "RootViewController.h"  
 #import "PDFPage.h"
 
-@interface RootViewController ()
-- (CGPDFDocumentRef)newPDFDocumentWithPath:(NSString *)path;
-@end
-
-
 @implementation RootViewController
+
+#pragma mark - Initialization
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	if ((self = [super initWithCoder:aDecoder]))
 	{
-		document = [self newPDFDocumentWithPath:self.documentPath];
+        NSURL *pdfURL = [NSURL fileURLWithPath:self.documentPath];
+        document = CGPDFDocumentCreateWithURL((CFURLRef)pdfURL);
 	}
 	return self;
 }
 
+#pragma mark PageViewDelegate
+
+/* The number of pages in the current PDF document */
 - (NSInteger)numberOfPagesInPageView:(PageView *)pageView
 {
 	return CGPDFDocumentGetNumberOfPages(document);
 }
 
-- (Page *)pageView:(PageView *)aPageView viewForPage:(NSInteger)aPage
+// TODO: Assign page to either the page or its content view, not both.
+
+/* Page view object for the requested page */
+- (Page *)pageView:(PageView *)aPageView viewForPage:(NSInteger)pageNumber
 {
 	PDFPage *page = (PDFPage *) [aPageView dequeueRecycledPage];
 	if (!page)
 	{
 		page = [[[PDFPage alloc] initWithFrame:CGRectZero] autorelease];
 	}
-	page.pageNumber = aPage;
-    [page setPage:CGPDFDocumentGetPage(document, aPage+1)];
-	[(PDFContentView *)page.contentView setPage:CGPDFDocumentGetPage(document, aPage+1)];
-	
+    
+	page.pageNumber = pageNumber;
+    CGPDFPageRef pdfPage = CGPDFDocumentGetPage(document, pageNumber + 1); // PDF document page numbers are 1-based
+    [page setPage:pdfPage];
+	[(PDFContentView *)page.contentView setPage:pdfPage];
 	return page;
 }
 
-- (CGPDFDocumentRef)newPDFDocumentWithPath:(NSString *)path
-{
-	NSURL *pdfURL = [NSURL fileURLWithPath:path];
-	CGPDFDocumentRef doc = CGPDFDocumentCreateWithURL((CFURLRef)pdfURL);
-	return doc;
-}
+// TODO: add user interface for choosing document
 
 - (NSString *)documentPath
 {
+    // DEBUG: for now, always load Kurt the Cat
 	return [[NSBundle mainBundle] pathForResource:@"Kurt the Cat" ofType:@"pdf"];
+}
+
+
+#pragma mark Memory Management
+
+- (void)dealloc
+{
+    CGPDFDocumentRelease(document);
+    [super dealloc];
 }
 
 @end

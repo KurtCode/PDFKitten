@@ -12,7 +12,11 @@
 #import "CIDType0Font.h"
 
 
+#pragma mark 
+
 @implementation Font
+
+#pragma mark - Initialization
 
 /* Factory method returns a Font object given a PDF font dictionary */
 + (Font *)fontWithDictionary:(CGPDFDictionaryRef)dictionary
@@ -73,6 +77,8 @@
 	return self;
 }
 
+#pragma mark Font Resources
+
 /* Import font descriptor */
 - (void)setFontDescriptorWithFontDictionary:(CGPDFDictionaryRef)dict
 {
@@ -99,22 +105,26 @@
 	[map release];
 }
 
+#pragma mark Font Property Accessors
+
 /* Subclasses will override this method with their own implementation */
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
-	return [(NSString *) CGPDFStringCopyTextString(pdfString) autorelease];
+    // Copy PDFString to NSString
+    NSString *string = (NSString *) CGPDFStringCopyTextString(pdfString);
+	return [string autorelease];
 }
 
 /* Lowest point of any character */
 - (CGFloat)minY
 {
-	return [[self fontDescriptor] descent];
+	return [self.fontDescriptor descent];
 }
 
 /* Highest point of any character */
 - (CGFloat)maxY
 {
-	return [[self fontDescriptor] ascent];
+	return [self.fontDescriptor ascent];
 }
 
 /* Width of the given character (CID) scaled to fontsize */
@@ -148,7 +158,6 @@
 	return [self widthOfCharacter:0x20 withFontSize:1.0];
 }
 
-#pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc

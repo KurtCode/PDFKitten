@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "RootViewController.h"
 
-@interface PDFDemoAppDelegate : NSObject <UIApplicationDelegate> {
+@interface PDFKittenAppDelegate : NSObject <UIApplicationDelegate> {
 	IBOutlet RootViewController *rootViewController;
 }
 
