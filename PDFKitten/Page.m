@@ -20,7 +20,6 @@
 		
 		UIView *view = [self contentView];
 		view.frame = frame;
-//		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		self.contentView = view;
 		[self addSubview:view];
 		

@@ -1,5 +1,6 @@
 #import "RootViewController.h"  
 #import "PDFPage.h"
+#import "DropboxSDK.h"
 
 @implementation RootViewController
 
@@ -13,6 +14,15 @@
         document = CGPDFDocumentCreateWithURL((CFURLRef)pdfURL);
 	}
 	return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	
+	// Ask user to connect Dropbox account
+	DBLoginController *loginController = [[DBLoginController new] autorelease];
+	[loginController presentFromController:self];
 }
 
 #pragma mark PageViewDelegate
