@@ -1,7 +1,10 @@
 #import "Scanner.h"
 
+#pragma mark 
 
 @interface Scanner ()
+
+#pragma mark - Text showing
 
 // Text-showing operators
 void Tj(CGPDFScannerRef scanner, void *info);
@@ -9,13 +12,18 @@ void quot(CGPDFScannerRef scanner, void *info);
 void doubleQuot(CGPDFScannerRef scanner, void *info);
 void TJ(CGPDFScannerRef scanner, void *info);
 
+#pragma mark Text positioning
+
 // Text-positioning operators
 void Td(CGPDFScannerRef scanner, void *info);
 void TD(CGPDFScannerRef scanner, void *info);
 void Tm(CGPDFScannerRef scanner, void *info);
 void TStar(CGPDFScannerRef scanner, void *info);
 
+#pragma mark Text state
+
 // Text state operators
+void BT(CGPDFScannerRef scanner, void *info);
 void Tc(CGPDFScannerRef scanner, void *info);
 void Tw(CGPDFScannerRef scanner, void *info);
 void Tz(CGPDFScannerRef scanner, void *info);
@@ -23,22 +31,29 @@ void TL(CGPDFScannerRef scanner, void *info);
 void Tf(CGPDFScannerRef scanner, void *info);
 void Ts(CGPDFScannerRef scanner, void *info);
 
+#pragma mark Graphics state
+
 // Special graphics state operators
 void q(CGPDFScannerRef scanner, void *info);
 void Q(CGPDFScannerRef scanner, void *info);
 void cm(CGPDFScannerRef scanner, void *info);
-
-void BT(CGPDFScannerRef scanner, void *info);
 
 @property (nonatomic, retain) Selection *currentSelection;
 @property (nonatomic, readonly) RenderingState *currentRenderingState;
 @property (nonatomic, readonly) Font *currentFont;
 @property (nonatomic, readonly) CGPDFDocumentRef pdfDocument;
 @property (nonatomic, copy) NSURL *documentURL;
+
+/* Returts the operator callbacks table for scanning page stream */
 @property (nonatomic, readonly) CGPDFOperatorTableRef operatorTable;
+
 @end
 
+#pragma mark
+
 @implementation Scanner
+
+#pragma mark - Initialization
 
 - (id)initWithDocument:(CGPDFDocumentRef)document
 {
@@ -58,14 +73,16 @@ void BT(CGPDFScannerRef scanner, void *info);
 	return self;
 }
 
+#pragma mark Scanner state accessors
+
 - (RenderingState *)currentRenderingState
 {
-	return [[self renderingStateStack] topRenderingState];
+	return [self.renderingStateStack topRenderingState];
 }
 
 - (Font *)currentFont
 {
-	return [[[self renderingStateStack] topRenderingState] font];
+	return self.currentRenderingState.font;
 }
 
 - (CGPDFDocumentRef)pdfDocument
@@ -139,18 +156,24 @@ void BT(CGPDFScannerRef scanner, void *info);
 }
 
 /* Scan the given page of the current document */
-- (void)scanPage:(NSUInteger)pageNumber
+- (void)scanDocumentPage:(NSUInteger)pageNumber
+{
+	CGPDFPageRef page = CGPDFDocumentGetPage(self.pdfDocument, pageNumber);
+    [self scanPage:page];
+}
+
+#pragma mark Start scanning
+
+- (void)scanPage:(CGPDFPageRef)page
 {
 	// Return immediately if no keyword set
 	if (!keyword) return;
+    
+    [self.stringDetector reset];
 
-	[self.stringDetector reset];
-
-	CGPDFPageRef page = CGPDFDocumentGetPage(self.pdfDocument, pageNumber);
-
-	// Initialize font collection (per page)
+    // Initialize font collection (per page)
 	self.fontCollection = [self fontCollectionWithPage:page];
-			
+    
 	CGPDFContentStreamRef content = CGPDFContentStreamCreateWithPage(page);
 	CGPDFScannerRef scanner = CGPDFScannerCreate(content, self.operatorTable, self);
 	CGPDFScannerScan(scanner);
@@ -159,7 +182,6 @@ void BT(CGPDFScannerRef scanner, void *info);
 }
 
 
-#pragma mark -
 #pragma mark StringDetectorDelegate
 
 - (void)detector:(StringDetector *)detector didScanCharacter:(unichar)character
@@ -194,12 +216,40 @@ void BT(CGPDFScannerRef scanner, void *info);
 	}
 }
 
+#pragma mark - Scanner callbacks
+
 void BT(CGPDFScannerRef scanner, void *info)
 {
 	[[(Scanner *)info currentRenderingState] setTextMatrix:CGAffineTransformIdentity replaceLineMatrix:YES];
 }
 
+/* Pops the requested number of values, and returns the number of values popped */
+// !!!: Make sure this is correct, then use it
+int popIntegers(CGPDFScannerRef scanner, CGPDFInteger *buffer, size_t length)
+{
+    bzero(buffer, length);
+    CGPDFInteger value;
+    int i = 0;
+    while (i < length)
+    {
+        if (!CGPDFScannerPopInteger(scanner, &value)) break;
+        buffer[i] = value;
+        i++;
+    }
+    return i;
+}
+
 #pragma mark Text showing operators
+
+void didScanSpace(float value, Scanner *scanner)
+{
+    float width = [scanner.currentRenderingState convertToUserSpace:value];
+    [scanner.currentRenderingState translateTextPosition:CGSizeMake(-width, 0)];
+    if (abs(value) >= [scanner.currentRenderingState.font widthOfSpace])
+    {
+        [scanner.stringDetector reset];
+    }
+}
 
 /* Called any time the scanner scans a string */
 void didScanString(CGPDFStringRef pdfString, Scanner *scanner)
@@ -233,51 +283,43 @@ void doubleQuot(CGPDFScannerRef scanner, void *info)
 /* Array of strings and spacings */
 void TJ(CGPDFScannerRef scanner, void *info)
 {
-	CGPDFArrayRef array;
-	if (!CGPDFScannerPopArray(scanner, &array)) return;
-	
-	for (int i = 0; i < CGPDFArrayGetCount(array); i++)
+	CGPDFArrayRef array = nil;
+	CGPDFScannerPopArray(scanner, &array);
+    size_t count = CGPDFArrayGetCount(array);
+    
+	for (int i = 0; i < count; i++)
 	{
-		CGPDFObjectRef object;
-		if (!CGPDFArrayGetObject(array, i, &object)) continue;
+		CGPDFObjectRef object = nil;
+		CGPDFArrayGetObject(array, i, &object);
 		CGPDFObjectType type = CGPDFObjectGetType(object);
 
-		if (type == kCGPDFObjectTypeString)
-		{
-			CGPDFStringRef pdfString;
-			if (!CGPDFObjectGetValue(object, kCGPDFObjectTypeString, &pdfString)) continue;
-			didScanString(pdfString, info);
-		}
-		else if (type == kCGPDFObjectTypeReal)
-		{
-			RenderingState *state = [(Scanner *)info currentRenderingState];
-			CGPDFReal tx;
-			if (!CGPDFObjectGetValue(object, kCGPDFObjectTypeReal, &tx)) continue;
-			float width = (float)tx/1000*[state fontSize];
-			[state translateTextPosition:CGSizeMake(-width, 0)];
-			
-			if (abs(tx) >= [state.font widthOfSpace])
-			{
-				[[(Scanner *)info stringDetector] reset];
-			}
-		}
-		else if (type == kCGPDFObjectTypeInteger)
-		{
-			RenderingState *state = [(Scanner *)info currentRenderingState];
-			CGPDFInteger tx;
-			if (!CGPDFObjectGetValue(object, kCGPDFObjectTypeInteger, &tx)) continue;
-			float width = (float)tx/1000*[state fontSize];
-			[state translateTextPosition:CGSizeMake(-width, 0)];
-
-			if (abs(tx) >= [state.font widthOfSpace])
-			{
-				[[(Scanner *)info stringDetector] reset];
-			}
-		}
-		else
-		{
-			NSLog(@"Unsupported value: %d", type);
-		}
+        switch (type)
+        {
+            case kCGPDFObjectTypeString:
+            {
+                CGPDFStringRef pdfString = nil;
+                CGPDFObjectGetValue(object, kCGPDFObjectTypeString, &pdfString);
+                didScanString(pdfString, info);
+                break;
+            }
+            case kCGPDFObjectTypeReal:
+            {
+                CGPDFReal tx = 0.0f;
+                CGPDFObjectGetValue(object, kCGPDFObjectTypeReal, &tx);
+                didScanSpace(tx, info);
+                break;
+            }
+            case kCGPDFObjectTypeInteger:
+            {
+                CGPDFInteger tx = 0L;
+                CGPDFObjectGetValue(object, kCGPDFObjectTypeInteger, &tx);
+                didScanSpace(tx, info);
+                break;
+            }
+            default:
+                NSLog(@"Scanner: TJ: Unsupported type: %d", type);
+                break;
+        }
 	}
 }
 
@@ -286,9 +328,9 @@ void TJ(CGPDFScannerRef scanner, void *info)
 /* Move to start of next line */
 void Td(CGPDFScannerRef scanner, void *info)
 {
-	CGPDFReal tx, ty;
-	if (!CGPDFScannerPopNumber(scanner, &ty)) return;
-	if (!CGPDFScannerPopNumber(scanner, &tx)) return;
+	CGPDFReal tx = 0, ty = 0;
+	CGPDFScannerPopNumber(scanner, &ty);
+	CGPDFScannerPopNumber(scanner, &tx);
 	[[(Scanner *)info currentRenderingState] newLineWithLineHeight:ty indent:tx save:NO];
 }
 
@@ -362,8 +404,6 @@ void Tf(CGPDFScannerRef scanner, void *info)
 	const char *fontName;
 	if (!CGPDFScannerPopNumber(scanner, &fontSize)) return;
 	if (!CGPDFScannerPopName(scanner, &fontName)) return;
-	
-	NSLog(@"Using font %s", fontName);
 	
 	RenderingState *state = [(Scanner *)info currentRenderingState];
 	Font *font = [[(Scanner *)info fontCollection] fontNamed:[NSString stringWithUTF8String:fontName]];

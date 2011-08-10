@@ -3,11 +3,14 @@
 
 @interface PDFContentView : PageContentView {
 	CGPDFPageRef pdfPage;
+    NSString *keyword;
 }
 
 #pragma mark
 
 - (void)setPage:(CGPDFPageRef)page;
+
+@property (nonatomic, copy) NSString *keyword;
 
 @end
 
@@ -19,5 +22,7 @@
 #pragma mark
 
 - (void)setPage:(CGPDFPageRef)page;
+
+@property (nonatomic, copy) NSString *keyword;
 
 @end

@@ -12,8 +12,8 @@
 	[self.window makeKeyAndVisible];
 	
 	// Setup Dropbox session
-	DBSession *session = [[[DBSession alloc] initWithConsumerKey:@"" consumerSecret:@""] autorelease];
-	[DBSession setSharedSession:session];
+//	DBSession *session = [[[DBSession alloc] initWithConsumerKey:@"" consumerSecret:@""] autorelease];
+//	[DBSession setSharedSession:session];
 
     return YES;
 }

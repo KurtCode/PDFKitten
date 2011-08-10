@@ -1,6 +1,7 @@
 #import "PageViewController.h"
+#import "PageView.h"
 
-@interface RootViewController : PageViewController {
+@interface RootViewController : UIViewController <PageViewDelegate> {
 	CGPDFDocumentRef document;
 }
 

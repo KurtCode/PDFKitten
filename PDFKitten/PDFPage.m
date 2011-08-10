@@ -1,5 +1,5 @@
 #import "PDFPage.h"
-
+#import "Scanner.h"
 
 @implementation PDFContentView
 
@@ -32,6 +32,25 @@
 
     // Draw page
 	CGContextDrawPDFPage(ctx, pdfPage);
+    
+    // Search for keyword, if set
+    
+    if (self.keyword)
+    {
+        Scanner *scanner = [[[Scanner alloc] init] autorelease];
+        [scanner setKeyword:self.keyword];
+        [scanner scanPage:pdfPage];
+        NSArray *selections = [scanner selections];
+        CGContextSetFillColorWithColor(ctx, [[UIColor colorWithRed:1.0 green:1.0 blue:0.0 alpha:0.5] CGColor]);
+        
+        for (Selection *s in selections)
+        {
+            CGContextSaveGState(ctx);
+            CGContextConcatCTM(ctx, s.transform);
+            CGContextFillRect(ctx, s.frame);
+            CGContextRestoreGState(ctx);
+        }
+    }
 }
 
 /* Sets the current PDFPage object */
@@ -49,6 +68,7 @@
     [super dealloc];
 }
 
+@synthesize keyword;
 @end
 
 #pragma mark -
@@ -73,6 +93,16 @@
     // Also set the frame of the content view according to the page size
     CGRect rect = CGPDFPageGetBoxRect(page, kCGPDFCropBox);
     self.contentView.frame = rect;
+}
+
+- (void)setKeyword:(NSString *)string
+{
+    ((PDFContentView *)contentView).keyword = string;
+}
+
+- (NSString *)keyword
+{
+    return ((PDFContentView *)contentView).keyword;
 }
 
 @end

@@ -21,8 +21,8 @@
 	[super viewDidAppear:animated];
 	
 	// Ask user to connect Dropbox account
-	DBLoginController *loginController = [[DBLoginController new] autorelease];
-	[loginController presentFromController:self];
+//	DBLoginController *loginController = [[DBLoginController new] autorelease];
+//	[loginController presentFromController:self];
 }
 
 #pragma mark PageViewDelegate
@@ -47,7 +47,8 @@
 	page.pageNumber = pageNumber;
     CGPDFPageRef pdfPage = CGPDFDocumentGetPage(document, pageNumber + 1); // PDF document page numbers are 1-based
     [page setPage:pdfPage];
-	[(PDFContentView *)page.contentView setPage:pdfPage];
+    page.keyword = @"cat";
+    
 	return page;
 }
 

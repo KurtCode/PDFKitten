@@ -13,10 +13,6 @@
 		self.pagingEnabled = YES;
 		recycledPages = [[NSMutableSet alloc] init];
 		visiblePages = [[NSMutableSet alloc] init];
-		
-//        self.maximumZoomScale = 1.0;
-//        self.minimumZoomScale = 1.0;
-//        self.bouncesZoom = NO;
         
         self.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -26,7 +22,6 @@
 
 - (void)reloadData
 {
-	numberOfPages = [dataSource numberOfPagesInPageView:self];
 	[self setNeedsLayout];
 }
 
@@ -45,6 +40,8 @@
 
 - (void)layoutSubviews
 {
+	numberOfPages = [dataSource numberOfPagesInPageView:self];
+
 	self.contentSize = CGSizeMake(CGRectGetWidth(self.bounds) * numberOfPages, CGRectGetWidth(self.bounds));
 	
 	CGRect visibleBounds = self.bounds;

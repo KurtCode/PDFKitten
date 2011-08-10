@@ -23,7 +23,9 @@
 - (id)initWithDocument:(CGPDFDocumentRef)document;
 
 /* Start scanning (synchronous) */
-- (void)scanPage:(NSUInteger)page;
+- (void)scanDocumentPage:(NSUInteger)pageNumber;
+
+- (void)scanPage:(CGPDFPageRef)page;
 
 @property (nonatomic, retain) NSMutableArray *selections;
 @property (nonatomic, retain) RenderingStateStack *renderingStateStack;

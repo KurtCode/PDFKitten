@@ -9,7 +9,7 @@
 {
 	if ((self = [super init]))
 	{
-		initialState = [state retain];
+		initialState = [state copy];
 	}
 	return self;
 }
@@ -44,7 +44,7 @@
 	// Selection frame in text space
 	frame = CGRectMake(0, descent, width, height);
 	
-	[initialState release]; initialState = nil;
+//	[initialState release]; initialState = nil;
 }
 
 

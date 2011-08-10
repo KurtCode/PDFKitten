@@ -29,7 +29,7 @@
 	NSInteger numberOfPages;
 	NSMutableSet *visiblePages;
 	NSMutableSet *recycledPages;
-	id<PageViewDelegate> dataSource;
+	IBOutlet id<PageViewDelegate> dataSource;
 }
 
 #pragma mark -
