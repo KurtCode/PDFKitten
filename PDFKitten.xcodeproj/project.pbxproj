@@ -55,6 +55,7 @@
 		2C38D8E113EF36AE00718B0D /* db_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C38D8B513EF36AE00718B0D /* db_logo.png */; };
 		2C38D8E213EF36AE00718B0D /* db_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C38D8B613EF36AE00718B0D /* db_logo@2x.png */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
+		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
 		2C855590137B336C00D58482 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
 		2CA0FC9413EEB11B0028DCCD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9313EEB11B0028DCCD /* RootViewController.m */; };
 		2CA0FC9713EEB1210028DCCD /* PDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9613EEB1210028DCCD /* PDFPage.m */; };
@@ -65,7 +66,6 @@
 		2CDC3F65138972E5006CC6FB /* StringDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F64138972E5006CC6FB /* StringDetector.m */; };
 		2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */; };
 		2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7C138977C0006CC6FB /* MainWindow.xib */; };
-		2CDC3F82138977C1006CC6FB /* PDFDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7E138977C1006CC6FB /* PDFDemoViewController.xib */; };
 		2CE7BC9D13896EF0009784B9 /* PageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BC9B13896EF0009784B9 /* PageView.m */; };
 		2CE7BCAF13896EFB009784B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA013896EFB009784B9 /* main.m */; };
 		2CE7BCB113896EFB009784B9 /* PDFKittenAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA413896EFB009784B9 /* PDFKittenAppDelegate.m */; };
@@ -174,6 +174,8 @@
 		2C38D8B513EF36AE00718B0D /* db_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_logo.png; sourceTree = "<group>"; };
 		2C38D8B613EF36AE00718B0D /* db_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "db_logo@2x.png"; sourceTree = "<group>"; };
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		2C47505C13F3E48200BC2DB9 /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsView.h; path = PDFKitten/DocumentsView.h; sourceTree = SOURCE_ROOT; };
+		2C47505D13F3E48200BC2DB9 /* DocumentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsView.m; path = PDFKitten/DocumentsView.m; sourceTree = SOURCE_ROOT; };
 		2C85558F137B336C00D58482 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2CA0FC9213EEB11B0028DCCD /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = PDFKitten/RootViewController.h; sourceTree = SOURCE_ROOT; };
 		2CA0FC9313EEB11B0028DCCD /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = PDFKitten/RootViewController.m; sourceTree = SOURCE_ROOT; };
@@ -189,7 +191,6 @@
 		2CDC3F64138972E5006CC6FB /* StringDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringDetector.m; path = PDFKitten/StringDetector.m; sourceTree = SOURCE_ROOT; };
 		2CDC3F7B138977C0006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = PDFKitten/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		2CDC3F7D138977C1006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = PDFKitten/en.lproj/MainWindow.xib; sourceTree = SOURCE_ROOT; };
-		2CDC3F7F138977C1006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = PDFKitten/en.lproj/PDFDemoViewController.xib; sourceTree = SOURCE_ROOT; };
 		2CE7BC491389674B009784B9 /* PDFKitten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKitten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE7BC9A13896EF0009784B9 /* PageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageView.h; path = PDFKitten/PageView.h; sourceTree = SOURCE_ROOT; };
 		2CE7BC9B13896EF0009784B9 /* PageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PageView.m; path = PDFKitten/PageView.m; sourceTree = SOURCE_ROOT; };
@@ -197,7 +198,6 @@
 		2CE7BCA013896EFB009784B9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PDFKitten/main.m; sourceTree = SOURCE_ROOT; };
 		2CE7BCA313896EFB009784B9 /* PDFKittenAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFKittenAppDelegate.h; path = PDFKitten/PDFKittenAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		2CE7BCA413896EFB009784B9 /* PDFKittenAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFKittenAppDelegate.m; path = PDFKitten/PDFKittenAppDelegate.m; sourceTree = SOURCE_ROOT; };
-		2CE7BCA913896EFB009784B9 /* PDFDocView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PDFDocView.xib; path = PDFKitten/PDFDocView.xib; sourceTree = SOURCE_ROOT; };
 		2CE7BCAA13896EFB009784B9 /* PDFKitten-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "PDFKitten-Info.plist"; path = "PDFKitten/PDFKitten-Info.plist"; sourceTree = SOURCE_ROOT; };
 		2CE7BCBC13897135009784B9 /* CIDType0Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDType0Font.h; path = PDFKitten/CIDType0Font.h; sourceTree = SOURCE_ROOT; };
 		2CE7BCBD13897135009784B9 /* CIDType0Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDType0Font.m; path = PDFKitten/CIDType0Font.m; sourceTree = SOURCE_ROOT; };
@@ -297,6 +297,8 @@
 				2C12935213E585F00090C70F /* PageViewController */,
 				2CA0FC9213EEB11B0028DCCD /* RootViewController.h */,
 				2CA0FC9313EEB11B0028DCCD /* RootViewController.m */,
+				2C47505C13F3E48200BC2DB9 /* DocumentsView.h */,
+				2C47505D13F3E48200BC2DB9 /* DocumentsView.m */,
 				2CE7BCA313896EFB009784B9 /* PDFKittenAppDelegate.h */,
 				2CE7BCA413896EFB009784B9 /* PDFKittenAppDelegate.m */,
 			);
@@ -446,8 +448,6 @@
 				2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */,
 				2CE7BCAA13896EFB009784B9 /* PDFKitten-Info.plist */,
 				2CDC3F7C138977C0006CC6FB /* MainWindow.xib */,
-				2CDC3F7E138977C1006CC6FB /* PDFDemoViewController.xib */,
-				2CE7BCA913896EFB009784B9 /* PDFDocView.xib */,
 				2CA0FC9813EEB12A0028DCCD /* Kurt the Cat.pdf */,
 			);
 			name = Resources;
@@ -622,7 +622,6 @@
 			files = (
 				2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */,
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
-				2CDC3F82138977C1006CC6FB /* PDFDemoViewController.xib in Resources */,
 				2CA0FC9913EEB12A0028DCCD /* Kurt the Cat.pdf in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
 				2C38D8D813EF36AE00718B0D /* db_background.png in Resources */,
@@ -703,6 +702,7 @@
 				2C38D8D513EF36AE00718B0D /* NSURL+MPURLParameterAdditions.m in Sources */,
 				2C38D8D613EF36AE00718B0D /* NSURLResponse+Encoding.m in Sources */,
 				2C38D8D713EF36AE00718B0D /* NSString+Dropbox.m in Sources */,
+				2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,14 +723,6 @@
 				2CDC3F7D138977C1006CC6FB /* en */,
 			);
 			name = MainWindow.xib;
-			sourceTree = "<group>";
-		};
-		2CDC3F7E138977C1006CC6FB /* PDFDemoViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2CDC3F7F138977C1006CC6FB /* en */,
-			);
-			name = PDFDemoViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

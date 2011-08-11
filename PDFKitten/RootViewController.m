@@ -1,6 +1,7 @@
 #import "RootViewController.h"  
 #import "PDFPage.h"
 #import "DropboxSDK.h"
+#import "DocumentsView.h"
 
 @implementation RootViewController
 
@@ -14,6 +15,40 @@
         document = CGPDFDocumentCreateWithURL((CFURLRef)pdfURL);
 	}
 	return self;
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if ([popoverController isEqual:libraryPopover])
+    {
+        [libraryPopover release]; libraryPopover = nil;
+    }
+}
+
+- (void)didSelectDocument:(NSURL *)url
+{
+	[libraryPopover dismissPopoverAnimated:YES];
+	[libraryPopover release]; libraryPopover = nil;
+	
+	CGPDFDocumentRelease(document);
+	document = CGPDFDocumentCreateWithURL((CFURLRef)url);
+	[pageView reloadData];
+}
+
+- (IBAction)showLibraryPopover:(UIBarButtonItem *)sender
+{
+    if (libraryPopover)
+    {
+        [libraryPopover dismissPopoverAnimated:NO];
+        [libraryPopover release]; libraryPopover = nil;
+        return;
+    }
+    
+    DocumentsView *docView = [[[DocumentsView alloc] init] autorelease];
+	docView.delegate = self;
+    libraryPopover = [[UIPopoverController alloc] initWithContentViewController:docView];
+    libraryPopover.delegate = self;
+    [libraryPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
