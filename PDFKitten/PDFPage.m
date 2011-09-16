@@ -1,5 +1,6 @@
 #import "PDFPage.h"
 #import "Scanner.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation PDFContentView
 
@@ -10,39 +11,47 @@
     if ((self = [super initWithFrame:frame]))
     {
         self.backgroundColor = [UIColor whiteColor];
+		
+		CATiledLayer *tiledLayer = (CATiledLayer *) [self layer];
+		tiledLayer.frame = CGRectMake(0, 0, 100, 100);
+		[tiledLayer setTileSize:CGSizeMake(1024, 1024)];
+		[tiledLayer setLevelsOfDetail:4];
+		[tiledLayer setLevelsOfDetailBias:4];
     }
     return self;
 }
 
-#pragma mark PDF drawing
-
-/* Draw the PDFPage to the content view */
-- (void)drawRect:(CGRect)rect
++ (Class)layerClass
 {
-	CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
+	return [CATiledLayer class];
+}
+
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+{
+	NSLog(@"Drawing");
+	
+	CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+	CGContextFillRect(ctx, layer.bounds);
+	
     // Flip the coordinate system
-	CGContextTranslateCTM(ctx, 0.0, rect.size.height);
+	CGContextTranslateCTM(ctx, 0.0, layer.bounds.size.height);
 	CGContextScaleCTM(ctx, 1.0, -1.0);
-    
-    // Transform coordinate system to match PDF
+
+	// Transform coordinate system to match PDF
 	NSInteger rotationAngle = CGPDFPageGetRotationAngle(pdfPage);
-	CGAffineTransform transform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, rect, -rotationAngle, YES);
+	CGAffineTransform transform = CGPDFPageGetDrawingTransform(pdfPage, kCGPDFCropBox, layer.bounds, -rotationAngle, YES);
 	CGContextConcatCTM(ctx, transform);
 
-    // Draw page
 	CGContextDrawPDFPage(ctx, pdfPage);
-    
-    // Search for keyword, if set
-    
-    if (self.keyword)
+	
+	if (self.keyword)
     {
         Scanner *scanner = [[[Scanner alloc] init] autorelease];
         [scanner setKeyword:self.keyword];
         [scanner scanPage:pdfPage];
         NSArray *selections = [scanner selections];
-        CGContextSetFillColorWithColor(ctx, [[UIColor colorWithRed:1.0 green:1.0 blue:0.0 alpha:0.5] CGColor]);
-        
+        CGContextSetFillColorWithColor(ctx, [[UIColor yellowColor] CGColor]);
+        CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
         for (Selection *s in selections)
         {
             CGContextSaveGState(ctx);
@@ -51,6 +60,18 @@
             CGContextRestoreGState(ctx);
         }
     }
+
+}
+
+#pragma mark PDF drawing
+
+/* Draw the PDFPage to the content view */
+- (void)drawRect:(CGRect)rect
+{
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	
+	CGContextSetFillColorWithColor(ctx, [[UIColor redColor] CGColor]);
+	CGContextFillRect(ctx, rect);
 }
 
 /* Sets the current PDFPage object */
@@ -76,6 +97,12 @@
 @implementation PDFPage
 
 #pragma mark -
+
+- (void)setNeedsDisplay
+{
+	[super setNeedsDisplay];
+	[contentView setNeedsDisplay];
+}
 
 /* Override implementation to return a PDFContentView */ 
 - (UIView *)contentView

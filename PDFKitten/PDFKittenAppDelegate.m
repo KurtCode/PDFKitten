@@ -1,5 +1,4 @@
 #import "PDFKittenAppDelegate.h"
-#import "DropboxSDK.h"
 
 @implementation PDFKittenAppDelegate
 

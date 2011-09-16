@@ -1,5 +1,5 @@
 #import "PageView.h"
-
+#import "PDFPage.h"
 
 @implementation PageView
 
@@ -22,6 +22,12 @@
 
 - (void)reloadData
 {
+	for (Page *p in visiblePages)
+	{
+		[p removeFromSuperview];
+	}
+	[recycledPages unionSet:visiblePages];
+	[visiblePages removeAllObjects];
 	[self setNeedsLayout];
 }
 
@@ -63,7 +69,7 @@
 	for (int i = firstNeededPageIndex; i <= lastNeededPageIndex; i++)
 	{
         if ([self isShowingPageForIndex:i]) continue;
-        
+		
 		Page *page = [dataSource pageView:self viewForPage:i];
 		CGRect rect = self.frame;
 		rect.origin.y = 0;
@@ -71,9 +77,12 @@
 		page.frame = rect;
 		
         [visiblePages addObject:page];
+		[page setNeedsDisplay];
         
 		[self addSubview:page];
 	}
+	
+	
 }
 
 - (UIView *)dequeueRecycledPage
@@ -146,15 +155,27 @@
 	return floorf(minimumVisibleX / CGRectGetWidth(self.frame));
 }
 
+- (void)setKeyword:(NSString *)str
+{
+	[keyword release];
+	keyword = [str retain];
+	for (PDFPage *p in visiblePages)
+	{
+		p.keyword = str;
+		[p setNeedsDisplay];
+	}
+	
+}
 
 #pragma mark - Memory Management
 
 - (void)dealloc
 {
+	[keyword release];
 	[recycledPages release];
 	[visiblePages release];
 	[super dealloc];
 }
 
-@synthesize page, dataSource;
+@synthesize page, dataSource, keyword;
 @end

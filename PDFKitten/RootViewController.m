@@ -1,6 +1,5 @@
 #import "RootViewController.h"  
 #import "PDFPage.h"
-#import "DropboxSDK.h"
 #import "DocumentsView.h"
 
 @implementation RootViewController
@@ -82,9 +81,14 @@
 	page.pageNumber = pageNumber;
     CGPDFPageRef pdfPage = CGPDFDocumentGetPage(document, pageNumber + 1); // PDF document page numbers are 1-based
     [page setPage:pdfPage];
-    page.keyword = @"cat";
+	page.keyword = keyword;
     
 	return page;
+}
+
+- (NSString *)keywordForPageView:(PageView *)pageView
+{
+	return keyword;
 }
 
 // TODO: add user interface for choosing document
@@ -95,6 +99,15 @@
 	return [[NSBundle mainBundle] pathForResource:@"Kurt the Cat" ofType:@"pdf"];
 }
 
+#pragma mark Search
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)aSearchBar
+{
+	[keyword release];
+	keyword = [[aSearchBar text] retain];
+	
+	[pageView setKeyword:keyword];
+}
 
 #pragma mark Memory Management
 

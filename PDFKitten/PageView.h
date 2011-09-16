@@ -21,14 +21,19 @@
 /* Tells the delegate when the document stopped scrolling at a page */
 - (void)pageView:(PageView *)pageView didScrollToPage:(NSInteger)pageNumber;
 
+/* Asks the delegate for a keyword */
+- (NSString *)keywordForPageView:(PageView *)pageView;
+
 @end
 
 #pragma mark
 
 @interface PageView : UIScrollView <UIScrollViewDelegate> {
 	NSInteger numberOfPages;
+	NSInteger pageNumber;
 	NSMutableSet *visiblePages;
 	NSMutableSet *recycledPages;
+	NSString *keyword;
 	IBOutlet id<PageViewDelegate> dataSource;
 }
 
@@ -48,5 +53,7 @@
 
 /* Data source for pages */
 @property (nonatomic, assign) id<PageViewDelegate> dataSource;
+
+@property (nonatomic, retain) NSString *keyword;
 
 @end
