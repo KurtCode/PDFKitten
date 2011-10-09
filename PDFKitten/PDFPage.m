@@ -26,10 +26,27 @@
 	return [CATiledLayer class];
 }
 
+- (void)setKeyword:(NSString *)str
+{
+	[keyword release];
+	keyword = [str retain];
+	self.selections = nil;
+}
+
+- (NSArray *)selections
+{
+	if (!selections)
+	{
+		Scanner *scanner = [[[Scanner alloc] init] autorelease];
+        [scanner setKeyword:self.keyword];
+        [scanner scanPage:pdfPage];
+		self.selections = [scanner selections];
+	}
+	return selections;
+}
+
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
-	NSLog(@"Drawing");
-	
 	CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
 	CGContextFillRect(ctx, layer.bounds);
 	
@@ -46,13 +63,9 @@
 	
 	if (self.keyword)
     {
-        Scanner *scanner = [[[Scanner alloc] init] autorelease];
-        [scanner setKeyword:self.keyword];
-        [scanner scanPage:pdfPage];
-        NSArray *selections = [scanner selections];
         CGContextSetFillColorWithColor(ctx, [[UIColor yellowColor] CGColor]);
         CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
-        for (Selection *s in selections)
+        for (Selection *s in self.selections)
         {
             CGContextSaveGState(ctx);
             CGContextConcatCTM(ctx, s.transform);
@@ -89,7 +102,7 @@
     [super dealloc];
 }
 
-@synthesize keyword;
+@synthesize keyword, selections;
 @end
 
 #pragma mark -

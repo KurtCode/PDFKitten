@@ -205,10 +205,10 @@ void cm(CGPDFScannerRef scanner, void *info);
 }
 
 - (void)detector:(StringDetector *)detector foundString:(NSString *)needle
-{
+{	
 	RenderingState *state = [[self renderingStateStack] topRenderingState];
 	[self.currentSelection finalizeWithState:state];
-		
+
 	if (self.currentSelection)
 	{
 		[self.selections addObject:self.currentSelection];

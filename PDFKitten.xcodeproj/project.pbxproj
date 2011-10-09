@@ -12,10 +12,10 @@
 		2C0E15B013589B0B004096C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
 		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
+		2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C77F7B31442381300767E6A /* Kurt the Cat.pdf */; };
 		2C855590137B336C00D58482 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
 		2CA0FC9413EEB11B0028DCCD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9313EEB11B0028DCCD /* RootViewController.m */; };
 		2CA0FC9713EEB1210028DCCD /* PDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9613EEB1210028DCCD /* PDFPage.m */; };
-		2CA0FC9913EEB12A0028DCCD /* Kurt the Cat.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9813EEB12A0028DCCD /* Kurt the Cat.pdf */; };
 		2CA0FCA113EEB1B80028DCCD /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA013EEB1B80028DCCD /* Page.m */; };
 		2CA0FCA513EEB1C00028DCCD /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA313EEB1C00028DCCD /* PageViewController.m */; };
 		2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA413EEB1C00028DCCD /* PageViewController.xib */; };
@@ -50,12 +50,12 @@
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2C47505C13F3E48200BC2DB9 /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsView.h; path = PDFKitten/DocumentsView.h; sourceTree = SOURCE_ROOT; };
 		2C47505D13F3E48200BC2DB9 /* DocumentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsView.m; path = PDFKitten/DocumentsView.m; sourceTree = SOURCE_ROOT; };
+		2C77F7B31442381300767E6A /* Kurt the Cat.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Kurt the Cat.pdf"; path = "PDFKitten/Samples/Kurt the Cat.pdf"; sourceTree = SOURCE_ROOT; };
 		2C85558F137B336C00D58482 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2CA0FC9213EEB11B0028DCCD /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = PDFKitten/RootViewController.h; sourceTree = SOURCE_ROOT; };
 		2CA0FC9313EEB11B0028DCCD /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = PDFKitten/RootViewController.m; sourceTree = SOURCE_ROOT; };
 		2CA0FC9513EEB1210028DCCD /* PDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFPage.h; path = PDFKitten/PDFPage.h; sourceTree = SOURCE_ROOT; };
 		2CA0FC9613EEB1210028DCCD /* PDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFPage.m; path = PDFKitten/PDFPage.m; sourceTree = SOURCE_ROOT; };
-		2CA0FC9813EEB12A0028DCCD /* Kurt the Cat.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Kurt the Cat.pdf"; path = "PDFKitten/Samples/Kurt the Cat.pdf"; sourceTree = SOURCE_ROOT; };
 		2CA0FC9F13EEB1B80028DCCD /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Page.h; path = PDFKitten/Page.h; sourceTree = SOURCE_ROOT; };
 		2CA0FCA013EEB1B80028DCCD /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Page.m; path = PDFKitten/Page.m; sourceTree = SOURCE_ROOT; };
 		2CA0FCA213EEB1BF0028DCCD /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageViewController.h; path = PDFKitten/PageViewController.h; sourceTree = SOURCE_ROOT; };
@@ -197,10 +197,10 @@
 		2CA0FC9A13EEB1430028DCCD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2C77F7B31442381300767E6A /* Kurt the Cat.pdf */,
 				2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */,
 				2CE7BCAA13896EFB009784B9 /* PDFKitten-Info.plist */,
 				2CDC3F7C138977C0006CC6FB /* MainWindow.xib */,
-				2CA0FC9813EEB12A0028DCCD /* Kurt the Cat.pdf */,
 			);
 			name = Resources;
 			path = PDFDemo;
@@ -374,8 +374,8 @@
 			files = (
 				2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */,
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
-				2CA0FC9913EEB12A0028DCCD /* Kurt the Cat.pdf in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
+				2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

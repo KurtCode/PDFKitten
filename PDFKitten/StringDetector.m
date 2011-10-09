@@ -108,7 +108,7 @@
 	NSString *unicodeString = [[font stringWithPDFString:string] lowercaseString];
 	
 	[unicodeContent appendString:unicodeString];
-	
+		
 	for (int i = 0; i < [unicodeString length]; i++)
 	{
 		NSString *needleString = [NSString stringWithFormat:@"%C", [unicodeString characterAtIndex:i]];
