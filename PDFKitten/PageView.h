@@ -24,6 +24,9 @@
 /* Asks the delegate for a keyword */
 - (NSString *)keywordForPageView:(PageView *)pageView;
 
+/* Detailed view for page */
+- (UIView *)pageView:(PageView *)pageView detailedViewForPage:(NSInteger)page;
+
 @end
 
 #pragma mark
@@ -38,6 +41,9 @@
 }
 
 #pragma mark -
+
+/* Called when user has pressed the info button */
+- (IBAction)detailedInfoButtonPressed:(id)sender;
 
 /* Returns a recycled page, or nil if none exist */
 - (Page *)dequeueRecycledPage;

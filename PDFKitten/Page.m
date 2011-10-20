@@ -3,11 +3,6 @@
 
 @implementation PageContentView
 
-//- (void)drawRect:(CGRect)rect
-//{
-//	
-//}
-
 @end
 
 @implementation Page
@@ -33,6 +28,11 @@
         [doubleTap release];
     }
     return self;
+}
+
+- (void)presentDetailedView:(UIView *)view
+{
+	
 }
 
 /* Double tap zooms the content to fill the container view */
@@ -79,6 +79,11 @@
 	self.contentView.frame = frame;
 }
 
+- (void)dealloc
+{
+	[super dealloc];
+	[detailedView release];
+}
 
-@synthesize pageNumber, contentView;
+@synthesize pageNumber, contentView, detailedView;
 @end

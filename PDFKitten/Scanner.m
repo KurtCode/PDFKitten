@@ -247,6 +247,10 @@ void didScanSpace(float value, Scanner *scanner)
     [scanner.currentRenderingState translateTextPosition:CGSizeMake(-width, 0)];
     if (abs(value) >= [scanner.currentRenderingState.font widthOfSpace])
     {
+		if (scanner.rawTextContent)
+		{
+			[*scanner.rawTextContent appendString:@" "];
+		}
         [scanner.stringDetector reset];
     }
 }
@@ -254,7 +258,12 @@ void didScanSpace(float value, Scanner *scanner)
 /* Called any time the scanner scans a string */
 void didScanString(CGPDFStringRef pdfString, Scanner *scanner)
 {
-	[[scanner stringDetector] appendPDFString:pdfString withFont:[scanner currentFont]];
+	NSString *string = [[scanner stringDetector] appendPDFString:pdfString withFont:[scanner currentFont]];
+	
+	if (scanner.rawTextContent)
+	{
+		[*scanner.rawTextContent appendString:string];
+	}
 }
 
 /* Show a string */
@@ -498,5 +507,5 @@ void cm(CGPDFScannerRef scanner, void *info)
 	[super dealloc];
 }
 
-@synthesize documentURL, keyword, stringDetector, fontCollection, renderingStateStack, currentSelection, selections;
+@synthesize documentURL, keyword, stringDetector, fontCollection, renderingStateStack, currentSelection, selections, rawTextContent;
 @end

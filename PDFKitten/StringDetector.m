@@ -99,7 +99,7 @@
 }
 
 /* Feed a string into the state machine */
-- (void)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font
+- (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font
 {
 	// Use CID string for font-related computations.
 	NSString *cidString = (NSString *) CGPDFStringCopyTextString(string);
@@ -169,6 +169,8 @@
 		}
 	}
 	[cidString release];
+
+	return unicodeString;
 }
 
 

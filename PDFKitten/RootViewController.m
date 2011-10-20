@@ -1,6 +1,7 @@
 #import "RootViewController.h"  
 #import "PDFPage.h"
 #import "DocumentsView.h"
+#import "Scanner.h"
 
 @implementation RootViewController
 
@@ -65,6 +66,25 @@
 - (NSInteger)numberOfPagesInPageView:(PageView *)pageView
 {
 	return CGPDFDocumentGetNumberOfPages(document);
+}
+
+/* Return the detailed view corresponding to a page */
+- (UIView *)pageView:(PageView *)pageView detailedViewForPage:(NSInteger)page
+{
+	Scanner *scanner = [[Scanner alloc] init];
+	[scanner setKeyword:@""];
+	NSMutableString *contentString = [NSMutableString string];
+	[scanner setRawTextContent:&contentString];
+	CGPDFPageRef pdfpage = CGPDFDocumentGetPage(document, page+1);
+	[scanner scanPage:pdfpage];
+	[scanner release];
+	
+	// The detail view is a text view
+	UITextView *view = [[[UITextView alloc] initWithFrame:CGRectZero] autorelease];
+	view.userInteractionEnabled = NO;
+	view.text = contentString;
+
+	return view;
 }
 
 // TODO: Assign page to either the page or its content view, not both.

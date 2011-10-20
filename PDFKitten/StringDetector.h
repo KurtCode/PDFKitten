@@ -39,7 +39,7 @@
 - (id)initWithKeyword:(NSString *)needle;
 
 /* Feed more charachers into the state machine */
-- (void)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font;
+- (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font;
 
 /* Reset the detector state */
 - (void)reset;
