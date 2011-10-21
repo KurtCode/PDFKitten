@@ -16,17 +16,17 @@ First, create a new instance of the scanner.
 	Scanner *scanner = [[Scanner alloc] init];
 ```
 
-Set a keyword (case-insensitive) and a page.
+Set a keyword (case-insensitive) and scan a page.
 
 ```
 	scanner.keyword = @"happiness";
 	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
+	[scanner scanPage:page];
 ```
 
 Finally, scan the page and draw the selections.
 
 ```
-	[scanner scanPage:page];
 	for (Selection selection in scanner.selections)
 	{
 		// draw selection
