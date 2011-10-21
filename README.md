@@ -27,7 +27,7 @@ Set a keyword (case-insensitive) and scan a page.
 Finally, scan the page and draw the selections.
 
 ```
-	for (Selection selection in scanner.selections)
+	for (Selection *selection in scanner.selections)
 	{
 		// draw selection
 	}
