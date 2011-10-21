@@ -7,7 +7,7 @@
 {
 	const char *type = nil;
 	CGPDFDictionaryGetName(dict, "Type", &type);
-	if (strcmp(type, "FontDescriptor") != 0)
+	if (!type || strcmp(type, "FontDescriptor") != 0)
 	{
 		[self release]; return nil;
 	}
