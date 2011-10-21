@@ -11,17 +11,20 @@ This project is meant to facilitate this by implementing a complete workflow, ta
 ### How?
 
 First, create a new instance of the scanner.
+
 ```
 	Scanner *scanner = [[Scanner alloc] init];
 ```
 
 Set a keyword (case-insensitive) and a page.
+
 ```
 	scanner.keyword = @"happiness";
 	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
 ```
 
 Finally, scan the page and draw the selections.
+
 ```
 	[scanner scanPage:page];
 	for (Selection selection in scanner.selections)
