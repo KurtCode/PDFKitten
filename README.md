@@ -4,7 +4,7 @@ A framework for searching PDF documents on iOS.
 
 ### Why?
 
-iOS, up to and including the current fifth version, does not provide any public APIs for searching PDF documents, or determining where on a page a given word is drawn. Any developer aiming to provide these features in an app must use low-lever Core Graphics APIs, and keep track of the stateful process of laying out the content of the page.
+iOS, up to and including the current fifth version, does not provide any public APIs for searching PDF documents, or determining where on a page a given word is drawn. Any developer aiming to provide these features in an app must use low-level Core Graphics APIs, and keep track of the stateful process of laying out the content of the page.
 
 This project is meant to facilitate this by implementing a complete workflow, taking as input a PDF document, a keyword string, and returning a set of selections that can be drawn on top of the PDF document.
 
