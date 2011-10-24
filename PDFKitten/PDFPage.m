@@ -1,5 +1,4 @@
 #import "PDFPage.h"
-#import "Scanner.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation PDFContentView
@@ -35,14 +34,16 @@
 
 - (NSArray *)selections
 {
-	if (!selections)
+	@synchronized (self)
 	{
-		Scanner *scanner = [[[Scanner alloc] init] autorelease];
-        [scanner setKeyword:self.keyword];
-        [scanner scanPage:pdfPage];
-		self.selections = [scanner selections];
+		if (!selections)
+		{
+			[self.scanner setKeyword:self.keyword];
+			[self.scanner scanPage:pdfPage];
+			self.selections = [self.scanner selections];
+		}
+		return selections;
 	}
-	return selections;
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
@@ -73,7 +74,6 @@
             CGContextRestoreGState(ctx);
         }
     }
-
 }
 
 #pragma mark PDF drawing
@@ -96,13 +96,23 @@
 
 #pragma mark Memory Management
 
+- (Scanner *)scanner
+{
+	if (!scanner)
+	{
+		scanner = [[Scanner alloc] init];
+	}
+	return scanner;
+}
+
 - (void)dealloc
 {
+	[scanner release];
     CGPDFPageRelease(pdfPage);
     [super dealloc];
 }
 
-@synthesize keyword, selections;
+@synthesize keyword, selections, scanner;
 @end
 
 #pragma mark -

@@ -2,6 +2,7 @@
 #import "PDFPage.h"
 #import "DocumentsView.h"
 #import "Scanner.h"
+#import "PDFPageDetailsView.h"
 
 @implementation RootViewController
 
@@ -68,8 +69,15 @@
 	return CGPDFDocumentGetNumberOfPages(document);
 }
 
+- (FontCollection *)activeFontCollection
+{
+	Page *page = [pageView pageAtIndex:pageView.page];
+	PDFContentView *pdfPage = (PDFContentView *) [(PDFPage *) page contentView];
+	return [[pdfPage scanner] fontCollection];
+}
+
 /* Return the detailed view corresponding to a page */
-- (UIView *)pageView:(PageView *)pageView detailedViewForPage:(NSInteger)page
+- (UIView *)pageView:(PageView *)aPageView detailedViewForPage:(NSInteger)page
 {
 	Scanner *scanner = [[Scanner alloc] init];
 	[scanner setKeyword:@""];
@@ -78,13 +86,10 @@
 	CGPDFPageRef pdfpage = CGPDFDocumentGetPage(document, page+1);
 	[scanner scanPage:pdfpage];
 	[scanner release];
-	
-	// The detail view is a text view
-	UITextView *view = [[[UITextView alloc] initWithFrame:CGRectZero] autorelease];
-	view.userInteractionEnabled = NO;
-	view.text = contentString;
 
-	return view;
+	FontCollection *collection = [self activeFontCollection];
+	PDFPageDetailsView *detailedView = [[PDFPageDetailsView alloc] initWithFont:collection];
+	return [detailedView view];
 }
 
 // TODO: Assign page to either the page or its content view, not both.
@@ -125,8 +130,9 @@
 {
 	[keyword release];
 	keyword = [[aSearchBar text] retain];
-	
 	[pageView setKeyword:keyword];
+	
+	[aSearchBar resignFirstResponder];
 }
 
 #pragma mark Memory Management

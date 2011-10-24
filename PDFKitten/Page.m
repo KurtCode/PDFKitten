@@ -79,6 +79,15 @@
 	self.contentView.frame = frame;
 }
 
+- (void)layoutSubviews
+{
+	UIView *currentContentView = (self.detailedView) ? self.detailedView : self.contentView;
+	// Set minimum zoom scale to where the content fits the screen
+	CGFloat hScale = CGRectGetWidth(self.frame) / CGRectGetWidth(currentContentView.bounds);
+	CGFloat vScale = CGRectGetHeight(self.frame) / CGRectGetHeight(currentContentView.bounds);
+	[self setMinimumZoomScale:MIN(hScale, vScale)];
+}
+
 - (void)dealloc
 {
 	[super dealloc];

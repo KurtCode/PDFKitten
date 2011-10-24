@@ -6,7 +6,6 @@
  *	Ideally, the subclasses are hidden from the user, who interacts with them through this facade class.
  *	
  */
-
 #import <Foundation/Foundation.h>
 #import "FontDescriptor.h"
 #import "CMap.h"
@@ -16,6 +15,7 @@
 	NSMutableDictionary *widths;
     FontDescriptor *fontDescriptor;
 	NSDictionary *ligatures;
+	NSRange widthsRange;
 }
 
 /* Factory method returns a Font object given a PDF font dictionary */
@@ -39,6 +39,9 @@
 /* Import a ToUnicode CMap from a font dictionary */
 - (void)setToUnicodeWithFontDictionary:(CGPDFDictionaryRef)dict;
 
+/* Unicode character with CID */
+- (NSString *)stringWithCharacters:(const char *)characters;
+
 @property (nonatomic, retain) CMap *toUnicode;
 @property (nonatomic, retain) NSMutableDictionary *widths;
 @property (nonatomic, retain) FontDescriptor *fontDescriptor;
@@ -46,4 +49,5 @@
 @property (nonatomic, readonly) CGFloat maxY;
 @property (nonatomic, readonly) NSDictionary *ligatures;
 @property (nonatomic, readonly) CGFloat widthOfSpace;
+@property (nonatomic, readonly) NSRange widthsRange;
 @end

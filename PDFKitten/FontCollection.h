@@ -3,6 +3,7 @@
 
 @interface FontCollection : NSObject {
 	NSMutableDictionary *fonts;
+	NSArray *names;
 }
 
 /* Initialize with a font collection dictionary */
@@ -12,4 +13,7 @@
 - (Font *)fontNamed:(NSString *)fontName;
 
 @property (nonatomic, readonly) NSDictionary *fontsByName;
+
+@property (nonatomic, readonly) NSArray *names;
+
 @end

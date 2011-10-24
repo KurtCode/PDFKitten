@@ -97,6 +97,19 @@
 	}
 }
 
+- (Page *)pageAtIndex:(NSInteger)index
+{
+	NSSet *pages = [[visiblePages copy] autorelease];
+	for (Page *page in pages)
+	{
+		if (page.pageNumber == index)
+		{
+			return page;
+		}
+	}
+	return nil;
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -189,14 +202,14 @@
 	
 	if (page.detailedView)
 	{
-		[UIView transitionFromView:page.detailedView toView:page.contentView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
+		[UIView transitionFromView:page.detailedView toView:page duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
 		page.detailedView = nil;
 		return;
 	}
 	
 	page.detailedView = detailedView;
-	detailedView.frame = page.contentView.frame;
-	[UIView transitionFromView:page.contentView toView:detailedView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
+	detailedView.frame = page.frame;
+	[UIView transitionFromView:page toView:detailedView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
 }
 
 #pragma mark - Memory Management

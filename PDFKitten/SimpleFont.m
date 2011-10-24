@@ -20,8 +20,10 @@
 	CGPDFArrayRef array;
 	if (!CGPDFDictionaryGetArray(dict, "Widths", &array)) return;
 	size_t count = CGPDFArrayGetCount(array);
-	CGPDFInteger firstChar;
+	CGPDFInteger firstChar, lastChar;
 	if (!CGPDFDictionaryGetInteger(dict, "FirstChar", &firstChar)) return;
+	if (!CGPDFDictionaryGetInteger(dict, "LastChar", &lastChar)) return;
+	widthsRange = NSMakeRange(firstChar, lastChar-firstChar);
 	NSMutableDictionary *widthsDict = [NSMutableDictionary dictionary];
 	for (int i = 0; i < count; i++)
 	{
@@ -31,6 +33,7 @@
 		NSNumber *value = [NSNumber numberWithFloat:width];
 		[widthsDict setObject:value forKey:key];
 	}
+	NSLog(@" %d widths (%ld,%ld)", [widthsDict count], firstChar, lastChar);
 	self.widths = widthsDict;
 }
 
@@ -109,6 +112,12 @@
 	{
 		self.encoding = NSWindowsCP1252StringEncoding;
 	}
+}
+
+/* Unicode character with CID */
+- (NSString *)stringWithCharacters:(const char *)characters
+{
+	return [NSString stringWithCString:characters encoding:encoding];
 }
 
 @synthesize encoding;

@@ -23,7 +23,7 @@
 {
 	const char *type = nil;
 	CGPDFDictionaryGetName(dictionary, "Type", &type);
-	if (strcmp(type, "Font") != 0) return nil;
+	if (!type || strcmp(type, "Font") != 0) return nil;
 	const char *subtype = nil;
 	CGPDFDictionaryGetName(dictionary, "Subtype", &subtype);
 
@@ -158,6 +158,19 @@
 	return [self widthOfCharacter:0x20 withFontSize:1.0];
 }
 
+/* Description is the class name of the object */
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@>", [self.class description]];
+}
+
+/* Unicode character with CID */
+- (NSString *)stringWithCharacters:(const char *)characters
+{
+	return 0;
+}
+
+
 #pragma mark Memory Management
 
 - (void)dealloc
@@ -168,5 +181,5 @@
 	[super dealloc];
 }
 
-@synthesize fontDescriptor, widths, toUnicode;
+@synthesize fontDescriptor, widths, toUnicode, widthsRange;
 @end
