@@ -26,6 +26,7 @@
 /* Start scanning (synchronous) */
 - (void)scanDocumentPage:(NSUInteger)pageNumber;
 
+/* Start scanning a particular page */
 - (void)scanPage:(CGPDFPageRef)page;
 
 @property (nonatomic, retain) NSMutableArray *selections;

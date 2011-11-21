@@ -33,7 +33,6 @@
 		NSNumber *value = [NSNumber numberWithFloat:width];
 		[widthsDict setObject:value forKey:key];
 	}
-	NSLog(@" %d widths (%ld,%ld)", [widthsDict count], firstChar, lastChar);
 	self.widths = widthsDict;
 }
 
@@ -61,7 +60,7 @@
 		for (int i = 0; i < [str length]; i++)
 		{
 			unichar cid = [str characterAtIndex:i];
-		 	[unicodeString appendFormat:@"%C", [self.toUnicode characterWithCID:cid]];
+		 	[unicodeString appendFormat:@"%C", [self.toUnicode unicodeCharacter:cid]];
 		}
 		
 		[str release];

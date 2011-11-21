@@ -36,3 +36,8 @@ Finally, scan the page and draw the selections.
 ### Limitations
 
 The PDF specification is huge, allowing for different fonts, text encodings et cetera. This means strict design is a must, and thorough testing is needed. At this point, this project is not fully compatible with all font types, and especially suppert for non-latin characters will require further development.
+
+
+### License and Warranty
+
+This software is provided as is, meaning that we are not responsible for the results of its use.

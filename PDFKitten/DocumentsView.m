@@ -12,6 +12,7 @@
 {
 	NSArray *userDocuments = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSURL *docementsURL = [NSURL fileURLWithPath:[userDocuments lastObject]];
+	NSLog(@"%@", docementsURL);
 	NSArray *documentsURLs = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:docementsURL 
 														   includingPropertiesForKeys:nil 
 																			  options:NSDirectoryEnumerationSkipsHiddenFiles

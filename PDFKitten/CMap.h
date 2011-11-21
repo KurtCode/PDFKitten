@@ -9,6 +9,6 @@
 - (id)initWithPDFStream:(CGPDFStreamRef)stream;
 
 /* Unicode mapping for character ID */
-- (unichar)characterWithCID:(unichar)cid;
+- (unichar)unicodeCharacter:(unichar)cid;
 
 @end
