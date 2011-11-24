@@ -17,12 +17,12 @@
 /* Set the text matrix and (optionally) the line matrix */
 - (void)setTextMatrix:(CGAffineTransform)matrix replaceLineMatrix:(BOOL)replace;
 
-/* Transform the text matrix and (optionally) the line matrix */
+/* Transform the text matrix */
 - (void)translateTextPosition:(CGSize)size;
 
 /* Move to start of next line, optionally with custom line height and indent, and optionally save line height */
-- (void)newLineWithLineHeight:(CGFloat)lineHeight indent:(CGFloat)indent save:(BOOL)save;
-- (void)newLineWithLineHeight:(CGFloat)lineHeight save:(BOOL)save;
+- (void)newLineWithLeading:(CGFloat)aLeading indent:(CGFloat)indent save:(BOOL)save;
+- (void)newLineWithLeading:(CGFloat)lineHeight save:(BOOL)save;
 - (void)newLine;
 
 /* Converts a size from text space to user space */

@@ -340,7 +340,7 @@ void Td(CGPDFScannerRef scanner, void *info)
 	CGPDFReal tx = 0, ty = 0;
 	CGPDFScannerPopNumber(scanner, &ty);
 	CGPDFScannerPopNumber(scanner, &tx);
-	[[(Scanner *)info currentRenderingState] newLineWithLineHeight:ty indent:tx save:NO];
+	[[(Scanner *)info currentRenderingState] newLineWithLeading:-ty indent:tx save:NO];
 }
 
 /* Move to start of next line, and set leading */
@@ -349,7 +349,7 @@ void TD(CGPDFScannerRef scanner, void *info)
 	CGPDFReal tx, ty;
 	if (!CGPDFScannerPopNumber(scanner, &ty)) return;
 	if (!CGPDFScannerPopNumber(scanner, &tx)) return;
-	[[(Scanner *)info currentRenderingState] newLineWithLineHeight:ty indent:tx save:YES];
+	[[(Scanner *)info currentRenderingState] newLineWithLeading:-ty indent:tx save:YES];
 }
 
 /* Set line and text matrixes */

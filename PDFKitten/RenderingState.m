@@ -49,26 +49,26 @@
 }
 
 /* Move to start of next line, with custom line height and relative indent */
-- (void)newLineWithLineHeight:(CGFloat)lineHeight indent:(CGFloat)indent save:(BOOL)save
+- (void)newLineWithLeading:(CGFloat)aLeading indent:(CGFloat)indent save:(BOOL)save
 {
-	CGAffineTransform t = CGAffineTransformTranslate(self.lineMatrix, indent, lineHeight);
+	CGAffineTransform t = CGAffineTransformTranslate(self.lineMatrix, indent, -aLeading);
 	[self setTextMatrix:t replaceLineMatrix:YES];
 	if (save)
 	{
-		self.leadning = -lineHeight;
+		self.leadning = aLeading;
 	}
 }
 
 /* Transforms the rendering state to the start of the next line, with custom line height */
-- (void)newLineWithLineHeight:(CGFloat)lineHeight save:(BOOL)save
+- (void)newLineWithLeading:(CGFloat)lineHeight save:(BOOL)save
 {
-	[self newLineWithLineHeight:lineHeight indent:0 save:save];
+	[self newLineWithLeading:lineHeight indent:0 save:save];
 }
 
 /* Transforms the rendering state to the start of the next line */
 - (void)newLine
 {
-	[self newLineWithLineHeight:self.leadning save:NO];
+	[self newLineWithLeading:self.leadning save:NO];
 }
 
 /* Convert value to user space */
