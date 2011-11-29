@@ -30,6 +30,7 @@
 	[keyword release];
 	keyword = [str retain];
 	self.selections = nil;
+    self.scanner.selections = nil;
 }
 
 - (NSArray *)selections

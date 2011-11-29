@@ -170,6 +170,7 @@ void cm(CGPDFScannerRef scanner, void *info);
 	if (!keyword) return;
     
     [self.stringDetector reset];
+    self.stringDetector.keyword = self.keyword;
 
     // Initialize font collection (per page)
 	self.fontCollection = [self fontCollectionWithPage:page];
