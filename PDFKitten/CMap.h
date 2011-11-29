@@ -3,6 +3,7 @@
 
 @interface CMap : NSObject {
 	NSMutableArray *offsets;
+    NSMutableDictionary *chars;
 }
 
 /* Initialize with PDF stream containing a CMap */
