@@ -60,8 +60,20 @@
 
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
+    NSMutableString *result;
 	Font *descendantFont = [self.descendantFonts lastObject];
-	return [descendantFont stringWithPDFString:pdfString];
+    NSString *descendantResult = [descendantFont stringWithPDFString: pdfString];
+    if (self.toUnicode) {
+        unichar mapping;
+        result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
+        for (int i = 0; i < [descendantResult length]; i++) {
+            mapping = [self.toUnicode unicodeCharacter: [descendantResult characterAtIndex:i]];
+            [result appendFormat: @"%C", mapping];
+        }        
+    } else {
+        result = [NSMutableString stringWithString: descendantResult];
+    }
+    return result;
 }
 
 #pragma mark -
