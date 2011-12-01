@@ -42,6 +42,38 @@
 	[scanner scanString:endToken intoString:nil];
 }
 
+- (void)scanChars:(NSScanner *)scanner 
+{
+	NSString *content = nil;
+	static NSString *endToken = @"endbfchar";
+	[scanner scanUpToString:endToken intoString:&content];
+    NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
+    NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+    NSString *separatorString = @"> <";
+    
+    chars = [[NSMutableDictionary alloc] init];    
+    NSScanner *rangeScanner = [NSScanner scannerWithString:content];
+    while (![rangeScanner isAtEnd])
+    {
+        NSString *line = nil;
+        [rangeScanner scanUpToCharactersFromSet:newLineSet intoString:&line];
+        line = [line stringByTrimmingCharactersInSet:tagSet];
+        NSArray *parts = [line componentsSeparatedByString:separatorString];
+        
+        NSUInteger from, to;
+        NSScanner *scanner = [NSScanner scannerWithString:[parts objectAtIndex:0]];
+        [scanner scanHexInt:&from];
+        
+        scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
+        [scanner scanHexInt:&to];
+        
+        NSNumber *fromNumber = [NSNumber numberWithInt:from];
+        NSNumber *toNumber = [NSNumber numberWithInt:to];
+        [chars setObject:toNumber  forKey:fromNumber];
+    }
+    
+}
+
 - (void)scanCMap:(NSScanner *)scanner
 {
 	while (![scanner isAtEnd])
@@ -56,6 +88,10 @@
 		{
 			[self scanRanges:scanner];
 		}
+        else if ([line rangeOfString:@"beginbfchar"].location != NSNotFound) 
+        {
+            [self scanChars:scanner];
+        }
 	}
 }
 
@@ -140,8 +176,18 @@
 - (unichar)unicodeCharacter:(unichar)cid
 {
 	NSDictionary *dict = [self rangeWithCharacter:cid];
-	NSUInteger internalOffset = cid - [[dict objectForKey:@"First"] intValue];
-	return [[dict objectForKey:@"Offset"] intValue] + internalOffset;
+    if (dict)
+    {
+        NSUInteger internalOffset = cid - [[dict objectForKey:@"First"] intValue];
+        return [[dict objectForKey:@"Offset"] intValue] + internalOffset;
+    }
+    else if (chars)
+    {
+        NSNumber *fromChar = [NSNumber numberWithInt: cid];
+        NSNumber *toChar = [chars objectForKey: fromChar];
+        return [toChar intValue];
+    }
+    return cid;
 }
 
 - (void)dealloc

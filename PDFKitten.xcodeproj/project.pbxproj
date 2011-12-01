@@ -42,6 +42,7 @@
 		2CE7BCE713897245009784B9 /* Scanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCE613897245009784B9 /* Scanner.m */; };
 		2CE7BCEB1389725D009784B9 /* RenderingState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCEA1389725D009784B9 /* RenderingState.m */; };
 		2CE7BCEF13897294009784B9 /* Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCEE13897294009784B9 /* Selection.m */; };
+		CEF5FABD1485505C009DB138 /* eZine41.pdf in Resources */ = {isa = PBXBuildFile; fileRef = CEF5FABC1485505C009DB138 /* eZine41.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		2CE7BCEA1389725D009784B9 /* RenderingState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingState.m; path = PDFKitten/RenderingState.m; sourceTree = SOURCE_ROOT; };
 		2CE7BCED13897293009784B9 /* Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Selection.h; path = PDFKitten/Selection.h; sourceTree = SOURCE_ROOT; };
 		2CE7BCEE13897294009784B9 /* Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Selection.m; path = PDFKitten/Selection.m; sourceTree = SOURCE_ROOT; };
+		CEF5FABC1485505C009DB138 /* eZine41.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = eZine41.pdf; path = ../eZine41.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 		2C0E159C13589B0B004096C7 = {
 			isa = PBXGroup;
 			children = (
+				CEF5FABC1485505C009DB138 /* eZine41.pdf */,
 				2C0E15B113589B0B004096C7 /* Classes */,
 				2CA0FC9E13EEB1910028DCCD /* Other Sources */,
 				2CA0FC9A13EEB1430028DCCD /* Resources */,
@@ -381,6 +384,7 @@
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
 				2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */,
+				CEF5FABD1485505C009DB138 /* eZine41.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +491,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PDFKitten/PDFKitten-Prefix.pch";
 				INFOPLIST_FILE = "PDFKitten/PDFKitten-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = PDFKitten;
 				WRAPPER_EXTENSION = app;
 			};
@@ -504,6 +509,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PDFKitten/PDFKitten-Prefix.pch";
 				INFOPLIST_FILE = "PDFKitten/PDFKitten-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = PDFKitten;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

@@ -115,6 +115,12 @@
 	return [string autorelease];
 }
 
+- (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
+    // Copy PDFString to NSString
+    NSString *string = (NSString *) CGPDFStringCopyTextString(pdfString);
+	return [string autorelease];
+}
+
 /* Lowest point of any character */
 - (CGFloat)minY
 {

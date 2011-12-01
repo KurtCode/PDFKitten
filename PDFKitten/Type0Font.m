@@ -58,11 +58,53 @@
 	return 0;
 }
 
-- (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
+- (NSDictionary *)ligatures
+{
+    Font *descendantFont = [self.descendantFonts lastObject];
+    return descendantFont.ligatures;
+}
+
+- (FontDescriptor *)fontDescriptor {
+	Font *descendantFont = [self.descendantFonts lastObject];
+	return descendantFont.fontDescriptor;
+}
+
+- (CGFloat)minY
 {
 	Font *descendantFont = [self.descendantFonts lastObject];
-	return [descendantFont stringWithPDFString:pdfString];
+	return [descendantFont.fontDescriptor descent];
 }
+
+/* Highest point of any character */
+- (CGFloat)maxY
+{
+	Font *descendantFont = [self.descendantFonts lastObject];
+	return [descendantFont.fontDescriptor ascent];
+}
+
+- (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
+{
+    NSMutableString *result;
+	Font *descendantFont = [self.descendantFonts lastObject];
+    NSString *descendantResult = [descendantFont stringWithPDFString: pdfString];
+    if (self.toUnicode) {
+        unichar mapping;
+        result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
+        for (int i = 0; i < [descendantResult length]; i++) {
+            mapping = [self.toUnicode unicodeCharacter: [descendantResult characterAtIndex:i]];
+            [result appendFormat: @"%C", mapping];
+        }        
+    } else {
+        result = [NSMutableString stringWithString: descendantResult];
+    }
+    return result;
+}
+
+- (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
+    Font *descendantFont = [self.descendantFonts lastObject];
+    return [descendantFont stringWithPDFString: pdfString];
+}
+
 
 #pragma mark -
 #pragma mark Memory Management
