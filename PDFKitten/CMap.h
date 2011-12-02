@@ -10,6 +10,6 @@
 - (id)initWithPDFStream:(CGPDFStreamRef)stream;
 
 /* Unicode mapping for character ID */
-- (unichar)unicodeCharacter:(unichar)cid;
+- (NSString *)unicodeCharacter:(unichar)cid;
 
 @end

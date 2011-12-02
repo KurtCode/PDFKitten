@@ -63,13 +63,30 @@
         NSUInteger from, to;
         NSScanner *scanner = [NSScanner scannerWithString:[parts objectAtIndex:0]];
         [scanner scanHexInt:&from];
-        
-        scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
-        [scanner scanHexInt:&to];
-        
         NSNumber *fromNumber = [NSNumber numberWithInt:from];
-        NSNumber *toNumber = [NSNumber numberWithInt:to];
-        [chars setObject:toNumber  forKey:fromNumber];
+        
+        NSString *toString = [parts objectAtIndex:1];
+        int charLen = 4;
+        if ([toString length] > charLen) {
+            NSMutableArray *toArray = [NSMutableArray arrayWithCapacity: [toString length]/4 + ([toString length]%4 > 0 ? 1 : 0)];
+            NSRange range;
+            NSString *nextTo;
+            for (int offset = 0; offset < [toString length]/4; offset++) {
+                range = NSMakeRange(offset * charLen, charLen);
+                nextTo = [toString substringWithRange: range];
+                scanner = [NSScanner scannerWithString: nextTo];
+                [scanner scanHexInt: &to];
+                [toArray addObject: [NSNumber numberWithInt:to]];
+            }
+            [chars setObject: toArray forKey:fromNumber];
+        }
+        else 
+        {
+            scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
+            [scanner scanHexInt:&to];
+            NSNumber *toNumber = [NSNumber numberWithInt:to];
+            [chars setObject:toNumber  forKey:fromNumber];
+        }
     }
     
 }
@@ -173,21 +190,35 @@
 	return nil;
 }
 
-- (unichar)unicodeCharacter:(unichar)cid
+- (NSString *)unicodeCharacter:(unichar)cid
 {
+    NSString *result = [NSString stringWithFormat: @"%C", cid];
 	NSDictionary *dict = [self rangeWithCharacter:cid];
     if (dict)
     {
         NSUInteger internalOffset = cid - [[dict objectForKey:@"First"] intValue];
-        return [[dict objectForKey:@"Offset"] intValue] + internalOffset;
+        result = [NSString stringWithFormat: @"%C", [[dict objectForKey:@"Offset"] intValue] + internalOffset];
     }
     else if (chars)
     {
         NSNumber *fromChar = [NSNumber numberWithInt: cid];
-        NSNumber *toChar = [chars objectForKey: fromChar];
-        return [toChar intValue];
+        NSObject *to = [chars objectForKey: fromChar];
+        if ([to isKindOfClass: [NSNumber class]]) {
+            NSNumber *toChar = [chars objectForKey: fromChar];
+            result = [NSString stringWithFormat: @"%C", [toChar intValue]];
+        } else if ([to isKindOfClass: [NSArray class]]) {
+            NSArray *toArray = (NSArray *)to;
+            NSNumber *nextChar;
+            NSMutableString *temp = [[NSMutableString alloc] initWithCapacity: [toArray count]];
+            for (int i = 0; i < [toArray count]; i++) {
+                nextChar = [toArray objectAtIndex: i];
+                [temp appendFormat: @"%C", [nextChar intValue]];                
+            }
+            result = [NSString stringWithString: temp];
+            [temp release];
+        }
     }
-    return cid;
+    return result;
 }
 
 - (void)dealloc

@@ -101,17 +101,15 @@
 /* Feed a string into the state machine */
 - (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font
 {
-	// Use CID string for font-related computations.
-	NSString *cidString = [font cidWithPDFString: string];
- 	
 	// Use Unicode string to compare with user input.
-	NSString *unicodeString = [[font stringWithPDFString:string] lowercaseString];
-	
+	NSString *unicodeString = [[font unicodeWithPDFString:string] lowercaseString];
+    NSString *unicodeLower = [unicodeString lowercaseString];
+    
 	[unicodeContent appendString:unicodeString];
 		
 	for (int i = 0; i < [unicodeString length]; i++)
 	{
-		NSString *needleString = [NSString stringWithFormat:@"%C", [unicodeString characterAtIndex:i]];
+		NSString *needleString = [NSString stringWithFormat:@"%C", [unicodeLower characterAtIndex:i]];
 		
 		// Expand ligatures to separate characters
 		needleString = [self stringByExpandingLigatures:needleString font:font];
@@ -131,7 +129,7 @@
 			// of the keyword has been detected, and BEFORE the last character is
 			// detected, such that all characters of the keyword fall within the
 			// messages corresponding to the start and end of the detected string.
-			[self didScanCharacter:[cidString characterAtIndex:i]];
+			[self didScanCharacter:[unicodeString characterAtIndex:i]];
 
 			if (isLast)
 			{
@@ -152,7 +150,7 @@
 			{
 				[self didStartDetectingNeedle];
 		
-				[self didScanCharacter:[cidString characterAtIndex:i]];
+				[self didScanCharacter:[unicodeString characterAtIndex:i]];
 				
 				if (isLast)
 				{
@@ -164,7 +162,7 @@
 			{
 				// Tell delegate another character was scanned,
 				// and reset in case part of the keyword was already matched.
-				[self didScanCharacter:[cidString characterAtIndex:i]];
+				[self didScanCharacter:[unicodeString characterAtIndex:i]];
 			}
 		}
 	}

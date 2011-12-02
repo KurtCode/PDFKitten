@@ -36,6 +36,8 @@
 /* Given a PDF string, returns a CID string */
 - (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString;
 
+- (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString;
+
 /* Returns the width of a charachter (optionally scaled to some font size) */
 - (CGFloat)widthOfCharacter:(unichar)characher withFontSize:(CGFloat)fontSize;
 
