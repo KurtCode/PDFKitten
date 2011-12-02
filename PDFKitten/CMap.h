@@ -12,4 +12,6 @@
 /* Unicode mapping for character ID */
 - (NSString *)unicodeCharacter:(unichar)cid;
 
+- (unichar)cidCharacter:(unichar)unicode;
+
 @end

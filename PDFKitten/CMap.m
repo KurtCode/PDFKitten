@@ -221,6 +221,25 @@
     return result;
 }
 
+- (unichar)cidCharacter:(unichar)unicode 
+{
+    //TODO: search in range dictionary
+    if (chars) {
+        NSEnumerator *keys = [chars keyEnumerator];
+        NSObject *value;
+        NSObject *key;
+        while (key = [keys nextObject]) {
+            value = [chars objectForKey: key];
+            if ([value isKindOfClass: [NSNumber class]]) {
+                if ([(NSNumber *)value intValue] == unicode) {
+                    return [(NSNumber *)key intValue];
+                }
+            }
+        }        
+    }
+    return unicode;
+}
+
 - (void)dealloc
 {
 	[offsets release];
