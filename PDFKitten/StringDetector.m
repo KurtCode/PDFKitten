@@ -101,16 +101,9 @@
 /* Feed a string into the state machine */
 - (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font
 {
-	NSString *cidString = [font cidWithPDFString:string];
-    NSRange range = [cidString rangeOfString: @"BUILDING"];
-    if (range.location < NSIntegerMax) {
-        NSLog(@"found");
-    }
 	NSString *unicodeString = [font unicodeWithPDFString:string];
     NSString *unicodeLower = [unicodeString lowercaseString];
     
-    NSLog(@"\tcid: |%@|", cidString);
-    NSLog(@"\tuni: |%@|", unicodeString);
 	[unicodeContent appendString:unicodeString];
 		
 	for (int i = 0; i < [unicodeString length]; i++)
