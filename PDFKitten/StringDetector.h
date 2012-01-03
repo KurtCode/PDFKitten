@@ -1,10 +1,7 @@
-/*
- *	Given a keyword and a stream of charachers, triggers when
- *	the desired needle is found.
- *
- *	The implementation ressembles a finite state machine (FSM).
- *
- *
+/**
+ * A detector implementing a finite state machine with the goal of detecting a predefined keyword in a continuous stream
+ * of characters. The user of a detector can append strings, and will receive a number of messages reflecting the
+ * current state of the detector.
  */
 
 #import <Foundation/Foundation.h>

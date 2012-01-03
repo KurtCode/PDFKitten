@@ -45,6 +45,9 @@
 /* Unicode character with CID */
 - (NSString *)stringWithCharacters:(const char *)characters;
 
+/* Return an equivalent string, replacing ligatures with individual characters */
+- (NSString *)stringByExpandingLigatures:(NSString *)string;
+
 @property (nonatomic, retain) CMap *toUnicode;
 @property (nonatomic, retain) NSMutableDictionary *widths;
 @property (nonatomic, retain) FontDescriptor *fontDescriptor;

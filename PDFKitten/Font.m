@@ -176,6 +176,20 @@
 	return 0;
 }
 
+/* Replace defined ligatures with separate characters */
+- (NSString *)stringByExpandingLigatures:(NSString *)string
+{
+	NSString *replacement = nil;
+	for (NSString *ligature in self.ligatures)
+	{
+		replacement = [self.ligatures objectForKey:ligature];
+		if (!replacement) continue;
+		string = [string stringByReplacingOccurrencesOfString:ligature withString:replacement];
+	}
+	return string;
+}
+
+
 
 #pragma mark Memory Management
 
