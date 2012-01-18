@@ -3,7 +3,7 @@
 
 @interface StringDetector ()
 - (void)didFindNeedle;
-- (BOOL)append:(NSString *)string isLast:(BOOL *)isLast font:(Font *)font;
+- (BOOL)append:(NSString *)string isLast:(BOOL *)isLast;
 - (void)didScanCharacter:(unichar)character;
 - (void)didStartDetectingNeedle;
 
@@ -28,10 +28,13 @@
 - (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font
 {
 	// Use CID string for font-related computations.
-	NSString *cidString = [font cidWithPDFString: string];
+	NSString *cidString = [font cidWithPDFString:string];
  	
 	// Use Unicode string to compare with user input.
 	NSString *unicodeString = [[font stringWithPDFString:string] lowercaseString];
+	
+	// The string being compared
+	NSMutableString *effectiveText = [NSMutableString string];
 	
 	[unicodeContent appendString:unicodeString];
 	
@@ -41,10 +44,11 @@
 		
 		// Expand ligatures to separate characters
 		needleString = [font stringByExpandingLigatures:needleString];
+		[effectiveText appendString:needleString];
 		
 		BOOL isFirst = (self.keywordPosition == 0);
 		BOOL isLast;
-		if ([self append:needleString isLast:&isLast font:font])
+		if ([self append:needleString isLast:&isLast])
 		{
 			if (isFirst)
 			{
@@ -74,7 +78,7 @@
 			
 			// This covers the case where the character does not match the current
 			// position in the keyword, but matches the first.
-			if ([self append:needleString isLast:&isLast font:font])
+			if ([self append:needleString isLast:&isLast])
 			{
 				[self didStartDetectingNeedle];
 				
@@ -94,7 +98,7 @@
 			}
 		}
 	}
-	return unicodeString;
+	return effectiveText;
 }
 
 /* Reset the state machine */
@@ -149,7 +153,7 @@
 	[self reset];
 }
 
-- (BOOL)append:(NSString *)string isLast:(BOOL *)isLast font:(Font *)font
+- (BOOL)append:(NSString *)string isLast:(BOOL *)isLast
 {
 	for (int i = 0; i < [string length]; i++)
 	{
