@@ -1,0 +1,30 @@
+\documentclass[12pt,a4paper]{article}
+
+\parskip 1em
+
+\begin{document}
+
+
+\section{Class model}
+
+The framework consists of classes that mirror the relevant objects contained in a PDF document. As the main objective is to parse text, the majority of classes are concerned with modeling fonts, arranged in a hierarchy similar to the relations between different font types supported by the PDF format. 
+
+\subsection{Fonts}
+
+For the purposes of this framework, a font tells us the unicode value of a character, and how much space the rendered character occupies on the page. This is how the keyword entered by the user is matched (or not) to the text in the PDF document, and the location of the word is determined.
+
+Fons can be divided into two sets -- \textit{simple} and \textit{composite} fonts. Simple fonts tend to be just that, simple, encoding characters in for example MacOSRoman or some other common encoding. Composite fonts, however, may include custom mappings to Unicode, and may even have sub-fonts that need to be consulted when reading the textual content of a document.
+
+\section{Coordinate systems}
+
+There are three coordinate systems describing textual content, device space, text space and glyph space. Glyph space describes individual glyphs (letters) within their bounding box. Coordinates in glyph space are one 1000th of a unit of font size. Text space takes into account font size, so that some text may be bigger than other. Finally, the text is translated into device space, where the entire content of the page, not only text but also pictures and other objects, may be scaled, rotated and so on.
+
+\section{Textual search}
+
+Pages are scanned one at a time, feeding the stream of text into the string detector, which uses the current font to translate characters to unicode. Following the design pattern of a finite state machine, the string detector keeps matching the stream of characters until the exact sequence of characters making up the keyword has been found, at which point a callback method informs the scanner that the keyword has been found. The string detector responds to each entered string with the string's dimension, which allows the scanner to maintain a selection object. Once the keyword is found, the current selection is finalized, stored, and a the scanner goes on looking for more occurrences of the keyword.
+
+\subsection{Selection}
+
+A selection consists of two parts; a rectangle with zero-origin and dimensions to exactly fit the keyword, and a transform placing on the page, allowing for scaling and rotation depending on how the text is rendered.
+
+\end{document}
