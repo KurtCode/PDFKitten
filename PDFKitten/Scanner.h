@@ -14,7 +14,8 @@
 	RenderingStateStack *renderingStateStack;
 	Selection *currentSelection;
 	NSMutableArray *selections;
-	NSMutableString **rawTextContent;
+	NSMutableString *content;
+//	NSMutableString **rawTextContent;
 }
 
 /* Initialize with a file path */
@@ -34,5 +35,6 @@
 @property (nonatomic, retain) FontCollection *fontCollection;
 @property (nonatomic, retain) StringDetector *stringDetector;
 @property (nonatomic, retain) NSString *keyword;
-@property (nonatomic, assign) NSMutableString **rawTextContent;
+@property (nonatomic, retain) NSMutableString *content;
+//@property (nonatomic, assign) NSMutableString **rawTextContent;
 @end

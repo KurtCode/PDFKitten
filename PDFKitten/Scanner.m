@@ -60,6 +60,7 @@ void cm(CGPDFScannerRef scanner, void *info);
 	if ((self = [super init]))
 	{
 		pdfDocument = CGPDFDocumentRetain(document);
+		self.content = [NSMutableString string];
 	}
 	return self;
 }
@@ -248,10 +249,10 @@ void didScanSpace(float value, Scanner *scanner)
     [scanner.currentRenderingState translateTextPosition:CGSizeMake(-width, 0)];
     if (abs(value) >= [scanner.currentRenderingState.font widthOfSpace])
     {
-		if (scanner.rawTextContent)
-		{
-			[*scanner.rawTextContent appendString:@" "];
-		}
+//		if (scanner.rawTextContent)
+//		{
+//			[*scanner.rawTextContent appendString:@" "];
+//		}
         [scanner.stringDetector reset];
     }
 }
@@ -260,11 +261,13 @@ void didScanSpace(float value, Scanner *scanner)
 void didScanString(CGPDFStringRef pdfString, Scanner *scanner)
 {
 	NSString *string = [[scanner stringDetector] appendPDFString:pdfString withFont:[scanner currentFont]];
+	NSLog(@"%@", string);
+	[[scanner content] appendString:string];
 	
-	if (scanner.rawTextContent)
-	{
-		[*scanner.rawTextContent appendString:string];
-	}
+//	if (scanner.rawTextContent)
+//	{
+//		[*scanner.rawTextContent appendString:string];
+//	}
 }
 
 /* Show a string */
@@ -505,8 +508,9 @@ void cm(CGPDFScannerRef scanner, void *info)
 	[stringDetector release];
 	[documentURL release]; documentURL = nil;
 	CGPDFDocumentRelease(pdfDocument); pdfDocument = nil;
+	[content release];
 	[super dealloc];
 }
 
-@synthesize documentURL, keyword, stringDetector, fontCollection, renderingStateStack, currentSelection, selections, rawTextContent;
+@synthesize documentURL, keyword, stringDetector, fontCollection, renderingStateStack, currentSelection, selections /* rawTextContent */, content;
 @end
