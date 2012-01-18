@@ -21,7 +21,7 @@ void didScanFont(const char *key, CGPDFObjectRef object, void *collection)
 {
 	if ((self = [super init]))
 	{
-		NSLog(@"Font Collection (%d)", CGPDFDictionaryGetCount(dict));
+		NSLog(@"Font Collection (%lu)", CGPDFDictionaryGetCount(dict));
 		fonts = [[NSMutableDictionary alloc] init];
 		// Enumerate the Font resource dictionary
 		CGPDFDictionaryApplyFunction(dict, didScanFont, fonts);

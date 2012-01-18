@@ -1,5 +1,10 @@
 #import "FontDescriptor.h"
 #import "TrueTypeFont.h"
+#import <CommonCrypto/CommonDigest.h>
+
+@interface FontDescriptor ()
+- (void)parseFontFile:(CGPDFStreamRef)stream;
+@end
 
 @implementation FontDescriptor
 
@@ -67,8 +72,55 @@
 			CGPDFArrayGetInteger(bboxValue, 3, &height);
 			self.bounds = CGRectMake(x, y, width, height);
 		}
+		
+		CGPDFStreamRef fontFile;
+		if (CGPDFDictionaryGetStream(dict, "FontFile", &fontFile))
+		{
+			[self parseFontFile:fontFile];
+		}
+
 	}
 	return self;
+}
+
+- (void)parseFontFile:(CGPDFStreamRef)stream
+{
+	CGPDFDictionaryRef dict = CGPDFStreamGetDictionary(stream);
+	
+	CGPDFInteger cleartextLength, decryptedLength, fixedLength;
+	CGPDFInteger totalLength;
+	CGPDFDictionaryGetInteger(dict, "Length1", &cleartextLength);
+	CGPDFDictionaryGetInteger(dict, "Length2", &decryptedLength);
+	CGPDFDictionaryGetInteger(dict, "Length3", &fixedLength);
+	CGPDFDictionaryGetInteger(dict, "Length", &totalLength);
+	
+	NSLog(@"Lengths: %ld, %ld, %ld", cleartextLength, decryptedLength, fixedLength);
+	NSLog(@"Total: %ld", totalLength);
+	
+	CGPDFDataFormat format;
+	CFDataRef data = CGPDFStreamCopyData(stream, &format);
+	const uint8_t *ptr = CFDataGetBytePtr(data);
+	size_t length = CFDataGetLength(data);
+	NSData *fontData = [NSData dataWithBytes:ptr length:length];
+
+	size_t digestStringLength = CC_MD5_DIGEST_LENGTH * sizeof(unsigned char);
+	unsigned char *digest = malloc(digestStringLength);
+	bzero(digest, digestStringLength);
+	CC_MD5(data, length, digest);
+	
+	NSArray *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *path = [[docs lastObject] stringByAppendingPathComponent:@"fontfile"];
+	NSLog(@"%@", path);
+	
+	[fontData writeToFile:path atomically:NO];
+	
+	NSMutableString *digestString = [NSMutableString string];
+	
+	for (int i = 0; i < digestStringLength; i++)
+	{
+		[digestString appendFormat:@"%x", digest[i]];
+	}
+	NSLog(@"%@", digestString);
 }
 
 /* True if a font is symbolic */
