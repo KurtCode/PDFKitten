@@ -60,6 +60,25 @@
 	return self;
 }
 
+
+- (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
+{
+	size_t length = CGPDFStringGetLength(pdfString);
+	const unsigned char *cid = CGPDFStringGetBytePtr(pdfString);
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSData *data = [NSData dataWithBytes:cid length:length];
+    NSLog(@"%@", data);
+	for (int i = 0; i < length; i+=2) {
+		unsigned char unicodeValue1 = cid[i];
+		unsigned char unicodeValue2 = cid[i+1];
+        unichar unicodeValue = (unicodeValue1 << 8) + unicodeValue2;
+        [result appendFormat:@"%C", unicodeValue];
+	}
+    return result;
+}
+
+/*
+
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
 	if (self.identity)
@@ -79,7 +98,6 @@
 			NSLog(@"%C %x", unicodeValue, unicodeValue);
 		}
 		
-		
 	}
 	else
 	{
@@ -89,6 +107,7 @@
 	
 	return @"";
 }
+*/
 
 @synthesize identity;
 @end

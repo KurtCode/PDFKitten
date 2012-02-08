@@ -99,7 +99,7 @@
 		[scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&line];
 		if ([line rangeOfString:@"begincodespacerange"].location != NSNotFound)
 		{
-			[self scanCodeSpaceRange:scanner];
+			//[self scanCodeSpaceRange:scanner];
 		}
 		else if ([line rangeOfString:@"beginbfrange"].location != NSNotFound)
 		{

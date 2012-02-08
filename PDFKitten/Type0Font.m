@@ -115,6 +115,7 @@
     } else {
         result = [NSMutableString stringWithString: descendantResult];
     }
+    NSLog(@"%@", result);
     return result;
 }
 
