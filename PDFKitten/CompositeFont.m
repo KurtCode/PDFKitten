@@ -50,8 +50,8 @@
 			// defines widths on the form [ first list-of-widths ]
 			CGPDFArrayRef characterWidths;
 			if (!CGPDFObjectGetValue(nextObject, kCGPDFObjectTypeArray, &characterWidths)) break;
-			NSUInteger count = CGPDFArrayGetCount(characterWidths);
-			for (int index = 0; index < count ; index++)
+			NSUInteger widthsCount = CGPDFArrayGetCount(characterWidths);
+			for (int index = 0; index < widthsCount ; index++)
 			{
 				CGPDFInteger width;
 				if (CGPDFArrayGetInteger(characterWidths, index, &width))

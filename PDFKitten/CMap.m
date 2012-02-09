@@ -114,6 +114,7 @@
 
 - (void)scanning:(NSString *)text
 {
+    NSLog(@"%@", text);
 	NSScanner *scanner = [NSScanner scannerWithString:text];
 	[scanner scanUpToString:@"begincmap" intoString:nil];
 	[scanner scanString:@"begincmap" intoString:nil];
@@ -224,6 +225,22 @@
 - (unichar)cidCharacter:(unichar)unicode 
 {
     //TODO: search in range dictionary
+        
+    // Look up the offsets dictionary for this unicode
+    for (NSDictionary *dict in offsets)
+	{
+        int firstChar = [[dict objectForKey:@"First"] intValue];
+        int lastChar = [[dict objectForKey:@"Last"] intValue];
+        int offset = [[dict objectForKey:@"Offset"] intValue];
+        
+        for (int i = 0 ; i <= lastChar-firstChar ; i++) {
+            unichar dictUnicode = offset+i;
+            if (dictUnicode == unicode) {
+                return i;
+            }
+        }
+	}
+    
     if (chars) {
         NSEnumerator *keys = [chars keyEnumerator];
         NSObject *value;
