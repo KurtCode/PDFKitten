@@ -1,16 +1,19 @@
 #import "CMap.h"
 #import "TrueTypeFont.h"
 
+static NSSet *operators;
+
+static NSString *kCodeSpaceRangeStart = @"begincodespacerange";
+static NSString *kCodeSpaceRangeEnd = @"endcodespacerange";
+
+static NSString *kBFCharBegin = @"beginbfchar";
+static NSString *kBFCharEnd = @"endbfchar";
+
+static NSString *kBFRangeBegin = @"beginbfrange";
+static NSString *kBFRangeEnd = @"endbfrange";
+
 @implementation CMap
 
-- (void)scanCodeSpaceRange:(NSScanner *)scanner
-{
-	static NSString *endToken = @"endcodespacerange";
-	NSString *content = nil;
-	[scanner scanUpToString:endToken intoString:&content];
-	[scanner scanString:endToken intoString:nil];
-	NSLog(@"%@", content);
-}
 
 - (void)scanRanges:(NSScanner *)scanner
 {
@@ -42,6 +45,12 @@
 	[scanner scanString:endToken intoString:nil];
 }
 
+- (BOOL)isOperator:(NSString *)token
+{
+	[token stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	return [operators containsObject:token];
+}
+
 - (void)scanChars:(NSScanner *)scanner 
 {
 	NSString *content = nil;
@@ -71,28 +80,65 @@
         NSNumber *toNumber = [NSNumber numberWithInt:to];
         [chars setObject:toNumber  forKey:fromNumber];
     }
-    
 }
 
+
+/**!
+ *	
+ *
+ *
+ */
 - (void)scanCMap:(NSScanner *)scanner
 {
+	NSMutableArray *rangeDelimiters = [NSMutableArray array];
+
+	
+	NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+	NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+	
 	while (![scanner isAtEnd])
 	{
-		NSString *line;
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&line];
-		if ([line rangeOfString:@"begincodespacerange"].location != NSNotFound)
+
+		NSString *word = nil;
+		[scanner scanUpToCharactersFromSet:set intoString:&word];
+		if ([self isOperator:word])
 		{
-			[self scanCodeSpaceRange:scanner];
+			if ([word isEqualToString:kCodeSpaceRangeStart])
+			{
+				NSString *buffer = nil;
+				
+				[scanner scanUpToCharactersFromSet:set intoString:&word];
+				word = [word stringByTrimmingCharactersInSet:set];
+				while (![word isEqualToString:kCodeSpaceRangeEnd])
+				{
+					// Keep scanning values until end token
+					if (!buffer)
+					{
+						buffer = word;
+					}
+					else
+					{
+						NSArray *arr = [NSArray arrayWithObjects:
+										[buffer stringByTrimmingCharactersInSet:tagSet], 
+										[word stringByTrimmingCharactersInSet:tagSet], nil];
+						[rangeDelimiters addObject:arr];
+						buffer = nil;
+					}
+					[scanner scanUpToCharactersFromSet:set intoString:&word];
+				}
+				NSLog(@"Ranges: %@", rangeDelimiters);
+			}
+//			else if ([word isEqualToString:@"beginbfchar"])
+//			{
+//				...
+//			}
+//			else if ([word isEqualToString:@"beginbfrange"])
+//			{
+//				...	
+//			}
 		}
-		else if ([line rangeOfString:@"beginbfrange"].location != NSNotFound)
-		{
-			[self scanRanges:scanner];
-		}
-        else if ([line rangeOfString:@"beginbfchar"].location != NSNotFound) 
-        {
-            [self scanChars:scanner];
-        }
 	}
+	
 }
 
 - (void)scanning:(NSString *)text
@@ -108,11 +154,27 @@
 {
 	if ((self = [super init]))
 	{
+		operators = [[NSSet alloc] initWithObjects:
+								   @"begincodespacerange",
+								   @"beginbfchar", 
+								   @"beginbfrange", nil];
+
 		NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
+		
+		NSArray *docss = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *path = [[docss lastObject] stringByAppendingPathComponent:@"CMap"];
+		[data writeToFile:path atomically:YES];
+		
 		NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		[data release];
 		
-		[self scanning:text];
+		NSLog(@"=== CMAP ===");
+//		NSLog(@"%@", text);
+
+		NSScanner *scanner = [NSScanner scannerWithString:text];
+
+		[self scanCMap:scanner];
+//		[self scanning:text];
 		return self;
 		
 

@@ -100,6 +100,7 @@
 {
 	CGPDFStreamRef stream;
 	if (!CGPDFDictionaryGetStream(dict, "ToUnicode", &stream)) return;
+	NSLog(@"Has toUnicode");
 	CMap *map = [[CMap alloc] initWithPDFStream:stream];
 	self.toUnicode = map;
 	[map release];
