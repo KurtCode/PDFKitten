@@ -1,15 +1,70 @@
 #import "CMap.h"
 #import "TrueTypeFont.h"
 
+static NSString *kCodeSpaceRangeStart = @"begincodespacerange";
+static NSString *kCodeSpaceRangeEnd = @"endcodespacerange";
+
+static NSString *kBFCharBegin = @"beginbfchar";
+static NSString *kBFCharEnd = @"endbfchar";
+
+static NSString *kBFRangeBegin = @"beginbfrange";
+static NSString *kBFRangeEnd = @"endbfrange";
+
+static NSSet *sharedOperators = nil;
+
+
+const Operator OperatorNone = {nil, nil, nil};
+
+inline Operator OperatorMake(NSString *tag, NSString *start, NSString *end) {
+	Operator operator;
+	operator.label = tag;
+	operator.start = start;
+	operator.end = end;
+	return operator;
+};
+
+inline BOOL OperatorIsEmpty(Operator op)
+{
+	return (op.label == nil 
+			&& op.start == nil
+			&& op.end == nil);
+}
+
+inline NSString *OperatorGetTag(Operator op)
+{
+	return op.label;
+}
+
+static int numberOfKnownOperators = 1;
+static Operator knownOperators[] = {
+	{@"CodeSpaceRange", @"begincodespacerange", @"endcodespacerange"}
+};
+
+
 @implementation CMap
 
-- (void)scanCodeSpaceRange:(NSScanner *)scanner
+- (NSSet *)operators
 {
-	static NSString *endToken = @"endcodespacerange";
-	NSString *content = nil;
-	[scanner scanUpToString:endToken intoString:&content];
-	[scanner scanString:endToken intoString:nil];
-	NSLog(@"%@", content);
+	@synchronized (self)
+	{
+		if (!sharedOperators)
+		{
+			sharedOperators = [[NSSet alloc] initWithObjects:
+							   kCodeSpaceRangeStart,
+							   kBFCharBegin, 
+							   kBFRangeBegin, nil];
+		}
+		return sharedOperators;
+	}
+}
+
+- (NSString *)endToken:(NSString *)str
+{
+	if (kCodeSpaceRangeStart)
+	{
+		return kCodeSpaceRangeEnd;
+	}
+	return @"";
 }
 
 - (void)scanRanges:(NSScanner *)scanner
@@ -42,6 +97,25 @@
 	[scanner scanString:endToken intoString:nil];
 }
 
+- (Operator)isOperatorStart:(NSString *)string
+{
+	for (int i = 0; i < numberOfKnownOperators; i++)
+	{
+		Operator op = knownOperators[i];
+		if ([string isEqualToString:op.start])
+		{
+			return op;
+		}
+	}
+	return OperatorNone;
+}
+
+- (BOOL)isOperator:(NSString *)token
+{
+	[token stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	return [self.operators containsObject:token];
+}
+
 - (void)scanChars:(NSScanner *)scanner 
 {
 	NSString *content = nil;
@@ -71,48 +145,127 @@
         NSNumber *toNumber = [NSNumber numberWithInt:to];
         [chars setObject:toNumber  forKey:fromNumber];
     }
-    
 }
 
-- (void)scanCMap:(NSScanner *)scanner
+- (void)addCodeSpaceRangeFrom:(unsigned int)low to:(unsigned int)high
 {
-	while (![scanner isAtEnd])
+	static NSString *rangesLabel = @"Ranges";
+	NSValue *range = [NSValue valueWithRange:NSMakeRange(low, (high - low))];
+	
+	NSMutableArray *ranges = [self.context valueForKey:rangesLabel];
+	if (!ranges)
 	{
-		NSString *line;
-		[scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&line];
-		if ([line rangeOfString:@"begincodespacerange"].location != NSNotFound)
-		{
-			[self scanCodeSpaceRange:scanner];
-		}
-		else if ([line rangeOfString:@"beginbfrange"].location != NSNotFound)
-		{
-			[self scanRanges:scanner];
-		}
-        else if ([line rangeOfString:@"beginbfchar"].location != NSNotFound) 
-        {
-            [self scanChars:scanner];
-        }
+		ranges = [NSMutableArray array];
+		[self.context setValue:ranges forKey:rangesLabel];
+	}
+	[ranges addObject:range];
+}
+
+/**!
+ * Code space ranges are pairs of hex numbers
+ */
+- (void)handleCodeSpaceRange:(NSString *)string
+{
+	NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+	string = [string stringByTrimmingCharactersInSet:tagSet];
+	
+	unsigned int numericValue;
+	if (![[NSScanner scannerWithString:string] scanHexInt:&numericValue]) return;
+	
+	static NSString *rangeLowerBound = @"MIN";
+	
+	if ([self.context objectForKey:rangeLowerBound] != nil)
+	{
+		// Assemble range from stored, current values
+		unsigned int lowerBound = [[self.context valueForKey:rangeLowerBound] intValue];
+		[self addCodeSpaceRangeFrom:lowerBound	to:numericValue];
+		return;
+	}
+	
+	[self.context setValue:[NSNumber numberWithInt:numericValue] forKey:rangeLowerBound];
+}
+
+- (SEL)selectorForOperator:(NSString *)operator
+{
+	if (operator == kCodeSpaceRangeStart)
+	{
+		currentHandler = @selector(handleCodeSpaceRange:);
 	}
 }
 
-- (void)scanning:(NSString *)text
+/**!
+ *	
+ *
+ *
+ */
+- (void)scanCMap:(NSScanner *)scanner
 {
-	NSScanner *scanner = [NSScanner scannerWithString:text];
-	[scanner scanUpToString:@"begincmap" intoString:nil];
-	[scanner scanString:@"begincmap" intoString:nil];
-	NSLog(@"%d", scanner.scanLocation);
-	[self scanCMap:scanner];
+	NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+	
+	NSInteger numericValue = 0;
+	
+	NSString *word = nil;
+	while (![scanner isAtEnd])
+	{
+		// Scan one word
+		[scanner scanUpToCharactersFromSet:set intoString:&word];
+
+		// Check for comment characher
+		int commentPosition = [word rangeOfString:@"%"].location;
+		if (commentPosition >= 0)
+		{
+			// If comment, trim and scan to EOL
+			word = [word substringToIndex:commentPosition];
+			[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
+		}
+		
+		numericValue = [word integerValue];
+		if (numericValue > 0 && numericValue != NSIntegerMax && numericValue != NSIntegerMin)
+		{
+		}
+		
+		Operator op = [self isOperatorStart:word];
+		if ([word isEqualToString:currentOperator.end])
+		{
+			// End the current context
+			currentOperator = OperatorNone;
+			self.context = nil;
+		}
+		else if (!OperatorIsEmpty(op))
+		{
+			// Start a new context
+			currentOperator = op;
+			self.context = [NSMutableDictionary dictionary];
+		}
+		else if (currentHandler != nil)
+		{
+			// Send input to the current context
+			[self performSelector:currentHandler withObject:word];
+		}
+	}
 }
 
 - (id)initWithPDFStream:(CGPDFStreamRef)stream
 {
 	if ((self = [super init]))
 	{
+
 		NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
+		
+		NSArray *docss = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *path = [[docss lastObject] stringByAppendingPathComponent:@"CMap"];
+		[data writeToFile:path atomically:YES];
+		
 		NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		[data release];
 		
-		[self scanning:text];
+		NSLog(@"=== CMAP ===");
+//		NSLog(@"%@", text);
+
+		NSScanner *scanner = [NSScanner scannerWithString:text];
+
+		[self scanCMap:scanner];
+//		[self scanning:text];
 		return self;
 		
 
@@ -196,4 +349,5 @@
 	[super dealloc];
 }
 
+@synthesize operators, context;
 @end
