@@ -19,12 +19,6 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-//    STFail(@"Unit tests are not implemented yet in KittenTest");
-	NSLog(@"Testing Kurt the PDF kitten!");
-}
-
 //- (void)testKurtTheCat
 //{
 //	static NSString *keyword = @"kurt";
@@ -52,21 +46,31 @@
 //	NSLog(@"FI: %@", [ff stringWithCode:0x0c]);
 //	NSLog(@"FL: %@", [ff stringWithCode:0x0d]);
 //	NSLog(@"FFL: %@", [ff stringWithCode:0x0f]);
+
+//- (void)testLigatureExpander
+//{
+//	NSLog(@"=== Ligatures");
+//	
+//	NSURL *url = [[NSBundle mainBundle] URLForResource:@"Ligatures" withExtension:@"pdf"];
+//	CGPDFDocumentRef doc = CGPDFDocumentCreateWithURL((__bridge CFURLRef)url);
+//
+//	Scanner *scanner = [[Scanner alloc] initWithDocument:doc];
+//	[scanner setKeyword:@"fish"];
+//	[scanner scanDocumentPage:1];
+//
+//	NSLog(@"%@", [[scanner content] dataUsingEncoding:NSUTF8StringEncoding]);
+//	
+//	CGPDFDocumentRelease(doc);
 //}
 
-- (void)testLigatureExpander
+- (void)testCMap
 {
-	NSLog(@"=== Ligatures");
-	
-	NSURL *url = [[NSBundle mainBundle] URLForResource:@"Ligatures" withExtension:@"pdf"];
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"iTabloPDFPlusUserGuide" withExtension:@"pdf"];
 	CGPDFDocumentRef doc = CGPDFDocumentCreateWithURL((__bridge CFURLRef)url);
-
 	Scanner *scanner = [[Scanner alloc] initWithDocument:doc];
 	[scanner setKeyword:@"fish"];
 	[scanner scanDocumentPage:1];
 
-	NSLog(@"%@", [scanner content]);
-	
 	CGPDFDocumentRelease(doc);
 }
 
