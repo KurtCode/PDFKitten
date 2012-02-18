@@ -13,6 +13,8 @@
 		2C0E15B013589B0B004096C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
 		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
+		2C4B91AD14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */; };
+		2C4B91AF14E316F0000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */; };
 		2C754C9E14B3A1D700105B5E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C754C9D14B3A1D700105B5E /* SenTestingKit.framework */; };
 		2C754C9F14B3A1D700105B5E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
 		2C754CA014B3A1D700105B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
@@ -73,6 +75,7 @@
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2C47505C13F3E48200BC2DB9 /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsView.h; path = PDFKitten/DocumentsView.h; sourceTree = SOURCE_ROOT; };
 		2C47505D13F3E48200BC2DB9 /* DocumentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsView.m; path = PDFKitten/DocumentsView.m; sourceTree = SOURCE_ROOT; };
+		2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = iTabloPDFPlusUserGuide.pdf; sourceTree = "<group>"; };
 		2C754C9C14B3A1D700105B5E /* KittenTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KittenTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C754C9D14B3A1D700105B5E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		2C754CA314B3A1D700105B5E /* KittenTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KittenTest-Info.plist"; sourceTree = "<group>"; };
@@ -257,6 +260,7 @@
 		2C754CA214B3A1D700105B5E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */,
 				2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */,
 				2C754CA314B3A1D700105B5E /* KittenTest-Info.plist */,
 				2C754CA414B3A1D700105B5E /* InfoPlist.strings */,
@@ -469,6 +473,7 @@
 				2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */,
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
+				2C4B91AF14E316F0000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */,
 				2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,6 +484,7 @@
 			files = (
 				2C754CA614B3A1D700105B5E /* InfoPlist.strings in Resources */,
 				2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */,
+				2C4B91AD14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
