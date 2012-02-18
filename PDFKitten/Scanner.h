@@ -15,7 +15,6 @@
 	Selection *currentSelection;
 	NSMutableArray *selections;
 	NSMutableString *content;
-//	NSMutableString **rawTextContent;
 }
 
 /* Initialize with a file path */

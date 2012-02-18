@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "FontFile.h"
 
 /* Flags as defined in PDF 1.7 */
 typedef enum FontFlags
@@ -30,10 +31,14 @@ typedef enum FontFlags
 	CGRect bounds;
 	NSUInteger flags;
 	NSString *fontName;
+	FontFile *fontFile;
 }
 
 /* Initialize a descriptor using a FontDescriptor dictionary */
 - (id)initWithPDFDictionary:(CGPDFDictionaryRef)dict;
+
+// TODO: temporarily public
++ (void)parseFontFile:(NSData *)data;
 
 @property (nonatomic, assign) CGRect bounds;
 @property (nonatomic, assign) CGFloat ascent;
@@ -50,4 +55,5 @@ typedef enum FontFlags
 @property (nonatomic, assign) NSUInteger flags;
 @property (nonatomic, readonly, getter = isSymbolic) BOOL symbolic;
 @property (nonatomic, copy) NSString *fontName;
+@property (nonatomic, readonly) FontFile *fontFile;
 @end

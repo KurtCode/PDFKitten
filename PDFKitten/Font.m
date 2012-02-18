@@ -11,8 +11,11 @@
 #import "CIDType2Font.h"
 #import "CIDType0Font.h"
 
-
 #pragma mark 
+
+static char *kStandardEncodingName = "StandardEncoding";
+static char *kMacRomanEncoding = "MacRomanEncoding";
+static char *kWinAnsiEncoding = "WinAnsiEncoding";
 
 @implementation Font
 
@@ -72,12 +75,52 @@
 		// Parse ToUnicode map
 		[self setToUnicodeWithFontDictionary:dict];
 		
+		// Set the font's base font
+		const char *baseFontName = nil;
+		if (CGPDFDictionaryGetName(dict, "BaseFont", &baseFontName))
+		{
+			self.baseFont = [NSString stringWithCString:baseFontName encoding:NSUTF8StringEncoding];
+		}
+		
 		// NOTE: Any furhter initialization is performed by the appropriate subclass
 	}
 	return self;
 }
 
 #pragma mark Font Resources
+
+- (void)setEncodingWithFontDictionary:(CGPDFDictionaryRef)dict
+{
+	CGPDFObjectRef encodingObject;
+	static char *encodingTag = "Encoding";
+	static char *baseEncodingTag = "BaseEncoding";
+	if (!CGPDFDictionaryGetObject(dict, encodingTag, &encodingObject)) return;
+
+	const char *encodingName = nil;
+	if (CGPDFObjectGetType(encodingObject) == kCGPDFObjectTypeName)
+	{
+		if (!CGPDFObjectGetValue(encodingObject, kCGPDFObjectTypeName, &encodingName)) return;
+	}
+	else if (CGPDFObjectGetType(encodingObject) == kCGPDFObjectTypeDictionary)
+	{
+		CGPDFDictionaryRef encodingDict;
+		CGPDFObjectGetValue(encodingObject, kCGPDFObjectTypeDictionary, &encodingDict);
+		CGPDFDictionaryGetName(encodingDict, baseEncodingTag, &encodingName);
+	}
+	
+	if (strcmp(encodingName, kMacRomanEncoding) == 0)
+	{
+		self.encoding = MacRomanEncoding;
+	}
+	else if (strcmp(encodingName, kWinAnsiEncoding) == 0)
+	{
+		self.encoding = WinAnsiEncoding;
+	}
+	else
+	{
+		self.encoding = UnknownEncoding;
+	}
+}
 
 /* Import font descriptor */
 - (void)setFontDescriptorWithFontDictionary:(CGPDFDictionaryRef)dict
@@ -107,12 +150,67 @@
 
 #pragma mark Font Property Accessors
 
-/* Subclasses will override this method with their own implementation */
+- (NSString *)unicodeStringUsingFontFile:(const unsigned char *)codes length:(size_t)length
+{
+	FontFile *fontFile = self.fontDescriptor.fontFile;
+	NSMutableString *unicodeString = [NSMutableString string];
+	for (int i = 0; i < length; i++)
+	{
+		NSString *string = [fontFile stringWithCode:codes[i]];
+		[unicodeString appendString:string];
+	}
+	return unicodeString;
+}
+
+- (NSString *)unicodeStringUsingToUnicode:(const unsigned char *)codes length:(size_t)length
+{
+	NSMutableString *unicodeString = [NSMutableString string];
+	for (int i = 0; i < length; i++)
+	{
+		unichar value = [self.toUnicode unicodeCharacter:codes[i]];
+		[unicodeString appendFormat:@"%C", value];
+	}
+	return unicodeString;
+}
+
+- (NSString *)unicodeStringWithStandardEncoding:(const unsigned char *)codes length:(size_t)length
+{
+	NSStringEncoding stringEncoding = nativeEncoding(self.encoding);
+	
+	NSString *unicodeString = [[NSString alloc] initWithBytes:codes length:length encoding:stringEncoding];
+	return [unicodeString autorelease];
+}
+
+/*!
+ Returns a unicode string equivalent to the argument string of character codes.
+ This method relies on either:
+	- the font having a known encoding (such as Mac OS Roman),
+	- a specified standard mapping,
+	- an embedded Unicode mapping, or
+	- a mapping embedded inside a font file
+ 
+ If neither of these produces a Unicode value, the text content can not be extracted.
+ */
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
-    // Copy PDFString to NSString
-    NSString *string = (NSString *) CGPDFStringCopyTextString(pdfString);
-	return [string autorelease];
+	// Character codes
+	const unsigned char *characterCodes = CGPDFStringGetBytePtr(pdfString);
+	size_t length = CGPDFStringGetLength(pdfString);
+
+	if (self.toUnicode)
+	{
+		return [self unicodeStringUsingToUnicode:characterCodes length:length];
+	}
+	else if (self.fontDescriptor.fontFile)
+	{
+		return [self unicodeStringUsingFontFile:characterCodes length:length];
+	}
+	else if (knownEncoding(self.encoding))
+	{
+		return [self unicodeStringWithStandardEncoding:characterCodes length:length];
+	}
+	
+	return @"";
 }
 
 - (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
@@ -198,8 +296,9 @@
 	[toUnicode release];
 	[widths release];
 	[fontDescriptor release];
+	[baseFont release];
 	[super dealloc];
 }
 
-@synthesize fontDescriptor, widths, toUnicode, widthsRange;
+@synthesize fontDescriptor, widths, toUnicode, widthsRange, baseFont, baseFontName, encoding;
 @end

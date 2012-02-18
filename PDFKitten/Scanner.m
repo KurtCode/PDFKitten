@@ -176,11 +176,11 @@ void cm(CGPDFScannerRef scanner, void *info);
     // Initialize font collection (per page)
 	self.fontCollection = [self fontCollectionWithPage:page];
     
-	CGPDFContentStreamRef content = CGPDFContentStreamCreateWithPage(page);
-	CGPDFScannerRef scanner = CGPDFScannerCreate(content, self.operatorTable, self);
+	CGPDFContentStreamRef contentStream = CGPDFContentStreamCreateWithPage(page);
+	CGPDFScannerRef scanner = CGPDFScannerCreate(contentStream, self.operatorTable, self);
 	CGPDFScannerScan(scanner);
 	CGPDFScannerRelease(scanner); scanner = nil;
-	CGPDFContentStreamRelease(content); content = nil;
+	CGPDFContentStreamRelease(contentStream); contentStream = nil;
 }
 
 

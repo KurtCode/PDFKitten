@@ -68,8 +68,9 @@
 	}
 	else if (!self.encoding)
 	{
-		NSString *string = [[NSString alloc] initWithData:rawBytes encoding:NSMacOSRomanStringEncoding];
-		return [string autorelease];
+		return [super stringWithPDFString:pdfString];
+//		NSString *string = [[NSString alloc] initWithData:rawBytes encoding:NSMacOSRomanStringEncoding];
+//		return [string autorelease];
 	}
 	NSString *string = [[NSString alloc] initWithData:rawBytes encoding:self.encoding];
 	return [string autorelease];
@@ -114,10 +115,10 @@
 }
 
 /* Unicode character with CID */
-- (NSString *)stringWithCharacters:(const char *)characters
-{
-	return [NSString stringWithCString:characters encoding:encoding];
-}
+//- (NSString *)stringWithCharacters:(const char *)characters
+//{
+//	return [NSString stringWithCString:characters encoding:encoding];
+//}
 
 @synthesize encoding;
 @end
