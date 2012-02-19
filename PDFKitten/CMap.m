@@ -1,47 +1,100 @@
 #import "CMap.h"
-#import "TrueTypeFont.h"
-
-static NSString *kCodeSpaceRangeStart = @"begincodespacerange";
-static NSString *kCodeSpaceRangeEnd = @"endcodespacerange";
-
-static NSString *kBFCharBegin = @"beginbfchar";
-static NSString *kBFCharEnd = @"endbfchar";
-
-static NSString *kBFRangeBegin = @"beginbfrange";
-static NSString *kBFRangeEnd = @"endbfrange";
 
 static NSSet *sharedOperators = nil;
+static NSCharacterSet *sharedTagSet = nil;
+static NSCharacterSet *sharedTokenDelimimerSet = nil;
+static NSString *kOperatorKey = @"CurrentOperator";
 
-
-const Operator OperatorNone = {nil, nil, nil};
-
-inline Operator OperatorMake(NSString *tag, NSString *start, NSString *end) {
-	Operator operator;
-	operator.label = tag;
-	operator.start = start;
-	operator.end = end;
-	return operator;
-};
-
-inline BOOL OperatorIsEmpty(Operator op)
+NSValue *rangeValue(unsigned int from, unsigned int to)
 {
-	return (op.label == nil 
-			&& op.start == nil
-			&& op.end == nil);
+	return [NSValue valueWithRange:NSMakeRange(from, to-from)];
 }
 
-inline NSString *OperatorGetTag(Operator op)
+@implementation Operator
+
++ (Operator *)operatorWithStart:(NSString *)start end:(NSString *)end handler:(SEL)handler
 {
-	return op.label;
+	Operator *op = [[[Operator alloc] init] autorelease];
+	op.start = start;
+	op.end = end;
+	op.handler = handler;
+	return op;
 }
 
-static int numberOfKnownOperators = 1;
-static Operator knownOperators[] = {
-	{@"CodeSpaceRange", @"begincodespacerange", @"endcodespacerange"}
-};
+@synthesize start, end, handler;
+@end
 
+@interface CMap ()
+- (void)handleCodeSpaceRange:(NSString *)string;
+- (void)handleCharacter:(NSString *)string;
+- (void)handleCharacterRange:(NSString *)string;
+- (void)scanCMap:(NSString *)string;
+@property (readonly) NSCharacterSet *tokenDelimiterSet;
+@property (nonatomic, retain) NSMutableDictionary *context;
+@property (nonatomic, readonly) NSCharacterSet *tagSet;
+@property (nonatomic, readonly) NSSet *operators;
+@end
 
 @implementation CMap
+
+- (id)initWithString:(NSString *)string
+{
+	if ((self = [super init]))
+	{
+		[self scanCMap:string];
+	}
+	return self;
+}
+
+- (id)initWithPDFStream:(CGPDFStreamRef)stream
+{
+	NSData *data = [(NSData *) CGPDFStreamCopyData(stream, nil) autorelease];
+	NSString *text = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+	return [self initWithString:text];
+}
+
+- (BOOL)isInCodeSpaceRange:(unichar)cid
+{
+	for (NSValue *rangeValue in self.codeSpaceRanges)
+	{
+		NSRange range = [rangeValue rangeValue];
+		if (cid >= range.location && cid <= NSMaxRange(range))
+		{
+			return YES;
+		}
+	}
+	return NO;
+}
+
+/**!
+ * Returns the unicode value mapped by the given character ID
+ */
+- (unichar)unicodeCharacter:(unichar)cid
+{
+	if (![self isInCodeSpaceRange:cid]) return 0;
+
+	NSArray	*mappedRanges = [self.characterRangeMappings allKeys];
+	for (NSValue *rangeValue in mappedRanges)
+	{
+		NSRange range = [rangeValue rangeValue];
+		if (cid >= range.location && cid <= NSMaxRange(range))
+		{
+			NSNumber *offsetValue = [self.characterRangeMappings objectForKey:rangeValue];
+			return cid + [offsetValue intValue];
+		}
+	}
+	
+	NSArray *mappedValues = [self.characterMappings allKeys];
+	for (NSNumber *from in mappedValues)
+	{
+		if ([from intValue] == cid)
+		{
+			return [[self.characterMappings objectForKey:from] intValue];
+		}
+	}
+	
+	return (unichar) NSNotFound;
+}
 
 - (NSSet *)operators
 {
@@ -49,305 +102,213 @@ static Operator knownOperators[] = {
 	{
 		if (!sharedOperators)
 		{
-			sharedOperators = [[NSSet alloc] initWithObjects:
-							   kCodeSpaceRangeStart,
-							   kBFCharBegin, 
-							   kBFRangeBegin, nil];
+			sharedOperators = [[NSMutableSet alloc] initWithObjects:
+							   [Operator operatorWithStart:@"begincodespacerange" 
+														end:@"endcodespacerange"
+													handler:@selector(handleCodeSpaceRange:)],
+							   [Operator operatorWithStart:@"beginbfchar" 
+													   end:@"endbfchar" 
+												   handler:@selector(handleCharacter:)],
+							   [Operator operatorWithStart:@"beginbfrange" 
+													   end:@"endbfrange" 
+												   handler:@selector(handleCharacterRange:)],
+			nil];
 		}
 		return sharedOperators;
 	}
 }
 
-- (NSString *)endToken:(NSString *)str
+#pragma mark -
+#pragma mark Scanner
+
+- (Operator *)operatorWithStartingToken:(NSString *)token
 {
-	if (kCodeSpaceRangeStart)
+	for (Operator *op in self.operators)
 	{
-		return kCodeSpaceRangeEnd;
-	}
-	return @"";
-}
-
-- (void)scanRanges:(NSScanner *)scanner
-{
-	NSString *content = nil;
-	static NSString *endToken = @"endbfrange";
-	[scanner scanUpToString:endToken intoString:&content];
-	NSCharacterSet *alphaNumericalSet = [NSCharacterSet alphanumericCharacterSet];
-	
-	offsets = [[NSMutableArray alloc] init];
-	NSScanner *rangeScanner = [NSScanner scannerWithString:content];
-	while (![rangeScanner isAtEnd])
-	{
-		unsigned int start, end, offset;
-		[rangeScanner scanUpToCharactersFromSet:alphaNumericalSet intoString:nil];
-		[rangeScanner scanHexInt:&start];
-		[rangeScanner scanUpToCharactersFromSet:alphaNumericalSet intoString:nil];
-		[rangeScanner scanHexInt:&end];
-		[rangeScanner scanUpToCharactersFromSet:alphaNumericalSet intoString:nil];
-		[rangeScanner scanHexInt:&offset];
-//		NSLog(@"%d,%d offset %d", start, end, offset);
-		NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-							  [NSNumber numberWithInt:start], @"First",
-							  [NSNumber numberWithInt:end], @"Last",
-							  [NSNumber numberWithInt:offset], @"Offset", 
-							  nil];
-		[offsets addObject:dict];
-
-	}
-	[scanner scanString:endToken intoString:nil];
-}
-
-- (Operator)isOperatorStart:(NSString *)string
-{
-	for (int i = 0; i < numberOfKnownOperators; i++)
-	{
-		Operator op = knownOperators[i];
-		if ([string isEqualToString:op.start])
-		{
-			return op;
-		}
-	}
-	return OperatorNone;
-}
-
-- (BOOL)isOperator:(NSString *)token
-{
-	[token stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	return [self.operators containsObject:token];
-}
-
-- (void)scanChars:(NSScanner *)scanner 
-{
-	NSString *content = nil;
-	static NSString *endToken = @"endbfchar";
-	[scanner scanUpToString:endToken intoString:&content];
-    NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
-    NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
-    NSString *separatorString = @"> <";
-    
-    chars = [[NSMutableDictionary alloc] init];    
-    NSScanner *rangeScanner = [NSScanner scannerWithString:content];
-    while (![rangeScanner isAtEnd])
-    {
-        NSString *line = nil;
-        [rangeScanner scanUpToCharactersFromSet:newLineSet intoString:&line];
-        line = [line stringByTrimmingCharactersInSet:tagSet];
-        NSArray *parts = [line componentsSeparatedByString:separatorString];
-        
-        NSUInteger from, to;
-        NSScanner *scanner = [NSScanner scannerWithString:[parts objectAtIndex:0]];
-        [scanner scanHexInt:&from];
-        
-        scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
-        [scanner scanHexInt:&to];
-        
-        NSNumber *fromNumber = [NSNumber numberWithInt:from];
-        NSNumber *toNumber = [NSNumber numberWithInt:to];
-        [chars setObject:toNumber  forKey:fromNumber];
-    }
-}
-
-- (void)addCodeSpaceRangeFrom:(unsigned int)low to:(unsigned int)high
-{
-	static NSString *rangesLabel = @"Ranges";
-	NSValue *range = [NSValue valueWithRange:NSMakeRange(low, (high - low))];
-	
-	NSMutableArray *ranges = [self.context valueForKey:rangesLabel];
-	if (!ranges)
-	{
-		ranges = [NSMutableArray array];
-		[self.context setValue:ranges forKey:rangesLabel];
-	}
-	[ranges addObject:range];
-}
-
-/**!
- * Code space ranges are pairs of hex numbers
- */
-- (void)handleCodeSpaceRange:(NSString *)string
-{
-	NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
-	string = [string stringByTrimmingCharactersInSet:tagSet];
-	
-	unsigned int numericValue;
-	if (![[NSScanner scannerWithString:string] scanHexInt:&numericValue]) return;
-	
-	static NSString *rangeLowerBound = @"MIN";
-	
-	if ([self.context objectForKey:rangeLowerBound] != nil)
-	{
-		// Assemble range from stored, current values
-		unsigned int lowerBound = [[self.context valueForKey:rangeLowerBound] intValue];
-		[self addCodeSpaceRangeFrom:lowerBound	to:numericValue];
-		return;
-	}
-	
-	[self.context setValue:[NSNumber numberWithInt:numericValue] forKey:rangeLowerBound];
-}
-
-- (SEL)selectorForOperator:(NSString *)operator
-{
-	if (operator == kCodeSpaceRangeStart)
-	{
-		currentHandler = @selector(handleCodeSpaceRange:);
-	}
-}
-
-/**!
- *	
- *
- *
- */
-- (void)scanCMap:(NSScanner *)scanner
-{
-	NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-	
-	NSInteger numericValue = 0;
-	
-	NSString *word = nil;
-	while (![scanner isAtEnd])
-	{
-		// Scan one word
-		[scanner scanUpToCharactersFromSet:set intoString:&word];
-
-		// Check for comment characher
-		int commentPosition = [word rangeOfString:@"%"].location;
-		if (commentPosition >= 0)
-		{
-			// If comment, trim and scan to EOL
-			word = [word substringToIndex:commentPosition];
-			[scanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
-		}
-		
-		numericValue = [word integerValue];
-		if (numericValue > 0 && numericValue != NSIntegerMax && numericValue != NSIntegerMin)
-		{
-		}
-		
-		Operator op = [self isOperatorStart:word];
-		if ([word isEqualToString:currentOperator.end])
-		{
-			// End the current context
-			currentOperator = OperatorNone;
-			self.context = nil;
-		}
-		else if (!OperatorIsEmpty(op))
-		{
-			// Start a new context
-			currentOperator = op;
-			self.context = [NSMutableDictionary dictionary];
-		}
-		else if (currentHandler != nil)
-		{
-			// Send input to the current context
-			[self performSelector:currentHandler withObject:word];
-		}
-	}
-}
-
-- (id)initWithPDFStream:(CGPDFStreamRef)stream
-{
-	if ((self = [super init]))
-	{
-
-		NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
-		
-		NSArray *docss = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *path = [[docss lastObject] stringByAppendingPathComponent:@"CMap"];
-		[data writeToFile:path atomically:YES];
-		
-		NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		[data release];
-		
-		NSLog(@"=== CMAP ===");
-//		NSLog(@"%@", text);
-
-		NSScanner *scanner = [NSScanner scannerWithString:text];
-
-		[self scanCMap:scanner];
-//		[self scanning:text];
-		return self;
-		
-
-//		NSScanner *scanner = [NSScanner scannerWithString:text];
-//		[scanner scanUpToString:@"beginbfrange" intoString:nil];
-//		[scanner scanUpToString:@"<" intoString:nil];
-//		NSString *characterRange = nil;
-//		[scanner scanUpToString:@"endbfrange" intoString:&characterRange];
-//		
-//		NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
-//		NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
-//		NSString *separatorString = @"><";
-//
-//		offsets = [[NSMutableArray alloc] init];
-//		
-//		NSScanner *rangeScanner = [NSScanner scannerWithString:characterRange];
-//		while (![rangeScanner isAtEnd])
-//		{
-//			NSString *line = nil;
-//			[rangeScanner scanUpToCharactersFromSet:newLineSet intoString:&line];
-//			line = [line stringByTrimmingCharactersInSet:tagSet];
-//			NSArray *parts = [line componentsSeparatedByString:separatorString];
-//			if ([parts count] < 3) continue;
-//			
-//			NSUInteger from, to, offset;
-//			NSScanner *scanner = [NSScanner scannerWithString:[parts objectAtIndex:0]];
-//			[scanner scanHexInt:&from];
-//			
-//			scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
-//			[scanner scanHexInt:&to];
-//			
-//			scanner = [NSScanner scannerWithString:[parts objectAtIndex:2]];
-//			[scanner scanHexInt:&offset];
-//			
-//			NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-//								  [NSNumber numberWithInt:from],	@"First",
-//								  [NSNumber numberWithInt:to],		@"Last",
-//								  [NSNumber numberWithInt:offset],	@"Offset",
-//								  nil];
-//			
-//			[offsets addObject:dict];
-//		}
-//		
-//		[text release];
-	}
-	return self;
-}
-
-- (NSDictionary *)rangeWithCharacter:(unichar)character
-{
-	for (NSDictionary *dict in offsets)
-	{
-		if ([[dict objectForKey:@"First"] intValue] <= character && [[dict objectForKey:@"Last"] intValue] >= character)
-		{
-			return dict;
-		}
+		if ([op.start isEqualToString:token]) return op;
 	}
 	return nil;
 }
 
-- (unichar)unicodeCharacter:(unichar)cid
+/**!
+ * Removes remainder of string after comment. Also advances scanner to start of next line.
+ */
+- (NSString *)stringByRemovingComment:(NSString *)token scanner:(NSScanner *)scanner
 {
-	NSDictionary *dict = [self rangeWithCharacter:cid];
-    if (dict)
-    {
-        NSUInteger internalOffset = cid - [[dict objectForKey:@"First"] intValue];
-        return [[dict objectForKey:@"Offset"] intValue] + internalOffset;
-    }
-    else if (chars)
-    {
-        NSNumber *fromChar = [NSNumber numberWithInt: cid];
-        NSNumber *toChar = [chars objectForKey: fromChar];
-        return [toChar intValue];
-    }
-    return cid;
+	// Check for comment characher
+	static NSString *kLineCommentToken = @"%@";
+	int commentPosition = [token rangeOfString:kLineCommentToken].location;
+	if (commentPosition != NSNotFound)
+	{
+		// If comment, trim and scan to EOL
+		token = [token substringToIndex:commentPosition];
+		[scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:nil];
+	}
+	return token;
+}
+
+/**!
+ *
+ */
+- (void)scanCMap:(NSString *)string
+{
+	NSScanner *scanner = [NSScanner scannerWithString:string];
+	NSString *token = nil;
+	while (![scanner isAtEnd])
+	{
+		[scanner scanUpToCharactersFromSet:self.tokenDelimiterSet intoString:&token];
+		[self stringByRemovingComment:token scanner:scanner];
+
+		Operator *operator = [self operatorWithStartingToken:token];
+		if (operator)
+		{
+			// Start a new context
+			self.context = [NSMutableDictionary dictionaryWithObject:operator forKey:kOperatorKey];
+		}
+		else if (self.context)
+		{
+			operator = [self.context valueForKey:kOperatorKey];
+			if ([token isEqualToString:operator.end])
+			{
+				// End the current context
+				self.context = nil;
+			}
+			else
+			{
+				// Send input to the current context
+				[self performSelector:operator.handler withObject:token];
+			}
+		}
+	}
+}
+
+
+#pragma mark -
+#pragma mark Parsing handlers
+
+/**!
+ * Trims tag characters from the argument string, and returns the parsed integer value of the string.
+ *
+ * @param tagString string representing a hexadecimal number, possibly within tags
+ */
+- (unsigned int)valueOfTag:(NSString *)tagString
+{
+	unsigned int numericValue = 0;
+	tagString = [tagString stringByTrimmingCharactersInSet:self.tagSet];
+	[[NSScanner scannerWithString:tagString] scanHexInt:&numericValue];
+	return numericValue;
+}
+
+/**!
+ * Code space ranges are pairs of hex numbers:
+ *	<from> <to>
+ */
+- (void)handleCodeSpaceRange:(NSString *)string
+{
+	static NSString *rangeLowerBound = @"MIN";
+	NSNumber *value = [NSNumber numberWithInt:[self valueOfTag:string]];
+	NSNumber *low = [self.context valueForKey:rangeLowerBound];
+
+	if (!low)
+	{
+		[self.context setValue:value forKey:rangeLowerBound];
+		return;
+	}
+	
+	[self.codeSpaceRanges addObject:rangeValue([low intValue], [value intValue])];
+	[self.context removeObjectForKey:rangeLowerBound];
+}
+
+/**!
+ * Character mappings appear in pairs:
+ *	<from> <to>
+ */
+- (void)handleCharacter:(NSString *)character
+{
+	NSNumber *value = [NSNumber numberWithInt:[self valueOfTag:character]];
+	static NSString *origin = @"Origin";
+	NSNumber *from = [self.context valueForKey:origin];
+	if (!from)
+	{
+		[self.context setValue:value forKey:origin];
+		return;
+	}
+	[self.characterMappings setObject:value forKey:from];
+	[self.context removeObjectForKey:origin];
+}
+
+/**!
+ * Ranges appear on the triplet form:
+ *	<from> <to> <offset>
+ */
+- (void)handleCharacterRange:(NSString *)token
+{
+	NSNumber *value = [NSNumber numberWithInt:[self valueOfTag:token]];
+	static NSString *from = @"From";
+	static NSString *to = @"To";
+	NSNumber *fromValue = [self.context valueForKey:from];
+	NSNumber *toValue = [self.context valueForKey:to];
+	if (!fromValue)
+	{
+		[self.context setValue:value forKey:from];
+		return;
+	}
+	else if (!toValue)
+	{
+		[self.context setValue:value forKey:to];
+		return;
+	}
+	NSValue *range = rangeValue([fromValue intValue], [toValue intValue]);
+	[self.characterRangeMappings setObject:value forKey:range];
+	[self.context removeObjectForKey:from];
+	[self.context removeObjectForKey:to];
+}
+
+#pragma mark -
+#pragma mark Accessor methods
+
+- (NSCharacterSet *)tagSet {
+	if (!sharedTagSet) {
+		sharedTagSet = [[NSCharacterSet characterSetWithCharactersInString:@"<>"] retain];
+	}
+	return sharedTagSet;
+}
+
+- (NSCharacterSet *)tokenDelimiterSet {
+	if (!sharedTokenDelimimerSet) {
+		sharedTokenDelimimerSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
+	}
+	return sharedTokenDelimimerSet;
+}
+
+- (NSMutableArray *)codeSpaceRanges {
+	if (!codeSpaceRanges) {
+		codeSpaceRanges = [[NSMutableArray alloc] init];
+	}
+	return codeSpaceRanges;
+}
+
+- (NSMutableDictionary *)characterMappings {
+	if (!characterMappings) {
+		characterMappings = [[NSMutableDictionary alloc] init];
+	}
+	return characterMappings;
+}
+
+- (NSMutableDictionary *)characterRangeMappings {
+	if (!characterRangeMappings) {
+		self.characterRangeMappings = [NSMutableDictionary dictionary];
+	}
+	return characterRangeMappings;
 }
 
 - (void)dealloc
 {
 	[offsets release];
+	[codeSpaceRanges release];
 	[super dealloc];
 }
 
 @synthesize operators, context;
+@synthesize codeSpaceRanges, characterMappings, characterRangeMappings;
 @end

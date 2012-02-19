@@ -1,34 +1,41 @@
 #import <Foundation/Foundation.h>
 
-typedef struct {
-	NSString *label;
-	NSString *start;
-	NSString *end;
-} Operator;
+extern NSValue *rangeValue(unsigned int from, unsigned int to);
 
+@interface Operator : NSObject
++ (Operator *)operatorWithStart:(NSString *)start end:(NSString *)end handler:(SEL)handler;
+@property (retain) NSString *start;
+@property (retain) NSString *end;
+@property SEL handler;
+@end
 
 @interface CMap : NSObject {
 	NSMutableArray *offsets;
     NSMutableDictionary *chars;
 	NSMutableDictionary *context;
-	SEL currentHandler;
 	NSString *currentEndToken;
 	
 
-	Operator currentOperator;
-
+	/* CMap ranges */
+	NSMutableArray *codeSpaceRanges;
 	
-	NSDictionary *codeSpaceRanges;
+	/* Character mappings */
+	NSMutableDictionary *characterMappings;
 	
+	/* Character range mappings */
+	NSMutableDictionary *characterRangeMappings;
 }
 
 /* Initialize with PDF stream containing a CMap */
 - (id)initWithPDFStream:(CGPDFStreamRef)stream;
 
+- (id)initWithString:(NSString *)string;
+
 /* Unicode mapping for character ID */
 - (unichar)unicodeCharacter:(unichar)cid;
 
-@property (nonatomic, readonly) NSSet *operators;
-@property (nonatomic, retain) NSMutableDictionary *context;
+@property (nonatomic, retain) NSMutableArray *codeSpaceRanges;
+@property (nonatomic, retain) NSMutableDictionary *characterMappings;
+@property (nonatomic, retain) NSMutableDictionary *characterRangeMappings;
 
 @end
