@@ -63,6 +63,8 @@ static inline BOOL knownEncoding(CharacterEncoding encoding)
 /* Given a PDF string, returns a Unicode string */
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString;
 
+- (NSString *)stringWithCharacters:(const char *)characters;
+
 /* Returns the width of a charachter (optionally scaled to some font size) */
 - (CGFloat)widthOfCharacter:(unichar)characher withFontSize:(CGFloat)fontSize;
 
