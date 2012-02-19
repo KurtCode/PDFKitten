@@ -44,7 +44,6 @@ static inline BOOL knownEncoding(CharacterEncoding encoding)
 	NSDictionary *ligatures;
 	NSRange widthsRange;
 	NSString *baseFont;
-	
 	CharacterEncoding encoding;
 }
 

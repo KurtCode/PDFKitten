@@ -84,4 +84,28 @@
 
 }
 
+- (CGPDFDictionaryRef)fontDictionary
+{
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"iTabloPDFPlusUserGuide" withExtension:@"pdf"];
+	CGPDFDocumentRef doc = CGPDFDocumentCreateWithURL((__bridge void*) url);
+	CGPDFPageRef page = CGPDFDocumentGetPage(doc, 1);
+	CGPDFDictionaryRef catalog = CGPDFPageGetDictionary(page);
+	CGPDFDictionaryRef resources;
+	CGPDFDictionaryGetDictionary(catalog, "Resources", &resources);
+	CGPDFDictionaryRef fonts;
+	CGPDFDictionaryGetDictionary(resources, "Font", &fonts);
+	CGPDFDictionaryRef font;
+	CGPDFDictionaryGetDictionary(fonts, "C2_0", &font);
+	return font;
+}
+
+- (void)testFont
+{
+	CGPDFDictionaryRef fontDict = [self fontDictionary];
+
+	Font *font = [[Font alloc] initWithFontDictionary:fontDict];
+	
+	
+}
+
 @end
