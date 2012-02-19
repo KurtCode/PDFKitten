@@ -15,7 +15,6 @@
 #import "Font.h"
 
 @interface SimpleFont : Font {
-	NSStringEncoding encoding;
 }
 
 /* Custom implementation for all simple fonts */
@@ -27,5 +26,4 @@
 /* Set encoding, given a font dictionary */
 - (void)setEncodingWithFontDictionary:(CGPDFDictionaryRef)dict;
 
-@property (nonatomic, assign) NSStringEncoding encoding;
 @end

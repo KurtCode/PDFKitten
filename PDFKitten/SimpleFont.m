@@ -101,16 +101,16 @@
 	
 	if (strcmp(name, "MacRomanEncoding") == 0)
 	{
-		self.encoding = NSMacOSRomanStringEncoding;
+		self.encoding = MacRomanEncoding;
 	}
 	else if (strcmp(name, "MacExpertEncoding") == 0)
 	{
 		// What is MacExpertEncoding ??
-		self.encoding = NSMacOSRomanStringEncoding;
+		self.encoding = MacRomanEncoding;
 	}
 	else if (strcmp(name, "WinAnsiEncoding") == 0)
 	{
-		self.encoding = NSWindowsCP1252StringEncoding;
+		self.encoding = WinAnsiEncoding;
 	}
 }
 
@@ -120,5 +120,4 @@
 //	return [NSString stringWithCString:characters encoding:encoding];
 //}
 
-@synthesize encoding;
 @end
