@@ -99,12 +99,24 @@
 	return font;
 }
 
+- (void)testEventHandling
+{
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"EventHandling" withExtension:@"pdf"];
+	CGPDFDocumentRef doc = CGPDFDocumentCreateWithURL((__bridge CFURLRef)url);
+	
+	Scanner *scanner = [[Scanner alloc] initWithDocument:doc];
+	[scanner setKeyword:@"event"];
+	[scanner scanDocumentPage:1];
+	
+	NSLog(@"%@", [scanner content]);
+	CGPDFDocumentRelease(doc);
+}
+
 - (void)testFont
 {
 	CGPDFDictionaryRef fontDict = [self fontDictionary];
-
-	Font *font = [[Font alloc] initWithFontDictionary:fontDict];
-	
+	Font *font = [Font fontWithDictionary:fontDict];
+	NSLog(@"%@", font);
 	
 }
 
