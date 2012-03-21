@@ -1,5 +1,7 @@
 #import "CompositeFont.h"
 
+static const char *kCompositeFontWidthsKey = "W";
+static const char *kCompositeFontDefaultWidthKey = "DW";
 
 @implementation CompositeFont
 
@@ -7,10 +9,10 @@
 - (void)setWidthsWithFontDictionary:(CGPDFDictionaryRef)dict
 {
 	CGPDFArrayRef ws;
-	if (!CGPDFDictionaryGetArray(dict, "W", &ws)) return;
+	if (!CGPDFDictionaryGetArray(dict, kCompositeFontWidthsKey, &ws)) return;
 
 	CGPDFInteger dw;
-	if (CGPDFDictionaryGetInteger(dict, "DW", &dw))
+	if (CGPDFDictionaryGetInteger(dict, kCompositeFontDefaultWidthKey, &dw))
 	{
 		self.defaultWidth = dw;
 	}
