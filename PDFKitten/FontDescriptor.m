@@ -2,17 +2,14 @@
 #import "TrueTypeFont.h"
 #import <CommonCrypto/CommonDigest.h>
 
-@interface FontDescriptor ()
-
-@end
 
 @implementation FontDescriptor
 
 - (id)initWithPDFDictionary:(CGPDFDictionaryRef)dict
 {
 	const char *type = nil;
-	CGPDFDictionaryGetName(dict, "Type", &type);
-	if (!type || strcmp(type, "FontDescriptor") != 0)
+	CGPDFDictionaryGetName(dict, kTypeKey, &type);
+	if (!type || strcmp(type, kFontDescriptorKey) != 0)
 	{
 		[self release]; return nil;
 	}
@@ -34,20 +31,20 @@
 		const char *fontNameString = nil;
 		CGPDFArrayRef bboxValue = nil;
 
-		CGPDFDictionaryGetInteger(dict, "Ascent", &ascentValue);
-        CGPDFDictionaryGetInteger(dict, "Descent", &descentValue);
-        CGPDFDictionaryGetInteger(dict, "Leading", &leadingValue);
-		CGPDFDictionaryGetInteger(dict, "CapHeight", &capHeightValue);
-		CGPDFDictionaryGetInteger(dict, "XHeight", &xHeightValue);
-		CGPDFDictionaryGetInteger(dict, "AvgWidth", &averageWidthValue);
-		CGPDFDictionaryGetInteger(dict, "MaxWidth", &maxWidthValue);
-		CGPDFDictionaryGetInteger(dict, "MissingWidth", &missingWidthValue);
-		CGPDFDictionaryGetInteger(dict, "Flags", &flagsValue);
-		CGPDFDictionaryGetInteger(dict, "StemV", &stemV);
-        CGPDFDictionaryGetInteger(dict, "StemH", &stemH);
-        CGPDFDictionaryGetInteger(dict, "ItalicAngle", &italicAngleValue);
-        CGPDFDictionaryGetName(dict, "FontName", &fontNameString);
-		CGPDFDictionaryGetArray(dict, "FontBBox", &bboxValue);
+		CGPDFDictionaryGetInteger(dict, kAscentKey, &ascentValue);
+        CGPDFDictionaryGetInteger(dict, kDescentKey, &descentValue);
+        CGPDFDictionaryGetInteger(dict, kLeadingKey, &leadingValue);
+		CGPDFDictionaryGetInteger(dict, kCapHeightKey, &capHeightValue);
+		CGPDFDictionaryGetInteger(dict, kXHeightKey, &xHeightValue);
+		CGPDFDictionaryGetInteger(dict, kAverageWidthKey, &averageWidthValue);
+		CGPDFDictionaryGetInteger(dict, kMaxWidthKey, &maxWidthValue);
+		CGPDFDictionaryGetInteger(dict, kMissingWidthKey, &missingWidthValue);
+		CGPDFDictionaryGetInteger(dict, kFlagsKey, &flagsValue);
+		CGPDFDictionaryGetInteger(dict, kStemVKey, &stemV);
+        CGPDFDictionaryGetInteger(dict, kStemHKey, &stemH);
+        CGPDFDictionaryGetInteger(dict, kItalicAngleKey, &italicAngleValue);
+        CGPDFDictionaryGetName(dict, kFontNameKey, &fontNameString);
+		CGPDFDictionaryGetArray(dict, kFontBBoxKey, &bboxValue);
         
         self.ascent = ascentValue;
         self.descent = descentValue;
@@ -74,7 +71,7 @@
 		}
 		
 		CGPDFStreamRef fontFileStream;
-		if (CGPDFDictionaryGetStream(dict, "FontFile", &fontFileStream))
+		if (CGPDFDictionaryGetStream(dict, kFontFileKey, &fontFileStream))
 		{
 			CGPDFDataFormat format;
 			NSData *data = (NSData *) CGPDFStreamCopyData(fontFileStream, &format);
