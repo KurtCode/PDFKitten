@@ -10,6 +10,26 @@
 #import "FontDescriptor.h"
 #import "CMap.h"
 
+static char *kMacRomanEncoding = "MacRomanEncoding";
+static char *kWinAnsiEncoding = "WinAnsiEncoding";
+
+static const char *kType0Key = "Type0";
+static const char *kType1Key = "Type1";
+static const char *kMMType1Key = "MMType1";
+static const char *kType3Key = "Type3";
+static const char *kTrueTypeKey = "TrueType";
+static const char *kCidFontType0Key = "CIDFontType0";
+static const char *kCidFontType2Key = "CIDFontType2";
+
+static const char *kToUnicodeKey = "ToUnicode";
+static const char *kFontDescriptorKey = "FontDescriptor";
+static const char *kBaseFontKey = "BaseFont";
+static const char *kEncodingKey = "Encoding";
+static const char *kBaseEncodingKey = "BaseEncoding";
+static const char *kFontSubtypeKey = "Subtype";
+static const char *kFontKey = "Font";
+static const char *kTypeKey = "Type";
+
 typedef enum {
 	UnknownEncoding = 0,
 	StandardEncoding, // Defined in Type1 font programs
@@ -62,8 +82,6 @@ static inline BOOL knownEncoding(CharacterEncoding encoding)
 /* Given a PDF string, returns a Unicode string */
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString;
 
-- (NSString *)stringWithCharacters:(const char *)characters;
-
 /* Returns the width of a charachter (optionally scaled to some font size) */
 - (CGFloat)widthOfCharacter:(unichar)characher withFontSize:(CGFloat)fontSize;
 
@@ -82,6 +100,7 @@ static inline BOOL knownEncoding(CharacterEncoding encoding)
 @property (nonatomic, readonly) CGFloat widthOfSpace;
 @property (nonatomic, readonly) NSRange widthsRange;
 @property (nonatomic, assign) CharacterEncoding encoding;
+@property (nonatomic, readonly) NSArray *descendantFonts;
 
 /*!
  @property baseFont
