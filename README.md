@@ -44,4 +44,4 @@ This software is provided as is, meaning that we are not responsible for the res
 
 ### "Are you available for hire?"
 
-Despite my continuing interent in this project, I have too much on my time table to consider doing this full (or part) time.
+Despite my continuing interest in this project, I have too much on my time table to consider doing this full (or part) time.
