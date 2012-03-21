@@ -55,13 +55,12 @@
 		CGFloat width = [font widthOfCharacter:characher withFontSize:fontSize];
 		if (width > 0) return width;
 	}
-	return 0;
+	return self.defaultWidth;
 }
 
 - (NSDictionary *)ligatures
 {
-    Font *descendantFont = [self.descendantFonts lastObject];
-    return descendantFont.ligatures;
+    return [[self.descendantFonts lastObject] ligatures];
 }
 
 - (FontDescriptor *)fontDescriptor {
@@ -84,25 +83,26 @@
 
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
-    NSMutableString *result;
-	Font *descendantFont = [self.descendantFonts lastObject];
-    NSString *descendantResult = [descendantFont stringWithPDFString: pdfString];
-    if (self.toUnicode) {
-        unichar mapping;
-        result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
-        for (int i = 0; i < [descendantResult length]; i++) {
-            mapping = [self.toUnicode unicodeCharacter: [descendantResult characterAtIndex:i]];
-            [result appendFormat: @"%C", mapping];
-        }        
-    } else {
-        result = [NSMutableString stringWithString: descendantResult];
-    }
-    return result;
-}
-
-- (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
-    Font *descendantFont = [self.descendantFonts lastObject];
-    return [descendantFont stringWithPDFString: pdfString];
+	if (self.toUnicode)
+	{
+		size_t stringLength = CGPDFStringGetLength(pdfString);
+		const unsigned char *characterCodes = CGPDFStringGetBytePtr(pdfString);
+		NSMutableString *unicodeString = [NSMutableString string];
+		
+        for (int i = 0; i < stringLength; i+=2)
+		{
+			unichar characterCode = characterCodes[i] << 8 | characterCodes[i+1];
+			unichar characterSelector = [self.toUnicode unicodeCharacter:characterCode];
+            [unicodeString appendFormat:@"%C", characterSelector];
+		}
+		return unicodeString;
+	}
+	else if ([self.descendantFonts count] > 0)
+	{
+		Font *descendantFont = [self.descendantFonts lastObject];
+		return [descendantFont stringWithPDFString:pdfString];
+	}
+	return @"";
 }
 
 

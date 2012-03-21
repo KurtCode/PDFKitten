@@ -261,7 +261,6 @@ void didScanSpace(float value, Scanner *scanner)
 void didScanString(CGPDFStringRef pdfString, Scanner *scanner)
 {
 	NSString *string = [[scanner stringDetector] appendPDFString:pdfString withFont:[scanner currentFont]];
-	NSLog(@"%@", string);
 	[[scanner content] appendString:string];
 	
 //	if (scanner.rawTextContent)
