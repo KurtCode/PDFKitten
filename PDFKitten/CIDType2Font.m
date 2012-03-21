@@ -51,7 +51,6 @@
 
 - (id)initWithFontDictionary:(CGPDFDictionaryRef)dict
 {
-	NSLog(@"CID FONT TYPE 2");
 	if ((self = [super initWithFontDictionary:dict]))
 	{
 		[self setCIDToGIDMapWithDictionary:dict];
@@ -62,6 +61,8 @@
 
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
+	// Note: glyphs descriptions are TrueType
+	
 	if (self.identity)
 	{
 		// Use 2-byte CIDToGID identity mapping
@@ -78,14 +79,23 @@
 //			unichar unicodeValue = 0x4ea4;  
 			NSLog(@"%C %x", unicodeValue, unicodeValue);
 		}
-		
-		
 	}
 	else
 	{
+		size_t length = CGPDFStringGetLength(pdfString);
+		const unsigned char *cid = CGPDFStringGetBytePtr(pdfString);
+
+		NSMutableString *string = [NSMutableString string];
+		for (int i = 0; i < length; i+=2)
+		{
+			unichar letter = cid[i] << 8 | cid[i+1];
+			NSLog(@"%C", letter+30);
+			[string appendFormat:@"%C", letter+30];
+		}
 		
+		NSLog(@"==> %@", string);
+		return string;
 	}
-	
 	
 	return @"";
 }
