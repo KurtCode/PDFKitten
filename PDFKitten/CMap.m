@@ -28,7 +28,7 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 - (void)handleCodeSpaceRange:(NSString *)string;
 - (void)handleCharacter:(NSString *)string;
 - (void)handleCharacterRange:(NSString *)string;
-- (void)scanCMap:(NSString *)string;
+- (void)parse:(NSString *)cMapString;
 @property (readonly) NSCharacterSet *tokenDelimiterSet;
 @property (nonatomic, retain) NSMutableDictionary *context;
 @property (nonatomic, readonly) NSCharacterSet *tagSet;
@@ -41,16 +41,19 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 {
 	if ((self = [super init]))
 	{
-		[self scanCMap:string];
+		[self parse:string];
 	}
 	return self;
 }
 
 - (id)initWithPDFStream:(CGPDFStreamRef)stream
 {
-	NSData *data = [(NSData *) CGPDFStreamCopyData(stream, nil) autorelease];
-	NSString *text = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-	return [self initWithString:text];
+	NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
+	NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    id obj = [self initWithString:text];
+    [text release];
+    [data release];
+    return obj;
 }
 
 - (BOOL)isInCodeSpaceRange:(unichar)cid
@@ -131,33 +134,44 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 }
 
 /**!
- * Removes remainder of string after comment. Also advances scanner to start of next line.
+ * Returns the next token that is not a comment. Only remainder-of-line comments are supported.
+ * The scanner is advanced to past the returned token.
+ *
+ * @param scanner a scanner
+ * @return next non-comment token
  */
-- (NSString *)stringByRemovingComment:(NSString *)token scanner:(NSScanner *)scanner
+- (NSString *)tokenByTrimmingComments:(NSScanner *)scanner
 {
-	// Check for comment characher
-	static NSString *kLineCommentToken = @"%@";
-	int commentPosition = [token rangeOfString:kLineCommentToken].location;
-	if (commentPosition != NSNotFound)
+	NSString *token = nil;
+	[scanner scanUpToCharactersFromSet:self.tokenDelimiterSet intoString:&token];
+
+	static NSString *commentMarker = @"%%";
+	NSRange commentMarkerRange = [token rangeOfString:commentMarker];
+	if (commentMarkerRange.location != NSNotFound)
 	{
-		// If comment, trim and scan to EOL
-		token = [token substringToIndex:commentPosition];
 		[scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:nil];
+		token = [token substringToIndex:commentMarkerRange.location];
+		if (token.length == 0)
+		{
+			return [self tokenByTrimmingComments:scanner];
+		}
 	}
+	
 	return token;
 }
 
 /**!
+ * Parse a CMap.
  *
+ * @param cMapString string representation of a CMap
  */
-- (void)scanCMap:(NSString *)string
+- (void)parse:(NSString *)cMapString
 {
-	NSScanner *scanner = [NSScanner scannerWithString:string];
+	NSScanner *scanner = [NSScanner scannerWithString:cMapString];
 	NSString *token = nil;
 	while (![scanner isAtEnd])
 	{
-		[scanner scanUpToCharactersFromSet:self.tokenDelimiterSet intoString:&token];
-		[self stringByRemovingComment:token scanner:scanner];
+		token = [self tokenByTrimmingComments:scanner];
 
 		Operator *operator = [self operatorWithStartingToken:token];
 		if (operator)

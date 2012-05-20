@@ -1,6 +1,22 @@
 #import <Foundation/Foundation.h>
 #import "FontFile.h"
 
+static const char *kAscentKey = "Ascent";
+static const char *kDescentKey = "Descent";
+static const char *kLeadingKey = "Leading";
+static const char *kCapHeightKey = "CapHeight";
+static const char *kXHeightKey = "XHeight";
+static const char *kAverageWidthKey = "AvgWidth";
+static const char *kMaxWidthKey = "MaxWidth";
+static const char *kMissingWidthKey = "MissingWidth";
+static const char *kFlagsKey = "Flags";
+static const char *kStemVKey = "StemV";
+static const char *kStemHKey = "StemH";
+static const char *kItalicAngleKey = "ItalicAngle";
+static const char *kFontNameKey = "FontName";
+static const char *kFontBBoxKey = "FontBBox";
+static const char *kFontFileKey = "FontFile";
+
 /* Flags as defined in PDF 1.7 */
 typedef enum FontFlags
 {

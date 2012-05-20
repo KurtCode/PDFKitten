@@ -14,7 +14,6 @@ extern NSValue *rangeValue(unsigned int from, unsigned int to);
     NSMutableDictionary *chars;
 	NSMutableDictionary *context;
 	NSString *currentEndToken;
-	
 
 	/* CMap ranges */
 	NSMutableArray *codeSpaceRanges;
@@ -29,6 +28,7 @@ extern NSValue *rangeValue(unsigned int from, unsigned int to);
 /* Initialize with PDF stream containing a CMap */
 - (id)initWithPDFStream:(CGPDFStreamRef)stream;
 
+/* Initialize with a string representation of a CMap */
 - (id)initWithString:(NSString *)string;
 
 /* Unicode mapping for character ID */

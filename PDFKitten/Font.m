@@ -13,9 +13,6 @@
 
 #pragma mark 
 
-static char *kStandardEncodingName = "StandardEncoding";
-static char *kMacRomanEncoding = "MacRomanEncoding";
-static char *kWinAnsiEncoding = "WinAnsiEncoding";
 
 @implementation Font
 
@@ -25,40 +22,36 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 + (Font *)fontWithDictionary:(CGPDFDictionaryRef)dictionary
 {
 	const char *type = nil;
-	CGPDFDictionaryGetName(dictionary, "Type", &type);
-	if (!type || strcmp(type, "Font") != 0) return nil;
+	CGPDFDictionaryGetName(dictionary, kTypeKey, &type);
+	if (!type || strcmp(type, kFontKey) != 0) return nil;
 	const char *subtype = nil;
-	CGPDFDictionaryGetName(dictionary, "Subtype", &subtype);
+	CGPDFDictionaryGetName(dictionary, kFontSubtypeKey, &subtype);
 
-	if (strcmp(subtype, "Type0") == 0)
-	{
-		return [[[Type0Font	alloc] initWithFontDictionary:dictionary] autorelease];
+	Font *font = nil;	
+	if (!strcmp(subtype, kType0Key)) {
+		font = [Type0Font alloc];
 	}
-	else if (strcmp(subtype, "Type1") == 0)
-	{
-		return [[[Type1Font alloc] initWithFontDictionary:dictionary] autorelease];
+	else if (!strcmp(subtype, kType1Key)) {
+		font = [Type1Font alloc];
 	}
-	else if (strcmp(subtype, "MMType1") == 0)
-	{
-		return [[[MMType1Font alloc] initWithFontDictionary:dictionary] autorelease];
+	else if (!strcmp(subtype, kMMType1Key)) {
+		font = [MMType1Font alloc];
 	}
-	else if (strcmp(subtype, "Type3") == 0)
-	{
-		return [[[Type3Font alloc] initWithFontDictionary:dictionary] autorelease];
+	else if (!strcmp(subtype, kType3Key)) {
+		font = [Type3Font alloc];
 	}
-	else if (strcmp(subtype, "TrueType") == 0)
-	{
-		return [[[TrueTypeFont alloc] initWithFontDictionary:dictionary] autorelease];
+	else if (!strcmp(subtype, kTrueTypeKey)) {
+		font = [TrueTypeFont alloc];
 	}
-	else if (strcmp(subtype, "CIDFontType0") == 0)
-	{
-		return [[[CIDType0Font alloc] initWithFontDictionary:dictionary] autorelease];
+	else if (!strcmp(subtype, kCidFontType0Key)) {
+		font = [CIDType0Font alloc];
 	}
-	else if (strcmp(subtype, "CIDFontType2") == 0)
-	{
-		return [[[CIDType2Font alloc] initWithFontDictionary:dictionary] autorelease];
+	else if (!strcmp(subtype, kCidFontType2Key)) {
+		font = [CIDType2Font alloc];
 	}
-	return nil;
+	
+	[font initWithFontDictionary:dictionary];
+	return [font autorelease];
 }
 
 /* Initialize with font dictionary */
@@ -77,7 +70,7 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 		
 		// Set the font's base font
 		const char *baseFontName = nil;
-		if (CGPDFDictionaryGetName(dict, "BaseFont", &baseFontName))
+		if (CGPDFDictionaryGetName(dict, kBaseFontKey, &baseFontName))
 		{
 			self.baseFont = [NSString stringWithCString:baseFontName encoding:NSUTF8StringEncoding];
 		}
@@ -92,9 +85,7 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 - (void)setEncodingWithFontDictionary:(CGPDFDictionaryRef)dict
 {
 	CGPDFObjectRef encodingObject;
-	static char *encodingTag = "Encoding";
-	static char *baseEncodingTag = "BaseEncoding";
-	if (!CGPDFDictionaryGetObject(dict, encodingTag, &encodingObject)) return;
+	if (!CGPDFDictionaryGetObject(dict, kEncodingKey, &encodingObject)) return;
 
 	const char *encodingName = nil;
 	if (CGPDFObjectGetType(encodingObject) == kCGPDFObjectTypeName)
@@ -105,7 +96,7 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 	{
 		CGPDFDictionaryRef encodingDict;
 		CGPDFObjectGetValue(encodingObject, kCGPDFObjectTypeDictionary, &encodingDict);
-		CGPDFDictionaryGetName(encodingDict, baseEncodingTag, &encodingName);
+		CGPDFDictionaryGetName(encodingDict, kBaseEncodingKey, &encodingName);
 	}
 	
 	if (strcmp(encodingName, kMacRomanEncoding) == 0)
@@ -126,7 +117,7 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 - (void)setFontDescriptorWithFontDictionary:(CGPDFDictionaryRef)dict
 {
 	CGPDFDictionaryRef descriptor;
-	if (!CGPDFDictionaryGetDictionary(dict, "FontDescriptor", &descriptor)) return;
+	if (!CGPDFDictionaryGetDictionary(dict, kFontDescriptorKey, &descriptor)) return;
 	FontDescriptor *desc = [[FontDescriptor alloc] initWithPDFDictionary:descriptor];
 	self.fontDescriptor = desc;
 	[desc release];
@@ -142,7 +133,7 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 - (void)setToUnicodeWithFontDictionary:(CGPDFDictionaryRef)dict
 {
 	CGPDFStreamRef stream;
-	if (!CGPDFDictionaryGetStream(dict, "ToUnicode", &stream)) return;
+	if (!CGPDFDictionaryGetStream(dict, kToUnicodeKey, &stream)) return;
 	CMap *map = [[CMap alloc] initWithPDFStream:stream];
 	self.toUnicode = map;
 	[map release];
@@ -262,16 +253,18 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 	return [self widthOfCharacter:0x20 withFontSize:1.0];
 }
 
-/* Description is the class name of the object */
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@>", [self.class description]];
-}
-
-/* Unicode character with CID */
-- (NSString *)stringWithCharacters:(const char *)characters
-{
-	return 0;
+	NSMutableString *string = [NSMutableString string];
+	[string appendFormat:@"%@ {\n", self.baseFont];
+	[string appendFormat:@"\ttype = %@\n", [self classForKeyedArchiver]];
+	[string appendFormat:@"\tcharacter widths = %d\n", [self.widths count]];
+	[string appendFormat:@"\ttoUnicode = %d\n", (self.toUnicode != nil)];
+	if (self.descendantFonts) {
+		[string appendFormat:@"\tdescendant fonts = %d\n", [self.descendantFonts count]];
+	}
+	[string appendFormat:@"}\n"];
+	return string;
 }
 
 /* Replace defined ligatures with separate characters */
@@ -287,8 +280,6 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 	return string;
 }
 
-
-
 #pragma mark Memory Management
 
 - (void)dealloc
@@ -300,5 +291,5 @@ static char *kWinAnsiEncoding = "WinAnsiEncoding";
 	[super dealloc];
 }
 
-@synthesize fontDescriptor, widths, toUnicode, widthsRange, baseFont, baseFontName, encoding;
+@synthesize fontDescriptor, widths, toUnicode, widthsRange, baseFont, baseFontName, encoding, descendantFonts;
 @end

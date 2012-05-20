@@ -21,7 +21,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 4;
+	return 3;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -62,17 +62,6 @@
 			cell.textLabel.text = @"Flags";
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",[[font fontDescriptor] flags]];
 			break;
-		case 3:
-		{
-			NSMutableString *str = [NSMutableString string];
-			for (int i = MAX(0x20, font.widthsRange.location); i < NSMaxRange(font.widthsRange); i++)
-			{
-				const char cids[] = {i, '\0'};
-				[str appendFormat:@"%d: %@, ", i, [font stringWithCharacters:cids]];
-			}
-			cell.detailTextLabel.text = str;
-			break;
-		}
 		default:
 			break;
 	}

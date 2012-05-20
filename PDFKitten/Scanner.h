@@ -3,6 +3,7 @@
 #import "FontCollection.h"
 #import "RenderingState.h"
 #import "Selection.h"
+#import "RenderingStateStack.h"
 
 @interface Scanner : NSObject <StringDetectorDelegate> {
 	NSURL *documentURL;
@@ -35,5 +36,4 @@
 @property (nonatomic, retain) StringDetector *stringDetector;
 @property (nonatomic, retain) NSString *keyword;
 @property (nonatomic, retain) NSMutableString *content;
-//@property (nonatomic, assign) NSMutableString **rawTextContent;
 @end

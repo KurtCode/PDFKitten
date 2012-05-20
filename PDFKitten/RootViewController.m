@@ -81,8 +81,6 @@
 {
 	Scanner *scanner = [[Scanner alloc] init];
 	[scanner setKeyword:@""];
-	NSMutableString *contentString = [NSMutableString string];
-	[scanner setRawTextContent:&contentString];
 	CGPDFPageRef pdfpage = CGPDFDocumentGetPage(document, page+1);
 	[scanner scanPage:pdfpage];
 	[scanner release];

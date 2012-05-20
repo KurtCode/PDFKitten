@@ -11,6 +11,7 @@
 		2C0E15AC13589B0B004096C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
 		2C0E15AE13589B0B004096C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
 		2C0E15B013589B0B004096C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
+		2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C265926154D9C3900E11745 /* RenderingStateStack.m */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
 		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
 		2C4B91AD14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */; };
@@ -24,6 +25,8 @@
 		2C754CA914B3A1D700105B5E /* KittenTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C754CA814B3A1D700105B5E /* KittenTest.m */; };
 		2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C77F7B31442381300767E6A /* Kurt the Cat.pdf */; };
 		2C855590137B336C00D58482 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
+		2C8D50371517D0A7008E813B /* EventHandling.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8D50361517D0A7008E813B /* EventHandling.pdf */; };
+		2C8D50391517D25D008E813B /* EventHandling.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8D50361517D0A7008E813B /* EventHandling.pdf */; };
 		2CA0FC9413EEB11B0028DCCD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9313EEB11B0028DCCD /* RootViewController.m */; };
 		2CA0FC9713EEB1210028DCCD /* PDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9613EEB1210028DCCD /* PDFPage.m */; };
 		2CA0FCA113EEB1B80028DCCD /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA013EEB1B80028DCCD /* Page.m */; };
@@ -74,6 +77,8 @@
 		2C0E15AB13589B0B004096C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2C0E15AD13589B0B004096C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2C265924154D9C0E00E11745 /* RenderingStateStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderingStateStack.h; path = PDFKitten/RenderingStateStack.h; sourceTree = SOURCE_ROOT; };
+		2C265926154D9C3900E11745 /* RenderingStateStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingStateStack.m; path = PDFKitten/RenderingStateStack.m; sourceTree = SOURCE_ROOT; };
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2C47505C13F3E48200BC2DB9 /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsView.h; path = PDFKitten/DocumentsView.h; sourceTree = SOURCE_ROOT; };
 		2C47505D13F3E48200BC2DB9 /* DocumentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsView.m; path = PDFKitten/DocumentsView.m; sourceTree = SOURCE_ROOT; };
@@ -88,6 +93,7 @@
 		2C754CAA14B3A1D700105B5E /* KittenTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KittenTest-Prefix.pch"; sourceTree = "<group>"; };
 		2C77F7B31442381300767E6A /* Kurt the Cat.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Kurt the Cat.pdf"; path = "PDFKitten/Samples/Kurt the Cat.pdf"; sourceTree = SOURCE_ROOT; };
 		2C85558F137B336C00D58482 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2C8D50361517D0A7008E813B /* EventHandling.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = EventHandling.pdf; sourceTree = "<group>"; };
 		2CA0FC9213EEB11B0028DCCD /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = PDFKitten/RootViewController.h; sourceTree = SOURCE_ROOT; };
 		2CA0FC9313EEB11B0028DCCD /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = PDFKitten/RootViewController.m; sourceTree = SOURCE_ROOT; };
 		2CA0FC9513EEB1210028DCCD /* PDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFPage.h; path = PDFKitten/PDFPage.h; sourceTree = SOURCE_ROOT; };
@@ -263,6 +269,7 @@
 		2C754CA214B3A1D700105B5E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2C8D50361517D0A7008E813B /* EventHandling.pdf */,
 				2C60BDC114F122E600F0846E /* Sample.cmap */,
 				2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */,
 				2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */,
@@ -359,9 +366,9 @@
 				2CE7BCCB1389713D009784B9 /* FontCollection.m */,
 				2CE7BCCC1389713D009784B9 /* FontDescriptor.h */,
 				2CE7BCCD1389713D009784B9 /* FontDescriptor.m */,
+				2CE7BCE31389715F009784B9 /* Subtypes */,
 				2C06404114C782DE00A9B33F /* FontFile.h */,
 				2C06404214C782DF00A9B33F /* FontFile.m */,
-				2CE7BCE31389715F009784B9 /* Subtypes */,
 			);
 			name = Font;
 			sourceTree = "<group>";
@@ -389,6 +396,8 @@
 			children = (
 				2CE7BCE91389725D009784B9 /* RenderingState.h */,
 				2CE7BCEA1389725D009784B9 /* RenderingState.m */,
+				2C265924154D9C0E00E11745 /* RenderingStateStack.h */,
+				2C265926154D9C3900E11745 /* RenderingStateStack.m */,
 			);
 			name = RenderingState;
 			sourceTree = "<group>";
@@ -476,6 +485,7 @@
 				2CE202EF14C4B539006BD9E3 /* Ligatures.pdf in Resources */,
 				2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */,
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
+				2C8D50391517D25D008E813B /* EventHandling.pdf in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
 				2C4B91AF14E316F0000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */,
 				2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */,
@@ -491,6 +501,7 @@
 				2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */,
 				2C4B91AD14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */,
 				2C60BDC314F122E600F0846E /* Sample.cmap in Resources */,
+				2C8D50371517D0A7008E813B /* EventHandling.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,6 +555,7 @@
 				2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */,
 				2CC77EC114560E2E000E9B8E /* PDFPageDetailsView.m in Sources */,
 				2C06404314C782DF00A9B33F /* FontFile.m in Sources */,
+				2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
