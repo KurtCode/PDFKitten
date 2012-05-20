@@ -7,7 +7,7 @@
 {
 	size_t length = CGPDFStringGetLength(pdfString);
 	const unsigned char *cid = CGPDFStringGetBytePtr(pdfString);
-    NSMutableString *result = [[NSMutableString alloc] init];
+    NSMutableString *result = [NSMutableString string];
 	for (int i = 0; i < length; i+=2) {
 		char unicodeValue = cid[i+1];
         [result appendFormat:@"%C", unicodeValue];

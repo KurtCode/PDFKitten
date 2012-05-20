@@ -19,7 +19,6 @@
 	if ((self = [super init]))
 	{
 		self.keyword = str;
-		unicodeContent = [[NSMutableString alloc] init];
 	}
 	return self;
 }
@@ -177,6 +176,7 @@
 
 - (void)dealloc
 {
+    [unicodeContent release];
 	[keyword release];
 	[super dealloc];
 }

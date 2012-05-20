@@ -249,10 +249,6 @@ void didScanSpace(float value, Scanner *scanner)
     [scanner.currentRenderingState translateTextPosition:CGSizeMake(-width, 0)];
     if (abs(value) >= [scanner.currentRenderingState.font widthOfSpace])
     {
-//		if (scanner.rawTextContent)
-//		{
-//			[*scanner.rawTextContent appendString:@" "];
-//		}
         [scanner.stringDetector reset];
     }
 }
@@ -262,11 +258,6 @@ void didScanString(CGPDFStringRef pdfString, Scanner *scanner)
 {
 	NSString *string = [[scanner stringDetector] appendPDFString:pdfString withFont:[scanner currentFont]];
 	[[scanner content] appendString:string];
-	
-//	if (scanner.rawTextContent)
-//	{
-//		[*scanner.rawTextContent appendString:string];
-//	}
 }
 
 /* Show a string */
@@ -298,34 +289,38 @@ void TJ(CGPDFScannerRef scanner, void *info)
 	CGPDFArrayRef array = nil;
 	CGPDFScannerPopArray(scanner, &array);
     size_t count = CGPDFArrayGetCount(array);
-    
 	for (int i = 0; i < count; i++)
 	{
 		CGPDFObjectRef object = nil;
 		CGPDFArrayGetObject(array, i, &object);
 		CGPDFObjectType type = CGPDFObjectGetType(object);
-
         switch (type)
         {
             case kCGPDFObjectTypeString:
             {
-                CGPDFStringRef pdfString = nil;
-                CGPDFObjectGetValue(object, kCGPDFObjectTypeString, &pdfString);
-                didScanString(pdfString, info);
+                CGPDFStringRef pdfString;
+                if (CGPDFObjectGetValue(object, kCGPDFObjectTypeString, &pdfString))
+                {
+                    didScanString(pdfString, info);
+                }
                 break;
             }
             case kCGPDFObjectTypeReal:
             {
-                CGPDFReal tx = 0.0f;
-                CGPDFObjectGetValue(object, kCGPDFObjectTypeReal, &tx);
-                didScanSpace(tx, info);
+                CGPDFReal tx;
+                if (CGPDFObjectGetValue(object, kCGPDFObjectTypeReal, &tx))
+                {
+                    didScanSpace(tx, info);
+                }
                 break;
             }
             case kCGPDFObjectTypeInteger:
             {
-                CGPDFInteger tx = 0L;
-                CGPDFObjectGetValue(object, kCGPDFObjectTypeInteger, &tx);
-                didScanSpace(tx, info);
+                CGPDFInteger tx;
+                if (CGPDFObjectGetValue(object, kCGPDFObjectTypeInteger, &tx))
+                {
+                    didScanSpace(tx, info);
+                }
                 break;
             }
             default:
@@ -508,6 +503,7 @@ void cm(CGPDFScannerRef scanner, void *info)
 	[documentURL release]; documentURL = nil;
 	CGPDFDocumentRelease(pdfDocument); pdfDocument = nil;
 	[content release];
+    [selections release];
 	[super dealloc];
 }
 

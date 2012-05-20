@@ -48,9 +48,12 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 
 - (id)initWithPDFStream:(CGPDFStreamRef)stream
 {
-	NSData *data = [(NSData *) CGPDFStreamCopyData(stream, nil) autorelease];
-	NSString *text = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-	return [self initWithString:text];
+	NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
+	NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    id obj = [self initWithString:text];
+    [text release];
+    [data release];
+    return obj;
 }
 
 - (BOOL)isInCodeSpaceRange:(unichar)cid
