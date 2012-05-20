@@ -27,4 +27,10 @@ Pages are scanned one at a time, feeding the stream of text into the string dete
 
 A selection consists of two parts; a rectangle with zero-origin and dimensions to exactly fit the keyword, and a transform placing on the page, allowing for scaling and rotation depending on how the text is rendered.
 
+\section{Information flow}
+Two kinds of data are extracted from each page of a document; the collection of fonts that are used on the page, and the stream of objects laying out the content of the page, out of which only the text objects and rendering transform operators are processed. Other objects, such as image objects are discarded.
+
+\subsection{}
+
+
 \end{document}
