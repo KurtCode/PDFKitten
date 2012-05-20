@@ -11,6 +11,7 @@
 		2C0E15AC13589B0B004096C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
 		2C0E15AE13589B0B004096C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
 		2C0E15B013589B0B004096C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
+		2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C265926154D9C3900E11745 /* RenderingStateStack.m */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
 		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
 		2C4B91AD14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */; };
@@ -76,6 +77,8 @@
 		2C0E15AB13589B0B004096C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2C0E15AD13589B0B004096C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2C265924154D9C0E00E11745 /* RenderingStateStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderingStateStack.h; path = PDFKitten/RenderingStateStack.h; sourceTree = SOURCE_ROOT; };
+		2C265926154D9C3900E11745 /* RenderingStateStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingStateStack.m; path = PDFKitten/RenderingStateStack.m; sourceTree = SOURCE_ROOT; };
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2C47505C13F3E48200BC2DB9 /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsView.h; path = PDFKitten/DocumentsView.h; sourceTree = SOURCE_ROOT; };
 		2C47505D13F3E48200BC2DB9 /* DocumentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsView.m; path = PDFKitten/DocumentsView.m; sourceTree = SOURCE_ROOT; };
@@ -393,6 +396,8 @@
 			children = (
 				2CE7BCE91389725D009784B9 /* RenderingState.h */,
 				2CE7BCEA1389725D009784B9 /* RenderingState.m */,
+				2C265924154D9C0E00E11745 /* RenderingStateStack.h */,
+				2C265926154D9C3900E11745 /* RenderingStateStack.m */,
 			);
 			name = RenderingState;
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 				2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */,
 				2CC77EC114560E2E000E9B8E /* PDFPageDetailsView.m in Sources */,
 				2C06404314C782DF00A9B33F /* FontFile.m in Sources */,
+				2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

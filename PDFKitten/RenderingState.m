@@ -1,5 +1,6 @@
 #import "RenderingState.h"
 
+#define kGlyphSpaceScale 1000
 
 @implementation RenderingState
 
@@ -74,8 +75,7 @@
 /* Convert value to user space */
 - (CGFloat)convertToUserSpace:(CGFloat)value
 {
-	CGFloat scaleFactor = self.fontSize / 1000;
-	return value * scaleFactor;
+	return value * (self.fontSize / kGlyphSpaceScale);
 }
 
 /* Converts a size from text space to user space */
@@ -96,52 +96,4 @@
 }
 
 @synthesize characterSpacing, wordSpacing, leadning, textRise, horizontalScaling, font, fontSize, lineMatrix, textMatrix, ctm;
-@end
-
-
-@implementation RenderingStateStack
-
-/* Initialize with root rendering state */
-- (id)init
-{
-	if ((self = [super init]))
-	{
-		stack = [[NSMutableArray alloc] init];
-		RenderingState *rootRenderingState = [[RenderingState alloc] init];
-		[self pushRenderingState:rootRenderingState];
-		[rootRenderingState release];
-	}
-	return self;
-}
-
-/* The rendering state currently on top of the stack */
-- (RenderingState *)topRenderingState
-{
-	return [stack lastObject];
-}
-
-/* Push a rendering state to the stack */
-- (void)pushRenderingState:(RenderingState *)state
-{
-	[stack addObject:state];
-}
-
-/* Pops the top rendering state off the stack */
-- (RenderingState *)popRenderingState
-{
-	RenderingState *state = [stack lastObject];
-	[[stack retain] autorelease];
-	[stack removeLastObject];
-	return state;
-}
-
-
-#pragma mark - Memory Management
-
-- (void)dealloc
-{
-	[stack release];
-	[super dealloc];
-}
-
 @end
