@@ -34,9 +34,9 @@
 /* True if the page with given index is showing */
 - (BOOL)isShowingPageForIndex:(NSInteger)index
 {
-    for (Page *page in visiblePages)
+    for (Page *p in visiblePages)
     {
-        if (page.pageNumber == index)
+        if (p.pageNumber == index)
         {
             return YES;
         }
@@ -56,12 +56,12 @@
 	firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
 	lastNeededPageIndex = MIN(numberOfPages-1, lastNeededPageIndex);
 	
-	for (Page *page in visiblePages)
+	for (Page *aPage in visiblePages)
 	{
-		if (page.pageNumber < firstNeededPageIndex || page.pageNumber > lastNeededPageIndex)
+		if (aPage.pageNumber < firstNeededPageIndex || aPage.pageNumber > lastNeededPageIndex)
 		{
-			[recycledPages addObject:page];
-			[page removeFromSuperview];
+			[recycledPages addObject:aPage];
+			[aPage removeFromSuperview];
 		}
 	}
 	[visiblePages minusSet:recycledPages];
@@ -70,16 +70,16 @@
 	{
         if ([self isShowingPageForIndex:i]) continue;
 		
-		Page *page = [dataSource pageView:self viewForPage:i];
+		Page *aPage = [dataSource pageView:self viewForPage:i];
 		CGRect rect = self.frame;
 		rect.origin.y = 0;
 		rect.origin.x = CGRectGetWidth(rect) * i;
-		page.frame = rect;
+		aPage.frame = rect;
 		
-        [visiblePages addObject:page];
-		[page setNeedsDisplay];
+        [visiblePages addObject:aPage];
+		[aPage setNeedsDisplay];
         
-		[self addSubview:page];
+		[self addSubview:aPage];
 	}
 }
 
@@ -87,24 +87,24 @@
 {
 	@synchronized (self)
 	{
-		UIView *page = [recycledPages anyObject];
-		if (page)
+		UIView *p = [recycledPages anyObject];
+		if (p)
 		{
-			[[page retain] autorelease];
-			[recycledPages removeObject:page];
+			[[p retain] autorelease];
+			[recycledPages removeObject:p];
 		}
-		return page;
+		return p;
 	}
 }
 
 - (Page *)pageAtIndex:(NSInteger)index
 {
 	NSSet *pages = [[visiblePages copy] autorelease];
-	for (Page *page in pages)
+	for (Page *p in pages)
 	{
-		if (page.pageNumber == index)
+		if (p.pageNumber == index)
 		{
-			return page;
+			return p;
 		}
 	}
 	return nil;
@@ -139,10 +139,10 @@
 #pragma mark - Page numbers
 
 /* Scrolls to the given page */
-- (void)setPage:(NSInteger)page animated:(BOOL)animated
+- (void)setPage:(NSInteger)aPage animated:(BOOL)animated
 {
 	CGRect rect = self.frame;
-	rect.origin.x = CGRectGetWidth(self.frame) * page;
+	rect.origin.x = CGRectGetWidth(self.frame) * aPage;
 	[self scrollRectToVisible:rect animated:YES];
 	if (!animated)
 	{
@@ -154,9 +154,9 @@
 }
 
 /* Scrolls to the given page */
-- (void)setPage:(NSInteger)page
+- (void)setPage:(NSInteger)aPage
 {
-	[self setPage:page animated:YES];
+	[self setPage:aPage animated:YES];
 }
 
 /* Returns the current page number */
@@ -187,29 +187,29 @@
 	
 	UIView *detailedView = [dataSource pageView:self detailedViewForPage:self.page];
 
-	Page *page = nil;
+	Page *currentPage = nil;
 	
 	for (Page *p in visiblePages)
 	{
 		if (p.pageNumber == self.page)
 		{
-			page = p;
+			currentPage = p;
 			break;
 		}
 	}
 
-	if (!page) return;
+	if (!currentPage) return;
 	
-	if (page.detailedView)
+	if (currentPage.detailedView)
 	{
-		[UIView transitionFromView:page.detailedView toView:page duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
-		page.detailedView = nil;
+		[UIView transitionFromView:currentPage.detailedView toView:currentPage duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
+		currentPage.detailedView = nil;
 		return;
 	}
 	
-	page.detailedView = detailedView;
-	detailedView.frame = page.frame;
-	[UIView transitionFromView:page toView:detailedView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
+	currentPage.detailedView = detailedView;
+	detailedView.frame = currentPage.frame;
+	[UIView transitionFromView:currentPage toView:detailedView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
 }
 
 #pragma mark - Memory Management

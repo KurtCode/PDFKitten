@@ -69,10 +69,10 @@
 		[self setToUnicodeWithFontDictionary:dict];
 		
 		// Set the font's base font
-		const char *baseFontName = nil;
-		if (CGPDFDictionaryGetName(dict, kBaseFontKey, &baseFontName))
+		const char *baseFont = nil;
+		if (CGPDFDictionaryGetName(dict, kBaseFontKey, &baseFont))
 		{
-			self.baseFont = [NSString stringWithCString:baseFontName encoding:NSUTF8StringEncoding];
+			self.baseFont = [NSString stringWithCString:baseFont encoding:NSUTF8StringEncoding];
 		}
 		
 		// NOTE: Any furhter initialization is performed by the appropriate subclass

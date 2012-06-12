@@ -10,25 +10,25 @@
 #import "FontDescriptor.h"
 #import "CMap.h"
 
-static char *kMacRomanEncoding = "MacRomanEncoding";
-static char *kWinAnsiEncoding = "WinAnsiEncoding";
-
-static const char *kType0Key = "Type0";
-static const char *kType1Key = "Type1";
-static const char *kMMType1Key = "MMType1";
-static const char *kType3Key = "Type3";
-static const char *kTrueTypeKey = "TrueType";
-static const char *kCidFontType0Key = "CIDFontType0";
-static const char *kCidFontType2Key = "CIDFontType2";
-
-static const char *kToUnicodeKey = "ToUnicode";
-static const char *kFontDescriptorKey = "FontDescriptor";
-static const char *kBaseFontKey = "BaseFont";
-static const char *kEncodingKey = "Encoding";
-static const char *kBaseEncodingKey = "BaseEncoding";
-static const char *kFontSubtypeKey = "Subtype";
-static const char *kFontKey = "Font";
-static const char *kTypeKey = "Type";
+//static char *kMacRomanEncoding = "MacRomanEncoding";
+//static char *kWinAnsiEncoding = "WinAnsiEncoding";
+//
+//static const char *kType0Key = "Type0";
+//static const char *kType1Key = "Type1";
+//static const char *kMMType1Key = "MMType1";
+//static const char *kType3Key = "Type3";
+//static const char *kTrueTypeKey = "TrueType";
+//static const char *kCidFontType0Key = "CIDFontType0";
+//static const char *kCidFontType2Key = "CIDFontType2";
+//
+//static const char *kToUnicodeKey = "ToUnicode";
+//static const char *kFontDescriptorKey = "FontDescriptor";
+//static const char *kBaseFontKey = "BaseFont";
+//static const char *kEncodingKey = "Encoding";
+//static const char *kBaseEncodingKey = "BaseEncoding";
+//static const char *kFontSubtypeKey = "Subtype";
+//static const char *kFontKey = "Font";
+//static const char *kTypeKey = "Type";
 
 typedef enum {
 	UnknownEncoding = 0,

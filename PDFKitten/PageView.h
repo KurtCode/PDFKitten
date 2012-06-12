@@ -52,7 +52,7 @@
 - (void)reloadData;
 
 /* Scroll to a specific page */
-- (void)setPage:(NSInteger)page animated:(BOOL)animated;
+- (void)setPage:(NSInteger)aPage animated:(BOOL)animated;
 
 /* Page at the given index */
 - (Page *)pageAtIndex:(NSInteger)index;
