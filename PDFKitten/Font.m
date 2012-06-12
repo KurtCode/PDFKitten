@@ -11,6 +11,27 @@
 #import "CIDType2Font.h"
 #import "CIDType0Font.h"
 
+const char *kMacRomanEncoding = "MacRomanEncoding";
+const char *kWinAnsiEncoding = "WinAnsiEncoding";
+
+const char *kType0Key = "Type0";
+const char *kType1Key = "Type1";
+const char *kMMType1Key = "MMType1";
+const char *kType3Key = "Type3";
+const char *kTrueTypeKey = "TrueType";
+const char *kCidFontType0Key = "CIDFontType0";
+const char *kCidFontType2Key = "CIDFontType2";
+
+const char *kToUnicodeKey = "ToUnicode"; 
+const char *kFontDescriptorKey = "FontDescriptor";
+const char *kBaseFontKey = "BaseFont";
+const char *kEncodingKey = "Encoding";
+const char *kBaseEncodingKey = "BaseEncoding";
+const char *kFontSubtypeKey = "Subtype";
+const char *kFontKey = "Font";
+const char *kTypeKey = "Type";
+
+
 #pragma mark 
 
 
@@ -69,10 +90,10 @@
 		[self setToUnicodeWithFontDictionary:dict];
 		
 		// Set the font's base font
-		const char *baseFont = nil;
-		if (CGPDFDictionaryGetName(dict, kBaseFontKey, &baseFont))
+		const char *fontName = nil;
+		if (CGPDFDictionaryGetName(dict, kBaseFontKey, &fontName))
 		{
-			self.baseFont = [NSString stringWithCString:baseFont encoding:NSUTF8StringEncoding];
+			self.baseFont = [NSString stringWithCString:fontName encoding:NSUTF8StringEncoding];
 		}
 		
 		// NOTE: Any furhter initialization is performed by the appropriate subclass

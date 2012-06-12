@@ -1,21 +1,21 @@
 #import <Foundation/Foundation.h>
 #import "FontFile.h"
 
-//static const char *kAscentKey = "Ascent";
-//static const char *kDescentKey = "Descent";
-//static const char *kLeadingKey = "Leading";
-//static const char *kCapHeightKey = "CapHeight";
-//static const char *kXHeightKey = "XHeight";
-//static const char *kAverageWidthKey = "AvgWidth";
-//static const char *kMaxWidthKey = "MaxWidth";
-//static const char *kMissingWidthKey = "MissingWidth";
-//static const char *kFlagsKey = "Flags";
-//static const char *kStemVKey = "StemV";
-//static const char *kStemHKey = "StemH";
-//static const char *kItalicAngleKey = "ItalicAngle";
-//static const char *kFontNameKey = "FontName";
-//static const char *kFontBBoxKey = "FontBBox";
-//static const char *kFontFileKey = "FontFile";
+extern const char *kAscentKey;
+extern const char *kDescentKey;
+extern const char *kLeadingKey;
+extern const char *kCapHeightKey;
+extern const char *kXHeightKey;
+extern const char *kAverageWidthKey;
+extern const char *kMaxWidthKey;
+extern const char *kMissingWidthKey;
+extern const char *kFlagsKey;
+extern const char *kStemVKey;
+extern const char *kStemHKey;
+extern const char *kItalicAngleKey;
+extern const char *kFontNameKey;
+extern const char *kFontBBoxKey;
+extern const char *kFontFileKey;
 
 /* Flags as defined in PDF 1.7 */
 typedef enum FontFlags

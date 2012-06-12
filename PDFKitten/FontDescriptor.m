@@ -2,6 +2,22 @@
 #import "TrueTypeFont.h"
 #import <CommonCrypto/CommonDigest.h>
 
+const char *kAscentKey = "Ascent";
+const char *kDescentKey = "Descent";
+const char *kLeadingKey = "Leading";
+const char *kCapHeightKey = "CapHeight";
+const char *kXHeightKey = "XHeight";
+const char *kAverageWidthKey = "AvgWidth";
+const char *kMaxWidthKey = "MaxWidth";
+const char *kMissingWidthKey = "MissingWidth";
+const char *kFlagsKey = "Flags";
+const char *kStemVKey = "StemV";
+const char *kStemHKey = "StemH";
+const char *kItalicAngleKey = "ItalicAngle";
+const char *kFontNameKey = "FontName";
+const char *kFontBBoxKey = "FontBBox";
+const char *kFontFileKey = "FontFile";
+
 
 @implementation FontDescriptor
 
