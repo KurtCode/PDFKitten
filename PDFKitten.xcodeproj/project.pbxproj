@@ -183,10 +183,8 @@
 		2C0E159C13589B0B004096C7 = {
 			isa = PBXGroup;
 			children = (
-				2C0E15B113589B0B004096C7 /* Classes */,
-				2CA0FC9E13EEB1910028DCCD /* Other Sources */,
-				2CA0FC9A13EEB1430028DCCD /* Resources */,
-				2C754CA114B3A1D700105B5E /* KittenTest */,
+				2C0E15B113589B0B004096C7 /* PDFKitten */,
+				2C754CA114B3A1D700105B5E /* PDFKittenTests */,
 				2C0E15AA13589B0B004096C7 /* Frameworks */,
 				2C0E15A813589B0B004096C7 /* Products */,
 			);
@@ -214,13 +212,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2C0E15B113589B0B004096C7 /* Classes */ = {
+		2C0E15B113589B0B004096C7 /* PDFKitten */ = {
 			isa = PBXGroup;
 			children = (
 				2CA0FCA713EEB32D0028DCCD /* PDF Core */,
 				2C0E15B213589B0B004096C7 /* View Controllers */,
+				2CA0FC9A13EEB1430028DCCD /* Resources */,
+				2CA0FC9E13EEB1910028DCCD /* Other Sources */,
 			);
-			name = Classes;
+			name = PDFKitten;
 			path = PDFDemo;
 			sourceTree = "<group>";
 		};
@@ -256,7 +256,7 @@
 			name = PageViewController;
 			sourceTree = "<group>";
 		};
-		2C754CA114B3A1D700105B5E /* KittenTest */ = {
+		2C754CA114B3A1D700105B5E /* PDFKittenTests */ = {
 			isa = PBXGroup;
 			children = (
 				2CDEEDA615794E9C0043BCBC /* TestBMSearch.h */,
@@ -265,6 +265,7 @@
 				2C754CA814B3A1D700105B5E /* KittenTest.m */,
 				2C754CA214B3A1D700105B5E /* Supporting Files */,
 			);
+			name = PDFKittenTests;
 			path = KittenTest;
 			sourceTree = "<group>";
 		};
@@ -289,7 +290,6 @@
 				2CDC3F7C138977C0006CC6FB /* MainWindow.xib */,
 			);
 			name = Resources;
-			path = PDFDemo;
 			sourceTree = "<group>";
 		};
 		2CA0FC9E13EEB1910028DCCD /* Other Sources */ = {
@@ -299,7 +299,6 @@
 				2CE7BCA013896EFB009784B9 /* main.m */,
 			);
 			name = "Other Sources";
-			path = PDFDemo;
 			sourceTree = "<group>";
 		};
 		2CA0FCA713EEB32D0028DCCD /* PDF Core */ = {
