@@ -32,8 +32,6 @@
 		2CDC3F65138972E5006CC6FB /* StringDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F64138972E5006CC6FB /* StringDetector.m */; };
 		2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */; };
 		2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7C138977C0006CC6FB /* MainWindow.xib */; };
-		2CDEEDA415794E510043BCBC /* BMSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDEEDA315794E510043BCBC /* BMSearcher.m */; };
-		2CDEEDA815794E9C0043BCBC /* TestBMSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDEEDA715794E9C0043BCBC /* TestBMSearch.m */; };
 		2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */; };
 		2CE202ED14C4B400006BD9E3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
 		2CE202EE14C4B41A006BD9E3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
@@ -105,10 +103,6 @@
 		2CDC3F64138972E5006CC6FB /* StringDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringDetector.m; path = PDFKitten/StringDetector.m; sourceTree = SOURCE_ROOT; };
 		2CDC3F7B138977C0006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = PDFKitten/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		2CDC3F7D138977C1006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = PDFKitten/en.lproj/MainWindow.xib; sourceTree = SOURCE_ROOT; };
-		2CDEEDA215794E510043BCBC /* BMSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMSearcher.h; path = PDFKitten/BMSearcher.h; sourceTree = SOURCE_ROOT; };
-		2CDEEDA315794E510043BCBC /* BMSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMSearcher.m; path = PDFKitten/BMSearcher.m; sourceTree = SOURCE_ROOT; };
-		2CDEEDA615794E9C0043BCBC /* TestBMSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestBMSearch.h; sourceTree = "<group>"; };
-		2CDEEDA715794E9C0043BCBC /* TestBMSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestBMSearch.m; sourceTree = "<group>"; };
 		2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Ligatures.pdf; sourceTree = "<group>"; };
 		2CE7BC491389674B009784B9 /* PDFKitten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKitten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE7BC9A13896EF0009784B9 /* PageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageView.h; path = PDFKitten/PageView.h; sourceTree = SOURCE_ROOT; };
@@ -259,8 +253,6 @@
 		2C754CA114B3A1D700105B5E /* PDFKittenTests */ = {
 			isa = PBXGroup;
 			children = (
-				2CDEEDA615794E9C0043BCBC /* TestBMSearch.h */,
-				2CDEEDA715794E9C0043BCBC /* TestBMSearch.m */,
 				2C754CA714B3A1D700105B5E /* KittenTest.h */,
 				2C754CA814B3A1D700105B5E /* KittenTest.m */,
 				2C754CA214B3A1D700105B5E /* Supporting Files */,
@@ -318,8 +310,6 @@
 			children = (
 				2CDC3F63138972E5006CC6FB /* StringDetector.h */,
 				2CDC3F64138972E5006CC6FB /* StringDetector.m */,
-				2CDEEDA215794E510043BCBC /* BMSearcher.h */,
-				2CDEEDA315794E510043BCBC /* BMSearcher.m */,
 			);
 			name = StringDetector;
 			sourceTree = "<group>";
@@ -553,7 +543,6 @@
 				2CC77EC114560E2E000E9B8E /* PDFPageDetailsView.m in Sources */,
 				2C06404314C782DF00A9B33F /* FontFile.m in Sources */,
 				2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */,
-				2CDEEDA415794E510043BCBC /* BMSearcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,7 +551,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C754CA914B3A1D700105B5E /* KittenTest.m in Sources */,
-				2CDEEDA815794E9C0043BCBC /* TestBMSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
