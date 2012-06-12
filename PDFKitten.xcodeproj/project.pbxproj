@@ -25,8 +25,6 @@
 		2C754CA914B3A1D700105B5E /* KittenTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C754CA814B3A1D700105B5E /* KittenTest.m */; };
 		2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C77F7B31442381300767E6A /* Kurt the Cat.pdf */; };
 		2C855590137B336C00D58482 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
-		2C8D50371517D0A7008E813B /* EventHandling.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8D50361517D0A7008E813B /* EventHandling.pdf */; };
-		2C8D50391517D25D008E813B /* EventHandling.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8D50361517D0A7008E813B /* EventHandling.pdf */; };
 		2CA0FC9413EEB11B0028DCCD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9313EEB11B0028DCCD /* RootViewController.m */; };
 		2CA0FC9713EEB1210028DCCD /* PDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9613EEB1210028DCCD /* PDFPage.m */; };
 		2CA0FCA113EEB1B80028DCCD /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA013EEB1B80028DCCD /* Page.m */; };
@@ -36,6 +34,8 @@
 		2CDC3F65138972E5006CC6FB /* StringDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F64138972E5006CC6FB /* StringDetector.m */; };
 		2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */; };
 		2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7C138977C0006CC6FB /* MainWindow.xib */; };
+		2CDEEDA415794E510043BCBC /* BMSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDEEDA315794E510043BCBC /* BMSearcher.m */; };
+		2CDEEDA815794E9C0043BCBC /* TestBMSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDEEDA715794E9C0043BCBC /* TestBMSearch.m */; };
 		2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */; };
 		2CE202ED14C4B400006BD9E3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
 		2CE202EE14C4B41A006BD9E3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
@@ -93,7 +93,6 @@
 		2C754CAA14B3A1D700105B5E /* KittenTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KittenTest-Prefix.pch"; sourceTree = "<group>"; };
 		2C77F7B31442381300767E6A /* Kurt the Cat.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Kurt the Cat.pdf"; path = "PDFKitten/Samples/Kurt the Cat.pdf"; sourceTree = SOURCE_ROOT; };
 		2C85558F137B336C00D58482 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		2C8D50361517D0A7008E813B /* EventHandling.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = EventHandling.pdf; sourceTree = "<group>"; };
 		2CA0FC9213EEB11B0028DCCD /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = PDFKitten/RootViewController.h; sourceTree = SOURCE_ROOT; };
 		2CA0FC9313EEB11B0028DCCD /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = PDFKitten/RootViewController.m; sourceTree = SOURCE_ROOT; };
 		2CA0FC9513EEB1210028DCCD /* PDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFPage.h; path = PDFKitten/PDFPage.h; sourceTree = SOURCE_ROOT; };
@@ -109,6 +108,10 @@
 		2CDC3F64138972E5006CC6FB /* StringDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringDetector.m; path = PDFKitten/StringDetector.m; sourceTree = SOURCE_ROOT; };
 		2CDC3F7B138977C0006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = PDFKitten/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		2CDC3F7D138977C1006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = PDFKitten/en.lproj/MainWindow.xib; sourceTree = SOURCE_ROOT; };
+		2CDEEDA215794E510043BCBC /* BMSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMSearcher.h; path = PDFKitten/BMSearcher.h; sourceTree = SOURCE_ROOT; };
+		2CDEEDA315794E510043BCBC /* BMSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMSearcher.m; path = PDFKitten/BMSearcher.m; sourceTree = SOURCE_ROOT; };
+		2CDEEDA615794E9C0043BCBC /* TestBMSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestBMSearch.h; sourceTree = "<group>"; };
+		2CDEEDA715794E9C0043BCBC /* TestBMSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestBMSearch.m; sourceTree = "<group>"; };
 		2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Ligatures.pdf; sourceTree = "<group>"; };
 		2CE7BC491389674B009784B9 /* PDFKitten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKitten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE7BC9A13896EF0009784B9 /* PageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageView.h; path = PDFKitten/PageView.h; sourceTree = SOURCE_ROOT; };
@@ -218,13 +221,13 @@
 			isa = PBXGroup;
 			children = (
 				2CA0FCA713EEB32D0028DCCD /* PDF Core */,
-				2C0E15B213589B0B004096C7 /* Root View Controller */,
+				2C0E15B213589B0B004096C7 /* View Controllers */,
 			);
 			name = Classes;
 			path = PDFDemo;
 			sourceTree = "<group>";
 		};
-		2C0E15B213589B0B004096C7 /* Root View Controller */ = {
+		2C0E15B213589B0B004096C7 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				2C12935213E585F00090C70F /* PageViewController */,
@@ -237,7 +240,7 @@
 				2CE7BCA313896EFB009784B9 /* PDFKittenAppDelegate.h */,
 				2CE7BCA413896EFB009784B9 /* PDFKittenAppDelegate.m */,
 			);
-			name = "Root View Controller";
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		2C12935213E585F00090C70F /* PageViewController */ = {
@@ -259,6 +262,8 @@
 		2C754CA114B3A1D700105B5E /* KittenTest */ = {
 			isa = PBXGroup;
 			children = (
+				2CDEEDA615794E9C0043BCBC /* TestBMSearch.h */,
+				2CDEEDA715794E9C0043BCBC /* TestBMSearch.m */,
 				2C754CA714B3A1D700105B5E /* KittenTest.h */,
 				2C754CA814B3A1D700105B5E /* KittenTest.m */,
 				2C754CA214B3A1D700105B5E /* Supporting Files */,
@@ -269,7 +274,6 @@
 		2C754CA214B3A1D700105B5E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				2C8D50361517D0A7008E813B /* EventHandling.pdf */,
 				2C60BDC114F122E600F0846E /* Sample.cmap */,
 				2C4B91AC14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf */,
 				2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */,
@@ -319,6 +323,8 @@
 			children = (
 				2CDC3F63138972E5006CC6FB /* StringDetector.h */,
 				2CDC3F64138972E5006CC6FB /* StringDetector.m */,
+				2CDEEDA215794E510043BCBC /* BMSearcher.h */,
+				2CDEEDA315794E510043BCBC /* BMSearcher.m */,
 			);
 			name = StringDetector;
 			sourceTree = "<group>";
@@ -485,7 +491,6 @@
 				2CE202EF14C4B539006BD9E3 /* Ligatures.pdf in Resources */,
 				2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */,
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
-				2C8D50391517D25D008E813B /* EventHandling.pdf in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
 				2C4B91AF14E316F0000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */,
 				2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */,
@@ -501,7 +506,6 @@
 				2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */,
 				2C4B91AD14E30DFF000D7318 /* iTabloPDFPlusUserGuide.pdf in Resources */,
 				2C60BDC314F122E600F0846E /* Sample.cmap in Resources */,
-				2C8D50371517D0A7008E813B /* EventHandling.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +560,7 @@
 				2CC77EC114560E2E000E9B8E /* PDFPageDetailsView.m in Sources */,
 				2C06404314C782DF00A9B33F /* FontFile.m in Sources */,
 				2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */,
+				2CDEEDA415794E510043BCBC /* BMSearcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C754CA914B3A1D700105B5E /* KittenTest.m in Sources */,
+				2CDEEDA815794E9C0043BCBC /* TestBMSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
