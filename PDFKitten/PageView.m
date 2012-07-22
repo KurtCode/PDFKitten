@@ -1,5 +1,10 @@
 #import "PageView.h"
 #import "PDFPage.h"
+#import "PDFPageDetailsView.h"
+
+@interface PageView ()
+@property (nonatomic, retain) PDFPageDetailsView *detailViewController;
+@end
 
 @implementation PageView
 
@@ -185,8 +190,9 @@
 		return;
 	}
 	
-	UIView *detailedView = [dataSource pageView:self detailedViewForPage:self.page];
-
+    self.detailViewController = [dataSource pageView:self detailedViewForPage:self.page];
+    UIView *detailedView = [self.detailViewController view];
+    
 	Page *currentPage = nil;
 	
 	for (Page *p in visiblePages)
@@ -216,11 +222,12 @@
 
 - (void)dealloc
 {
+    [detailedViewController release];
 	[keyword release];
 	[recycledPages release];
 	[visiblePages release];
 	[super dealloc];
 }
 
-@synthesize page, dataSource, keyword;
+@synthesize page, dataSource, keyword, detailViewController;
 @end

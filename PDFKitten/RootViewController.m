@@ -77,7 +77,7 @@
 }
 
 /* Return the detailed view corresponding to a page */
-- (UIView *)pageView:(PageView *)aPageView detailedViewForPage:(NSInteger)page
+- (PDFPageDetailsView *)pageView:(PageView *)aPageView detailedViewForPage:(NSInteger)page
 {
 	Scanner *scanner = [[Scanner alloc] init];
 	[scanner setKeyword:@""];
@@ -87,7 +87,7 @@
 
 	FontCollection *collection = [self activeFontCollection];
 	PDFPageDetailsView *detailedView = [[PDFPageDetailsView alloc] initWithFont:collection];
-	return [detailedView view];
+	return [detailedView autorelease];
 }
 
 // TODO: Assign page to either the page or its content view, not both.

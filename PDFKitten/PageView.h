@@ -2,7 +2,7 @@
 #import "Page.h"
 
 @class PageView;
-
+@class PDFPageDetailsView;
 
 @protocol PageViewDelegate <NSObject>
 
@@ -25,7 +25,7 @@
 - (NSString *)keywordForPageView:(PageView *)pageView;
 
 /* Detailed view for page */
-- (UIView *)pageView:(PageView *)pageView detailedViewForPage:(NSInteger)page;
+- (PDFPageDetailsView *)pageView:(PageView *)pageView detailedViewForPage:(NSInteger)page;
 
 @end
 
@@ -37,6 +37,7 @@
 	NSMutableSet *visiblePages;
 	NSMutableSet *recycledPages;
 	NSString *keyword;
+    PDFPageDetailsView *detailedViewController;
 	IBOutlet id<PageViewDelegate> dataSource;
 }
 
