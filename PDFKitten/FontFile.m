@@ -91,6 +91,7 @@ static NSDictionary *charactersByName = nil;
 	static NSString *singleUnicodeCharFormat = @"%C";
 	NSString *characterName = [names objectForKey:[NSNumber numberWithInt:code]];
 	unichar unicodeValue = [FontFile characterByName:characterName];
+    if (!unicodeValue) unicodeValue = code;
 	return [NSString stringWithFormat:singleUnicodeCharFormat, unicodeValue];
 }
 
