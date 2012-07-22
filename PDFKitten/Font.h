@@ -10,24 +10,7 @@
 #import "FontDescriptor.h"
 #import "CMap.h"
 
-extern const char *kMacRomanEncoding;
-extern const char *kWinAnsiEncoding;
-
-extern const char *kType0Key;
-extern const char *kType1Key;
-extern const char *kMMType1Key;
-extern const char *kType3Key;
-extern const char *kTrueTypeKey;
-extern const char *kCidFontType0Key;
-extern const char *kCidFontType2Key;
-
-extern const char *kToUnicodeKey;
 extern const char *kFontDescriptorKey;
-extern const char *kBaseFontKey;
-extern const char *kEncodingKey;
-extern const char *kBaseEncodingKey;
-extern const char *kFontSubtypeKey;
-extern const char *kFontKey;
 extern const char *kTypeKey;
 
 typedef enum {

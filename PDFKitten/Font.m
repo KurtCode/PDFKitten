@@ -71,8 +71,8 @@ const char *kTypeKey = "Type";
 		font = [CIDType2Font alloc];
 	}
 	
-	[font initWithFontDictionary:dictionary];
-	return [font autorelease];
+	[[font initWithFontDictionary:dictionary] autorelease];
+	return font;
 }
 
 /* Initialize with font dictionary */
