@@ -57,8 +57,8 @@ static NSDictionary *charactersByName = nil;
 		NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 									 
 
-									 [NSNumber numberWithInt:0xfb00], @"/ff",
-									 [NSNumber numberWithInt:0xfb01], @"/fi",
+                                     [NSNumber numberWithInt:0xfb00], @"/ff",
+                                     [NSNumber numberWithInt:0xfb01], @"/fi",
 									 [NSNumber numberWithInt:0xfb02], @"/fl",
 									 [NSNumber numberWithInt:0xfb04], @"/ffl",
 									 
