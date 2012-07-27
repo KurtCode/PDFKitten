@@ -31,6 +31,7 @@ const char *kFontSubtypeKey = "Subtype";
 const char *kFontKey = "Font";
 const char *kTypeKey = "Type";
 
+typedef const unsigned char CharacterCode;
 
 #pragma mark 
 
@@ -147,7 +148,7 @@ const char *kTypeKey = "Type";
 /* Populate the widths array given font dictionary */
 - (void)setWidthsWithFontDictionary:(CGPDFDictionaryRef)dict
 {
-	// Custom implementation in subclasses
+    self.widths = [NSMutableDictionary dictionary];
 }
 
 /* Parse the ToUnicode map */
@@ -174,23 +175,17 @@ const char *kTypeKey = "Type";
 	return unicodeString;
 }
 
-- (NSString *)unicodeStringUsingToUnicode:(const unsigned char *)codes length:(size_t)length
+- (unichar)mappedUnicodeValue:(CharacterCode)character
 {
-	NSMutableString *unicodeString = [NSMutableString string];
-	for (int i = 0; i < length; i++)
-	{
-		unichar value = [self.toUnicode unicodeCharacter:codes[i]];
-		[unicodeString appendFormat:@"%C", value];
-	}
-	return unicodeString;
+    unichar value = [self.toUnicode unicodeCharacter:character];
+    return (value == NSNotFound) ? value : [self encodedUnicodeValue:character];
 }
 
-- (NSString *)unicodeStringWithStandardEncoding:(const unsigned char *)codes length:(size_t)length
+- (unichar)encodedUnicodeValue:(CharacterCode)character
 {
 	NSStringEncoding stringEncoding = nativeEncoding(self.encoding);
-	
-	NSString *unicodeString = [[NSString alloc] initWithBytes:codes length:length encoding:stringEncoding];
-	return [unicodeString autorelease];
+    const char str[] = {character, '\0'};
+    return [[NSString stringWithCString:str encoding:stringEncoding] characterAtIndex:0];
 }
 
 /*!
@@ -206,23 +201,18 @@ const char *kTypeKey = "Type";
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
 	// Character codes
-	const unsigned char *characterCodes = CGPDFStringGetBytePtr(pdfString);
-	size_t length = CGPDFStringGetLength(pdfString);
+	CharacterCode *characterCodes = CGPDFStringGetBytePtr(pdfString);
+	NSInteger characterCodeCount = CGPDFStringGetLength(pdfString);
 
-	if (self.toUnicode)
-	{
-		return [self unicodeStringUsingToUnicode:characterCodes length:length];
-	}
-	else if (self.fontDescriptor.fontFile)
-	{
-		return [self unicodeStringUsingFontFile:characterCodes length:length];
-	}
-	else if (knownEncoding(self.encoding))
-	{
-		return [self unicodeStringWithStandardEncoding:characterCodes length:length];
-	}
+    NSMutableString *string = [NSMutableString string];
+    for (int i = 0; i < characterCodeCount; i++)
+    {
+        CharacterCode code = characterCodes[i];
+        unichar value = [self mappedUnicodeValue:code];
+        [string appendFormat:@"%C", value];
+    }
 	
-	return @"";
+	return [NSString stringWithString:string];
 }
 
 - (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
@@ -263,6 +253,7 @@ const char *kTypeKey = "Type";
 					 @"fl", [NSString stringWithFormat:@"%C", 0xfb02],
 					 @"ae", [NSString stringWithFormat:@"%C", 0x00e6],
 					 @"oe", [NSString stringWithFormat:@"%C", 0x0153],
+                     // List is obviously not complete!
 					 nil];
 	}
 	return ligatures;
