@@ -5,5 +5,5 @@
 	BOOL identity;
 }
 
-@property (nonatomic, assign, getter = isIdentity) BOOL identity;
+@property (nonatomic, readonly, getter = isIdentity) BOOL identity;
 @end
