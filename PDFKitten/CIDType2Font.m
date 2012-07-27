@@ -12,7 +12,7 @@
 	{
 		const char *mapName;
 		if (!CGPDFObjectGetValue(object, kCGPDFObjectTypeName, &mapName)) return;
-		self.identity = YES;
+		identity = YES;
 	}
 	else if (type == kCGPDFObjectTypeStream)
 	{
@@ -42,7 +42,7 @@
 	NSString *registryString = (NSString *) CGPDFStringCopyTextString(registry);
 	NSString *orderingString = (NSString *) CGPDFStringCopyTextString(ordering);
 	
-	NSString *cidSystemString = [NSString stringWithFormat:@"%@ (%@) %d", registryString, orderingString, supplement];
+	NSString *cidSystemString = [NSString stringWithFormat:@"%@ (%@) %ld", registryString, orderingString, supplement];
 	NSLog(@"%@", cidSystemString);
 	
 	[registryString release];
@@ -61,43 +61,17 @@
 
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
-	// Note: glyphs descriptions are TrueType
-	
-	if (self.identity)
+	unichar *characterIDs = (unichar *) CGPDFStringGetBytePtr(pdfString);
+	int length = CGPDFStringGetLength(pdfString) / sizeof(unichar);
+	int magicalOffset = ([self isIdentity] ? 0 : 30);
+	NSMutableString *unicodeString = [NSMutableString string];
+	for (int i = 0; i < length; i++)
 	{
-		// Use 2-byte CIDToGID identity mapping
-		size_t length = CGPDFStringGetLength(pdfString);
-		const unsigned char *cid = CGPDFStringGetBytePtr(pdfString);
-
-		
-		NSData *data = [NSData dataWithBytes:cid length:length];
-		NSLog(@"%@", data);
-		
-		for (int i = 0; i < length; i+=2)
-		{
-			unichar unicodeValue = cid[i] << 8 | cid[i+1];
-//			unichar unicodeValue = 0x4ea4;  
-			NSLog(@"%C %x", unicodeValue, unicodeValue);
-		}
+		unichar unicodeValue = characterIDs[i] + magicalOffset;
+		[unicodeString appendFormat:@"%C", unicodeValue];
 	}
-	else
-	{
-		size_t length = CGPDFStringGetLength(pdfString);
-		const unsigned char *cid = CGPDFStringGetBytePtr(pdfString);
 
-		NSMutableString *string = [NSMutableString string];
-		for (int i = 0; i < length; i+=2)
-		{
-			unichar letter = cid[i] << 8 | cid[i+1];
-			NSLog(@"%C", letter+30);
-			[string appendFormat:@"%C", letter+30];
-		}
-		
-		NSLog(@"==> %@", string);
-		return string;
-	}
-	
-	return @"";
+	return unicodeString;
 }
 
 @synthesize identity;

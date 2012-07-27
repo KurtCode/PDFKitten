@@ -11,9 +11,6 @@
 #import "CIDType2Font.h"
 #import "CIDType0Font.h"
 
-const char *kMacRomanEncoding = "MacRomanEncoding";
-const char *kWinAnsiEncoding = "WinAnsiEncoding";
-
 const char *kType0Key = "Type0";
 const char *kType1Key = "Type1";
 const char *kMMType1Key = "MMType1";
@@ -104,28 +101,28 @@ typedef const unsigned char CharacterCode;
 
 #pragma mark Font Resources
 
-- (void)setEncodingWithFontDictionary:(CGPDFDictionaryRef)dict
+- (void)setEncodingWithFontDictionary:(CGPDFDictionaryRef)fontDictionary
 {
-	CGPDFObjectRef encodingObject;
-	if (!CGPDFDictionaryGetObject(dict, kEncodingKey, &encodingObject)) return;
-
 	const char *encodingName = nil;
-	if (CGPDFObjectGetType(encodingObject) == kCGPDFObjectTypeName)
+	if (!CGPDFDictionaryGetName(fontDictionary, kEncodingKey, &encodingName))
 	{
-		if (!CGPDFObjectGetValue(encodingObject, kCGPDFObjectTypeName, &encodingName)) return;
-	}
-	else if (CGPDFObjectGetType(encodingObject) == kCGPDFObjectTypeDictionary)
-	{
-		CGPDFDictionaryRef encodingDict;
-		CGPDFObjectGetValue(encodingObject, kCGPDFObjectTypeDictionary, &encodingDict);
+		CGPDFDictionaryRef encodingDict = nil;
+		CGPDFDictionaryGetDictionary(fontDictionary, kEncodingKey, &encodingDict);
 		CGPDFDictionaryGetName(encodingDict, kBaseEncodingKey, &encodingName);
+
+		// TODO: Also get differences from font encoding dictionary
 	}
-	
-	if (strcmp(encodingName, kMacRomanEncoding) == 0)
+
+	[self setEncodingNamed:[NSString stringWithCString:encodingName encoding:NSUTF8StringEncoding]];
+}
+
+- (void)setEncodingNamed:(NSString *)encodingName
+{
+	if ([@"MacRomanEncoding" isEqualToString:encodingName])
 	{
 		self.encoding = MacRomanEncoding;
 	}
-	else if (strcmp(encodingName, kWinAnsiEncoding) == 0)
+	else if ([@"WinAnsiEncoding" isEqualToString:encodingName])
 	{
 		self.encoding = WinAnsiEncoding;
 	}
@@ -248,14 +245,13 @@ typedef const unsigned char CharacterCode;
 	{
 		// Mapping ligature Unicode character values to strings
 		ligatures = [NSDictionary dictionaryWithObjectsAndKeys:
-					 @"ff", [NSString stringWithFormat:@"%C", 0xfb00],
-					 @"fi", [NSString stringWithFormat:@"%C", 0xfb01],
-					 @"fl", [NSString stringWithFormat:@"%C", 0xfb02],
-					 @"ae", [NSString stringWithFormat:@"%C", 0x00e6],
-					 @"oe", [NSString stringWithFormat:@"%C", 0x0153],
-                     // List is obviously not complete!
-					 nil];
+					 @"ff", [NSString stringWithFormat:@"%C", (unichar) 0xfb00],
+					 @"fi", [NSString stringWithFormat:@"%C", (unichar) 0xfb01],
+					 @"fl", [NSString stringWithFormat:@"%C", (unichar) 0xfb02],
+					 @"ae", [NSString stringWithFormat:@"%C", (unichar) 0x00e6],
+					 @"oe", [NSString stringWithFormat:@"%C", (unichar) 0x0153], nil];
 	}
+
 	return ligatures;
 }
 
