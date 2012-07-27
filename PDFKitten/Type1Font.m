@@ -4,7 +4,7 @@
 
 - (id)initWithFontDictionary:(CGPDFDictionaryRef)dict
 {
-	if ([super initWithFontDictionary:dict])
+	if (self = [super initWithFontDictionary:dict])
 	{
 	}
 	return self;
