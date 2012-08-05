@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "CompositeFont.h"
+#import "CIDFont.h"
 
-@interface CIDType0Font : CompositeFont {
+@interface CIDType0Font : CIDFont {
     
 }
 

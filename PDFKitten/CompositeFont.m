@@ -1,89 +1,79 @@
 #import "CompositeFont.h"
 
-static const char *kCompositeFontWidthsKey = "W";
-static const char *kCompositeFontDefaultWidthKey = "DW";
-
 @implementation CompositeFont
 
 /* Override with implementation for composite fonts */
 - (void)setWidthsWithFontDictionary:(CGPDFDictionaryRef)dict
 {
-	CGPDFArrayRef ws;
-	if (!CGPDFDictionaryGetArray(dict, kCompositeFontWidthsKey, &ws)) return;
+	CGPDFArrayRef widthsArray;
+	if (CGPDFDictionaryGetArray(dict, "W", &widthsArray))
+    {
+        [self setWidthsWithArray:widthsArray];
+    }
 
-	CGPDFInteger dw;
-	if (CGPDFDictionaryGetInteger(dict, kCompositeFontDefaultWidthKey, &dw))
+	CGPDFInteger defaultWidthValue;
+	if (CGPDFDictionaryGetInteger(dict, "DW", &defaultWidthValue))
 	{
-		self.defaultWidth = dw;
+		self.defaultWidth = defaultWidthValue;
 	}
+}
 
-	NSUInteger count = CGPDFArrayGetCount(ws);
-		
-	CGPDFObjectRef nextObject = nil;
-	CGPDFInteger firstCharacter = 0;
-	NSMutableDictionary *widthsDict = [NSMutableDictionary dictionary];
-	for (int i = 0; i < count; )
-	{
-		// Read two first items from sequence
-		if (!CGPDFArrayGetInteger(ws, i++, &firstCharacter)) break;
-		if (!CGPDFArrayGetObject(ws, i++, &nextObject)) break;
+- (void)setWidthsWithArray:(CGPDFArrayRef)widthsArray
+{
+    NSUInteger length = CGPDFArrayGetCount(widthsArray);
+    int idx = 0;
+    while (idx < length)
+    {
+        CGPDFInteger baseCid = 0;
+        CGPDFArrayGetInteger(widthsArray, idx, &baseCid);
 
-		CGPDFObjectType type = CGPDFObjectGetType(nextObject);
-
-		if (type == kCGPDFObjectTypeInteger)
+        CGPDFObjectRef integerOrArray = nil;
+		CGPDFArrayGetObject(widthsArray, idx + 1, &integerOrArray);
+		if (CGPDFObjectGetType(integerOrArray) == kCGPDFObjectTypeInteger)
 		{
-			// If the second item is another integer, the sequence
-			// defines a range on the form [ first last width ]
-			CGPDFInteger lastCharacter;
-			CGPDFInteger characterWidth;
-			CGPDFObjectGetValue(nextObject, kCGPDFObjectTypeInteger, &lastCharacter);
-			CGPDFArrayGetInteger(ws, i++, &characterWidth);
-			
-			for (int index = firstCharacter; index <= lastCharacter; index++)
-			{
-				NSNumber *key = [NSNumber numberWithInt:index];
-				NSNumber *val = [NSNumber numberWithInt:characterWidth];
-				[widthsDict setObject:val forKey:key];
-			}
-		}
-		else if (type == kCGPDFObjectTypeArray)
-		{
-			// If the second item is an array, the sequence
-			// defines widths on the form [ first list-of-widths ]
-			CGPDFArrayRef characterWidths;
-			if (!CGPDFObjectGetValue(nextObject, kCGPDFObjectTypeArray, &characterWidths)) break;
-			NSUInteger count = CGPDFArrayGetCount(characterWidths);
-			for (int index = 0; index < count ; index++)
-			{
-				CGPDFInteger width;
-				if (CGPDFArrayGetInteger(characterWidths, index, &width))
-				{
-					NSNumber *key = [NSNumber numberWithInt:firstCharacter+index];
-					NSNumber *val = [NSNumber numberWithInt:width];
-					[widthsDict setObject:val forKey:key];
-				}
-			}
+            // [ first last width ]
+			CGPDFInteger maxCid;
+			CGPDFInteger glyphWidth;
+			CGPDFObjectGetValue(integerOrArray, kCGPDFObjectTypeInteger, &maxCid);
+			CGPDFArrayGetInteger(widthsArray, idx + 2, &glyphWidth);
+			[self setWidthsFrom:baseCid to:maxCid width:glyphWidth];
 		}
 		else
 		{
-			break;
-		}
+            // [ first list-of-widths ]
+			CGPDFArrayRef glyphWidths;
+			CGPDFObjectGetValue(integerOrArray, kCGPDFObjectTypeArray, &glyphWidths);
+            [self setWidthsWithBase:baseCid array:glyphWidths];
+        }
 	}
-	self.widths = widthsDict;
 }
 
-/* Custom implementation */
+- (void)setWidthsFrom:(CGPDFInteger)cid to:(CGPDFInteger)maxCid width:(CGPDFInteger)width
+{
+    while (cid <= maxCid)
+    {
+        [self.widths setObject:[NSNumber numberWithInt:width] forKey:[NSNumber numberWithInt:cid++]];
+    }
+}
+
+- (void)setWidthsWithBase:(CGPDFInteger)base array:(CGPDFArrayRef)array
+{
+    NSInteger count = CGPDFArrayGetCount(array);
+    CGPDFInteger width;
+    for (int index = 0; index < count ; index++)
+    {
+        if (CGPDFArrayGetInteger(array, index, &width))
+        {
+            [self.widths setObject:[NSNumber numberWithInt:width] forKey:[NSNumber numberWithInt:base+index]];
+        }
+    }
+}
+
 - (CGFloat)widthOfCharacter:(unichar)characher withFontSize:(CGFloat)fontSize
 {
-//	CGFloat width = [super widthOfCharacter:characher withFontSize:fontSize];
-	
 	NSNumber *width = [self.widths objectForKey:[NSNumber numberWithInt:characher]];
-	
-	if (!width)
-	{
-		return self.defaultWidth * fontSize;
-	}
-	return [width floatValue] * fontSize;
+    CGFloat glyphWidth = (width) ? width.floatValue : self.defaultWidth;
+    return glyphWidth * fontSize;
 }
 
 @synthesize defaultWidth;

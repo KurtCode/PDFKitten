@@ -1,9 +1,8 @@
 #import <Foundation/Foundation.h>
-#import "CompositeFont.h"
+#import "CIDFont.h"
 
-@interface CIDType2Font : CompositeFont {
-	BOOL identity;
+@interface CIDType2Font : CIDFont {
+    NSData *cidGidMap;
 }
 
-@property (nonatomic, readonly, getter = isIdentity) BOOL identity;
 @end

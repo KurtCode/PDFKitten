@@ -11,6 +11,7 @@
 		2C0E15AC13589B0B004096C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
 		2C0E15AE13589B0B004096C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
 		2C0E15B013589B0B004096C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
+		2C209A9215C2B36900D4437B /* CIDFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C209A9115C2B36900D4437B /* CIDFont.m */; };
 		2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C265926154D9C3900E11745 /* RenderingStateStack.m */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
 		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
@@ -73,6 +74,8 @@
 		2C0E15AB13589B0B004096C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2C0E15AD13589B0B004096C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2C209A9015C2B36900D4437B /* CIDFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDFont.h; path = PDFKitten/CIDFont.h; sourceTree = SOURCE_ROOT; };
+		2C209A9115C2B36900D4437B /* CIDFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDFont.m; path = PDFKitten/CIDFont.m; sourceTree = SOURCE_ROOT; };
 		2C265924154D9C0E00E11745 /* RenderingStateStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderingStateStack.h; path = PDFKitten/RenderingStateStack.h; sourceTree = SOURCE_ROOT; };
 		2C265926154D9C3900E11745 /* RenderingStateStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingStateStack.m; path = PDFKitten/RenderingStateStack.m; sourceTree = SOURCE_ROOT; };
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -336,12 +339,14 @@
 			children = (
 				2CE7BCC213897135009784B9 /* CompositeFont.h */,
 				2CE7BCC313897135009784B9 /* CompositeFont.m */,
+				2CE7BCD913897159009784B9 /* Type0Font.h */,
+				2CE7BCDA13897159009784B9 /* Type0Font.m */,
+				2C209A9015C2B36900D4437B /* CIDFont.h */,
+				2C209A9115C2B36900D4437B /* CIDFont.m */,
 				2CE7BCBC13897135009784B9 /* CIDType0Font.h */,
 				2CE7BCBD13897135009784B9 /* CIDType0Font.m */,
 				2CE7BCBE13897135009784B9 /* CIDType2Font.h */,
 				2CE7BCBF13897135009784B9 /* CIDType2Font.m */,
-				2CE7BCD913897159009784B9 /* Type0Font.h */,
-				2CE7BCDA13897159009784B9 /* Type0Font.m */,
 			);
 			name = "Composite Fonts";
 			sourceTree = "<group>";
@@ -543,6 +548,7 @@
 				2CC77EC114560E2E000E9B8E /* PDFPageDetailsView.m in Sources */,
 				2C06404314C782DF00A9B33F /* FontFile.m in Sources */,
 				2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */,
+				2C209A9215C2B36900D4437B /* CIDFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
