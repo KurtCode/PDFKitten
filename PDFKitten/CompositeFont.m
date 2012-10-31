@@ -77,7 +77,7 @@ static const char *kCompositeFontDefaultWidthKey = "DW";
 {
 //	CGFloat width = [super widthOfCharacter:characher withFontSize:fontSize];
 	
-	NSNumber *width = [self.widths objectForKey:[NSNumber numberWithInt:characher]];
+	NSNumber *width = [self.widths objectForKey:[NSNumber numberWithInt:characher - 30]];
 	
 	if (!width)
 	{
