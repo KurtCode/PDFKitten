@@ -452,7 +452,7 @@
 		2C0E159E13589B0B004096C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Chalmers Göteborg";
 			};
 			buildConfigurationList = 2C0E15A113589B0B004096C7 /* Build configuration list for PBXProject "PDFKitten" */;
