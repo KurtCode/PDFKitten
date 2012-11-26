@@ -89,9 +89,12 @@
 
 - (CGFloat)widthOfCharacter:(unichar)characher withFontSize:(CGFloat)fontSize
 {
-	NSNumber *width = [self.widths objectForKey:[NSNumber numberWithInt:characher]];
-    CGFloat glyphWidth = (width) ? width.floatValue : self.defaultWidth;
-    return glyphWidth * fontSize;
+	NSNumber *width = [self.widths objectForKey:[NSNumber numberWithInt:characher - 30]];
+	if (!width)
+	{
+		return self.defaultWidth * fontSize;
+	}
+	return [width floatValue] * fontSize;
 }
 
 @synthesize defaultWidth;
