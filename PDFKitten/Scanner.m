@@ -462,7 +462,7 @@ void cm(CGPDFScannerRef scanner, void *info)
 	
 	RenderingState *state = [(Scanner *)info currentRenderingState];
 	CGAffineTransform t = CGAffineTransformMake(a, b, c, d, tx, ty);
-	state.ctm = CGAffineTransformConcat(state.ctm, t);
+	state.ctm = CGAffineTransformConcat(t, state.ctm);
 }
 
 
