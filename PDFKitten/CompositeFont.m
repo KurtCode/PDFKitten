@@ -22,12 +22,14 @@
 {
     NSUInteger length = CGPDFArrayGetCount(widthsArray);
     int idx = 0;
+    CGPDFObjectRef nextObject = nil;
     while (idx < length)
     {
         CGPDFInteger baseCid = 0;
         CGPDFArrayGetInteger(widthsArray, idx, &baseCid);
 
         CGPDFObjectRef integerOrArray = nil;
+        CGPDFInteger firstCharacter = 0;
 		CGPDFArrayGetObject(widthsArray, idx + 1, &integerOrArray);
 		if (CGPDFObjectGetType(integerOrArray) == kCGPDFObjectTypeInteger)
 		{
@@ -50,7 +52,7 @@
 				{
 					NSNumber *key = [NSNumber numberWithInt:firstCharacter+index];
 					NSNumber *val = [NSNumber numberWithInt:width];
-					[widthsDict setObject:val forKey:key];
+					[widths setObject:val forKey:key];
 				}
 			}
 		}

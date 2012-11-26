@@ -126,8 +126,6 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 
 - (Operator *)operatorWithStartingToken:(NSString *)token {
 	NSString *content = nil;
-	static NSString *endToken = @"endbfchar";
-	[scanner scanUpToString:endToken intoString:&content];
     NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
     NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
     NSString *separatorString = @"> <";
@@ -166,19 +164,12 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
             scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
             [scanner scanHexInt:&to];
             NSNumber *toNumber = [NSNumber numberWithInt:to];
-            [chars setObject:toNumber  forKey:fromNumber];
+            [chars setObject:toNumber forKey:fromNumber];
+        
         }
     }
-    
-}
 
-- (void)scanCMap:(NSScanner *)scanner
-{
-	for (Operator *op in self.operators)
-	{
-		if ([op.start isEqualToString:token]) return op;
-	}
-	return nil;
+    return nil;
 }
 
 /**!
@@ -259,15 +250,6 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	tagString = [tagString stringByTrimmingCharactersInSet:self.tagSet];
 	[[NSScanner scannerWithString:tagString] scanHexInt:&numericValue];
 	return numericValue;
-}
-
-- (void)scanning:(NSString *text) {
-    NSLog(@"%@", text);
-	NSScanner *scanner = [NSScanner scannerWithString:text];
-	[scanner scanUpToString:@"begincmap" intoString:nil];
-	[scanner scanString:@"begincmap" intoString:nil];
-	NSLog(@"%d", scanner.scanLocation);
-	[self scanCMap:scanner];
 }
 
 /**!
@@ -371,36 +353,6 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 		self.characterRangeMappings = [NSMutableDictionary dictionary];
 	}
 	return characterRangeMappings;
-
-- (NSString *)unicodeCharacter:(unichar)cid
-{
-    NSString *result = [NSString stringWithFormat: @"%C", cid];
-	NSDictionary *dict = [self rangeWithCharacter:cid];
-    if (dict)
-    {
-        NSUInteger internalOffset = cid - [[dict objectForKey:@"First"] intValue];
-        result = [NSString stringWithFormat: @"%C", [[dict objectForKey:@"Offset"] intValue] + internalOffset];
-    }
-    else if (chars)
-    {
-        NSNumber *fromChar = [NSNumber numberWithInt: cid];
-        NSObject *to = [chars objectForKey: fromChar];
-        if ([to isKindOfClass: [NSNumber class]]) {
-            NSNumber *toChar = [chars objectForKey: fromChar];
-            result = [NSString stringWithFormat: @"%C", [toChar intValue]];
-        } else if ([to isKindOfClass: [NSArray class]]) {
-            NSArray *toArray = (NSArray *)to;
-            NSNumber *nextChar;
-            NSMutableString *temp = [[NSMutableString alloc] initWithCapacity: [toArray count]];
-            for (int i = 0; i < [toArray count]; i++) {
-                nextChar = [toArray objectAtIndex: i];
-                [temp appendFormat: @"%C", [nextChar intValue]];                
-            }
-            result = [NSString stringWithString: temp];
-            [temp release];
-        }
-    }
-    return result;
 }
 
 - (unichar)cidCharacter:(unichar)unicode 

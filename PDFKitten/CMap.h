@@ -32,7 +32,7 @@ extern NSValue *rangeValue(unsigned int from, unsigned int to);
 - (id)initWithString:(NSString *)string;
 
 /* Unicode mapping for character ID */
-- (NSString *)unicodeCharacter:(unichar)cid;
+- (unichar)unicodeCharacter:(unichar)cid;
 
 - (unichar)cidCharacter:(unichar)unicode;
 

@@ -228,7 +228,7 @@ typedef const unsigned char CharacterCode;
 		for (int i = 0; i < length; i++)
 		{
             const unsigned char cid = bytes[i];
-		 	[unicodeString appendString: [self.toUnicode unicodeCharacter:cid]];
+		 	[unicodeString appendFormat:@"%C", [self.toUnicode unicodeCharacter:cid]];
 		}
 		return unicodeString;
 	}

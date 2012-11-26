@@ -112,7 +112,8 @@
     if (self.toUnicode) {
         result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
         for (int i = 0; i < [descendantResult length]; i++) {
-		 	[result appendString: [self.toUnicode unicodeCharacter:[descendantResult characterAtIndex:i]]];
+            unichar character = [self.toUnicode unicodeCharacter:[descendantResult characterAtIndex:i]];
+		 	[result appendFormat:@"%C", character];
         }        
     } else {
         result = [NSMutableString stringWithString: descendantResult];
