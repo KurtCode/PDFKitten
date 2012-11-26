@@ -35,8 +35,10 @@
 	// The string being compared
 	NSMutableString *effectiveText = [NSMutableString string];
 	
-	[unicodeContent appendString:unicodeString];
-	
+    if (unicodeString) {
+        [unicodeContent appendString:unicodeString];
+    }
+
 	for (int i = 0; i < [unicodeString length]; i++)
 	{
 		NSString *needleString = [NSString stringWithFormat:@"%C", [unicodeString characterAtIndex:i]];
