@@ -105,6 +105,42 @@
 	return @"";
 }
 
+- (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString {
+    NSMutableString *result;
+	Font *descendantFont = [self.descendantFonts lastObject];
+    NSString *descendantResult = [descendantFont stringWithPDFString: pdfString];
+    if (self.toUnicode) {
+        result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
+        for (int i = 0; i < [descendantResult length]; i++) {
+		 	[result appendString: [self.toUnicode unicodeCharacter:[descendantResult characterAtIndex:i]]];
+        }        
+    } else {
+        result = [NSMutableString stringWithString: descendantResult];
+    }
+    return result;
+}
+
+- (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
+    Font *descendantFont = [self.descendantFonts lastObject];
+    return [descendantFont stringWithPDFString: pdfString];
+}
+
+- (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString {
+    NSMutableString *result;
+	Font *descendantFont = [self.descendantFonts lastObject];
+    NSString *descendantResult = [descendantFont stringWithPDFString: pdfString];
+    if (self.toUnicode) {
+        result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
+        for (int i = 0; i < [descendantResult length]; i++) {
+		 	[result appendString: [self.toUnicode unicodeCharacter:[descendantResult characterAtIndex:i]]];
+        }        
+    } else {
+        result = [NSMutableString stringWithString: descendantResult];
+    }
+    NSLog(@"%@", result);
+    return result;
+}
+
 
 #pragma mark -
 #pragma mark Memory Management

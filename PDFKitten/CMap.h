@@ -32,7 +32,9 @@ extern NSValue *rangeValue(unsigned int from, unsigned int to);
 - (id)initWithString:(NSString *)string;
 
 /* Unicode mapping for character ID */
-- (unichar)unicodeCharacter:(unichar)cid;
+- (NSString *)unicodeCharacter:(unichar)cid;
+
+- (unichar)cidCharacter:(unichar)unicode;
 
 @property (nonatomic, retain) NSMutableArray *codeSpaceRanges;
 @property (nonatomic, retain) NSMutableDictionary *characterMappings;

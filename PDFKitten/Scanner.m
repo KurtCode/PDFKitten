@@ -189,7 +189,12 @@ void cm(CGPDFScannerRef scanner, void *info);
 - (void)detector:(StringDetector *)detector didScanCharacter:(unichar)character
 {
 	RenderingState *state = [self currentRenderingState];
-	CGFloat width = [self.currentFont widthOfCharacter:character withFontSize:state.fontSize];
+    Font *font = self.currentFont;
+    unichar cid = character;
+    if (font.toUnicode) {
+        cid = [font.toUnicode cidCharacter: character];
+    }
+	CGFloat width = [self.currentFont widthOfCharacter:cid withFontSize:state.fontSize];
 	width /= 1000;
 	width += state.characterSpacing;
 	if (character == 32)

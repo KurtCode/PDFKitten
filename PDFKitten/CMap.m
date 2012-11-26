@@ -124,7 +124,55 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 #pragma mark -
 #pragma mark Scanner
 
-- (Operator *)operatorWithStartingToken:(NSString *)token
+- (Operator *)operatorWithStartingToken:(NSString *)token {
+	NSString *content = nil;
+	static NSString *endToken = @"endbfchar";
+	[scanner scanUpToString:endToken intoString:&content];
+    NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
+    NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
+    NSString *separatorString = @"> <";
+    
+    chars = [[NSMutableDictionary alloc] init];    
+    NSScanner *rangeScanner = [NSScanner scannerWithString:content];
+    while (![rangeScanner isAtEnd])
+    {
+        NSString *line = nil;
+        [rangeScanner scanUpToCharactersFromSet:newLineSet intoString:&line];
+        line = [line stringByTrimmingCharactersInSet:tagSet];
+        NSArray *parts = [line componentsSeparatedByString:separatorString];
+        
+        NSUInteger from, to;
+        NSScanner *scanner = [NSScanner scannerWithString:[parts objectAtIndex:0]];
+        [scanner scanHexInt:&from];
+        NSNumber *fromNumber = [NSNumber numberWithInt:from];
+        
+        NSString *toString = [parts objectAtIndex:1];
+        int charLen = 4;
+        if ([toString length] > charLen) {
+            NSMutableArray *toArray = [NSMutableArray arrayWithCapacity: [toString length]/4 + ([toString length]%4 > 0 ? 1 : 0)];
+            NSRange range;
+            NSString *nextTo;
+            for (int offset = 0; offset < [toString length]/4; offset++) {
+                range = NSMakeRange(offset * charLen, charLen);
+                nextTo = [toString substringWithRange: range];
+                scanner = [NSScanner scannerWithString: nextTo];
+                [scanner scanHexInt: &to];
+                [toArray addObject: [NSNumber numberWithInt:to]];
+            }
+            [chars setObject: toArray forKey:fromNumber];
+        }
+        else 
+        {
+            scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
+            [scanner scanHexInt:&to];
+            NSNumber *toNumber = [NSNumber numberWithInt:to];
+            [chars setObject:toNumber  forKey:fromNumber];
+        }
+    }
+    
+}
+
+- (void)scanCMap:(NSScanner *)scanner
 {
 	for (Operator *op in self.operators)
 	{
@@ -211,6 +259,15 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	tagString = [tagString stringByTrimmingCharactersInSet:self.tagSet];
 	[[NSScanner scannerWithString:tagString] scanHexInt:&numericValue];
 	return numericValue;
+}
+
+- (void)scanning:(NSString *text) {
+    NSLog(@"%@", text);
+	NSScanner *scanner = [NSScanner scannerWithString:text];
+	[scanner scanUpToString:@"begincmap" intoString:nil];
+	[scanner scanString:@"begincmap" intoString:nil];
+	NSLog(@"%d", scanner.scanLocation);
+	[self scanCMap:scanner];
 }
 
 /**!
@@ -314,6 +371,71 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 		self.characterRangeMappings = [NSMutableDictionary dictionary];
 	}
 	return characterRangeMappings;
+
+- (NSString *)unicodeCharacter:(unichar)cid
+{
+    NSString *result = [NSString stringWithFormat: @"%C", cid];
+	NSDictionary *dict = [self rangeWithCharacter:cid];
+    if (dict)
+    {
+        NSUInteger internalOffset = cid - [[dict objectForKey:@"First"] intValue];
+        result = [NSString stringWithFormat: @"%C", [[dict objectForKey:@"Offset"] intValue] + internalOffset];
+    }
+    else if (chars)
+    {
+        NSNumber *fromChar = [NSNumber numberWithInt: cid];
+        NSObject *to = [chars objectForKey: fromChar];
+        if ([to isKindOfClass: [NSNumber class]]) {
+            NSNumber *toChar = [chars objectForKey: fromChar];
+            result = [NSString stringWithFormat: @"%C", [toChar intValue]];
+        } else if ([to isKindOfClass: [NSArray class]]) {
+            NSArray *toArray = (NSArray *)to;
+            NSNumber *nextChar;
+            NSMutableString *temp = [[NSMutableString alloc] initWithCapacity: [toArray count]];
+            for (int i = 0; i < [toArray count]; i++) {
+                nextChar = [toArray objectAtIndex: i];
+                [temp appendFormat: @"%C", [nextChar intValue]];                
+            }
+            result = [NSString stringWithString: temp];
+            [temp release];
+        }
+    }
+    return result;
+}
+
+- (unichar)cidCharacter:(unichar)unicode 
+{
+    //TODO: search in range dictionary
+        
+    // Look up the offsets dictionary for this unicode
+    for (NSDictionary *dict in offsets)
+	{
+        int firstChar = [[dict objectForKey:@"First"] intValue];
+        int lastChar = [[dict objectForKey:@"Last"] intValue];
+        int offset = [[dict objectForKey:@"Offset"] intValue];
+        
+        for (int i = 0 ; i <= lastChar-firstChar ; i++) {
+            unichar dictUnicode = offset+i;
+            if (dictUnicode == unicode) {
+                return i;
+            }
+        }
+	}
+    
+    if (chars) {
+        NSEnumerator *keys = [chars keyEnumerator];
+        NSObject *value;
+        NSObject *key;
+        while (key = [keys nextObject]) {
+            value = [chars objectForKey: key];
+            if ([value isKindOfClass: [NSNumber class]]) {
+                if ([(NSNumber *)value intValue] == unicode) {
+                    return [(NSNumber *)key intValue];
+                }
+            }
+        }        
+    }
+    return unicode;
 }
 
 - (void)dealloc

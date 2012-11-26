@@ -60,7 +60,9 @@
 		for (int i = 0; i < [str length]; i++)
 		{
 			unichar cid = [str characterAtIndex:i];
-		 	[unicodeString appendFormat:@"%C", [self.toUnicode unicodeCharacter:cid]];
+//		 	[unicodeString appendFormat:@"%C", [self.toUnicode unicodeCharacter:cid]];
+            [unicodeString appendString: [self.toUnicode unicodeCharacter:cid]];
+
 		}
 		
 		[str release];
@@ -73,6 +75,7 @@
 //		return [string autorelease];
 	}
 	NSString *string = [[NSString alloc] initWithData:rawBytes encoding:self.encoding];
+                    
 	return [string autorelease];
 }
 

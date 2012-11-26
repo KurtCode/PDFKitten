@@ -218,6 +218,25 @@ typedef const unsigned char CharacterCode;
 	return [string autorelease];
 }
 
+- (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString
+{
+	const unsigned char *bytes = CGPDFStringGetBytePtr(pdfString);
+	NSInteger length = CGPDFStringGetLength(pdfString);
+	if (self.toUnicode)
+	{
+		NSMutableString *unicodeString = [NSMutableString string];
+		for (int i = 0; i < length; i++)
+		{
+            const unsigned char cid = bytes[i];
+		 	[unicodeString appendString: [self.toUnicode unicodeCharacter:cid]];
+		}
+		return unicodeString;
+	}
+    else {
+        return [self stringWithPDFString:pdfString];
+    }
+}
+
 /* Lowest point of any character */
 - (CGFloat)minY
 {

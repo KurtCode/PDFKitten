@@ -37,6 +37,22 @@
 			CGPDFObjectGetValue(integerOrArray, kCGPDFObjectTypeInteger, &maxCid);
 			CGPDFArrayGetInteger(widthsArray, idx + 2, &glyphWidth);
 			[self setWidthsFrom:baseCid to:maxCid width:glyphWidth];
+
+			// If the second item is an array, the sequence
+			// defines widths on the form [ first list-of-widths ]
+			CGPDFArrayRef characterWidths;
+			if (!CGPDFObjectGetValue(nextObject, kCGPDFObjectTypeArray, &characterWidths)) break;
+			NSUInteger widthsCount = CGPDFArrayGetCount(characterWidths);
+			for (int index = 0; index < widthsCount ; index++)
+			{
+				CGPDFInteger width;
+				if (CGPDFArrayGetInteger(characterWidths, index, &width))
+				{
+					NSNumber *key = [NSNumber numberWithInt:firstCharacter+index];
+					NSNumber *val = [NSNumber numberWithInt:width];
+					[widthsDict setObject:val forKey:key];
+				}
+			}
 		}
 		else
 		{
