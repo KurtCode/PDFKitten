@@ -26,18 +26,18 @@
     while (idx < length)
     {
         CGPDFInteger baseCid = 0;
-        CGPDFArrayGetInteger(widthsArray, idx, &baseCid);
+        CGPDFArrayGetInteger(widthsArray, idx++, &baseCid);
 
         CGPDFObjectRef integerOrArray = nil;
         CGPDFInteger firstCharacter = 0;
-		CGPDFArrayGetObject(widthsArray, idx + 1, &integerOrArray);
+		CGPDFArrayGetObject(widthsArray, idx++, &integerOrArray);
 		if (CGPDFObjectGetType(integerOrArray) == kCGPDFObjectTypeInteger)
 		{
             // [ first last width ]
 			CGPDFInteger maxCid;
 			CGPDFInteger glyphWidth;
 			CGPDFObjectGetValue(integerOrArray, kCGPDFObjectTypeInteger, &maxCid);
-			CGPDFArrayGetInteger(widthsArray, idx + 2, &glyphWidth);
+			CGPDFArrayGetInteger(widthsArray, idx++, &glyphWidth);
 			[self setWidthsFrom:baseCid to:maxCid width:glyphWidth];
 
 			// If the second item is an array, the sequence
