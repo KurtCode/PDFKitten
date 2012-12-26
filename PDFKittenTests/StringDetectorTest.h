@@ -1,13 +1,11 @@
-//
-//  StringDetectorTest.h
-//  PDFKitten
-//
-//  Created by Marcus Hedenström on 2012-12-16.
-//  Copyright (c) 2012 Chalmers Göteborg. All rights reserved.
-//
-
 #import <SenTestingKit/SenTestingKit.h>
+#import "StringDetector.h"
 
-@interface StringDetectorTest : SenTestCase
+@interface StringDetectorTest : SenTestCase <StringDetectorDelegate> {
+    int matchCount;
+    int prefixCount;
+    NSString *kurtStory;
+    StringDetector *stringDetector;
+}
 
 @end

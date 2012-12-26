@@ -11,17 +11,17 @@
 		2C0E15AC13589B0B004096C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
 		2C0E15AE13589B0B004096C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
 		2C0E15B013589B0B004096C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
+		2C1BB5CE168B97960026F266 /* KurtStory.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2C1BB5CB168B91F50026F266 /* KurtStory.txt */; };
 		2C209A9215C2B36900D4437B /* CIDFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C209A9115C2B36900D4437B /* CIDFont.m */; };
 		2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C265926154D9C3900E11745 /* RenderingStateStack.m */; };
+		2C35AD6F167E02E000BA5F79 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C754C9D14B3A1D700105B5E /* SenTestingKit.framework */; };
+		2C35AD70167E02E000BA5F79 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
+		2C35AD71167E02E000BA5F79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
+		2C35AD77167E02E000BA5F79 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C35AD75167E02E000BA5F79 /* InfoPlist.strings */; };
+		2C35AD7A167E02E000BA5F79 /* PDFKittenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C35AD79167E02E000BA5F79 /* PDFKittenTests.m */; };
+		2C35AD83167E055A00BA5F79 /* StringDetectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C35AD82167E055A00BA5F79 /* StringDetectorTest.m */; };
 		2C38D8E713EF370700718B0D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C38D8E613EF370700718B0D /* Security.framework */; };
 		2C47505F13F3E48200BC2DB9 /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C47505D13F3E48200BC2DB9 /* DocumentsView.m */; };
-		2C60BDC214F122E600F0846E /* Sample.cmap in Resources */ = {isa = PBXBuildFile; fileRef = 2C60BDC114F122E600F0846E /* Sample.cmap */; };
-		2C60BDC314F122E600F0846E /* Sample.cmap in Resources */ = {isa = PBXBuildFile; fileRef = 2C60BDC114F122E600F0846E /* Sample.cmap */; };
-		2C754C9E14B3A1D700105B5E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C754C9D14B3A1D700105B5E /* SenTestingKit.framework */; };
-		2C754C9F14B3A1D700105B5E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AB13589B0B004096C7 /* UIKit.framework */; };
-		2C754CA014B3A1D700105B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AD13589B0B004096C7 /* Foundation.framework */; };
-		2C754CA614B3A1D700105B5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C754CA414B3A1D700105B5E /* InfoPlist.strings */; };
-		2C754CA914B3A1D700105B5E /* KittenTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C754CA814B3A1D700105B5E /* KittenTest.m */; };
 		2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2C77F7B31442381300767E6A /* Kurt the Cat.pdf */; };
 		2C855590137B336C00D58482 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
 		2CA0FC9413EEB11B0028DCCD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FC9313EEB11B0028DCCD /* RootViewController.m */; };
@@ -33,10 +33,6 @@
 		2CDC3F65138972E5006CC6FB /* StringDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F64138972E5006CC6FB /* StringDetector.m */; };
 		2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */; };
 		2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7C138977C0006CC6FB /* MainWindow.xib */; };
-		2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */; };
-		2CE202ED14C4B400006BD9E3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C85558F137B336C00D58482 /* QuartzCore.framework */; };
-		2CE202EE14C4B41A006BD9E3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */; };
-		2CE202EF14C4B539006BD9E3 /* Ligatures.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */; };
 		2CE7BC9D13896EF0009784B9 /* PageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BC9B13896EF0009784B9 /* PageView.m */; };
 		2CE7BCAF13896EFB009784B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA013896EFB009784B9 /* main.m */; };
 		2CE7BCB113896EFB009784B9 /* PDFKittenAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE7BCA413896EFB009784B9 /* PDFKittenAppDelegate.m */; };
@@ -59,7 +55,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2C754CAE14B3A1EF00105B5E /* PBXContainerItemProxy */ = {
+		2C35AD7F167E035B00BA5F79 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2C0E159E13589B0B004096C7 /* Project object */;
 			proxyType = 1;
@@ -74,21 +70,23 @@
 		2C0E15AB13589B0B004096C7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2C0E15AD13589B0B004096C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C0E15AF13589B0B004096C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2C1BB5CB168B91F50026F266 /* KurtStory.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KurtStory.txt; sourceTree = "<group>"; };
 		2C209A9015C2B36900D4437B /* CIDFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDFont.h; path = PDFKitten/CIDFont.h; sourceTree = SOURCE_ROOT; };
 		2C209A9115C2B36900D4437B /* CIDFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDFont.m; path = PDFKitten/CIDFont.m; sourceTree = SOURCE_ROOT; };
 		2C265924154D9C0E00E11745 /* RenderingStateStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderingStateStack.h; path = PDFKitten/RenderingStateStack.h; sourceTree = SOURCE_ROOT; };
 		2C265926154D9C3900E11745 /* RenderingStateStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingStateStack.m; path = PDFKitten/RenderingStateStack.m; sourceTree = SOURCE_ROOT; };
+		2C35AD6E167E02E000BA5F79 /* PDFKittenTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDFKittenTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C35AD74167E02E000BA5F79 /* PDFKittenTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PDFKittenTests-Info.plist"; sourceTree = "<group>"; };
+		2C35AD76167E02E000BA5F79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2C35AD78167E02E000BA5F79 /* PDFKittenTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFKittenTests.h; sourceTree = "<group>"; };
+		2C35AD79167E02E000BA5F79 /* PDFKittenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDFKittenTests.m; sourceTree = "<group>"; };
+		2C35AD7B167E02E000BA5F79 /* PDFKittenTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PDFKittenTests-Prefix.pch"; sourceTree = "<group>"; };
+		2C35AD81167E055A00BA5F79 /* StringDetectorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringDetectorTest.h; sourceTree = "<group>"; };
+		2C35AD82167E055A00BA5F79 /* StringDetectorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringDetectorTest.m; sourceTree = "<group>"; };
 		2C38D8E613EF370700718B0D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2C47505C13F3E48200BC2DB9 /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsView.h; path = PDFKitten/DocumentsView.h; sourceTree = SOURCE_ROOT; };
 		2C47505D13F3E48200BC2DB9 /* DocumentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsView.m; path = PDFKitten/DocumentsView.m; sourceTree = SOURCE_ROOT; };
-		2C60BDC114F122E600F0846E /* Sample.cmap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sample.cmap; sourceTree = "<group>"; };
-		2C754C9C14B3A1D700105B5E /* KittenTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KittenTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C754C9D14B3A1D700105B5E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		2C754CA314B3A1D700105B5E /* KittenTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KittenTest-Info.plist"; sourceTree = "<group>"; };
-		2C754CA514B3A1D700105B5E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2C754CA714B3A1D700105B5E /* KittenTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KittenTest.h; sourceTree = "<group>"; };
-		2C754CA814B3A1D700105B5E /* KittenTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KittenTest.m; sourceTree = "<group>"; };
-		2C754CAA14B3A1D700105B5E /* KittenTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KittenTest-Prefix.pch"; sourceTree = "<group>"; };
 		2C77F7B31442381300767E6A /* Kurt the Cat.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Kurt the Cat.pdf"; path = "PDFKitten/Samples/Kurt the Cat.pdf"; sourceTree = SOURCE_ROOT; };
 		2C85558F137B336C00D58482 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2CA0FC9213EEB11B0028DCCD /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = PDFKitten/RootViewController.h; sourceTree = SOURCE_ROOT; };
@@ -106,7 +104,6 @@
 		2CDC3F64138972E5006CC6FB /* StringDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringDetector.m; path = PDFKitten/StringDetector.m; sourceTree = SOURCE_ROOT; };
 		2CDC3F7B138977C0006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = PDFKitten/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		2CDC3F7D138977C1006CC6FB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = PDFKitten/en.lproj/MainWindow.xib; sourceTree = SOURCE_ROOT; };
-		2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Ligatures.pdf; sourceTree = "<group>"; };
 		2CE7BC491389674B009784B9 /* PDFKitten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKitten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE7BC9A13896EF0009784B9 /* PageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageView.h; path = PDFKitten/PageView.h; sourceTree = SOURCE_ROOT; };
 		2CE7BC9B13896EF0009784B9 /* PageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PageView.m; path = PDFKitten/PageView.m; sourceTree = SOURCE_ROOT; };
@@ -162,15 +159,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2C754C9814B3A1D700105B5E /* Frameworks */ = {
+		2C35AD6A167E02E000BA5F79 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CE202EE14C4B41A006BD9E3 /* CoreGraphics.framework in Frameworks */,
-				2CE202ED14C4B400006BD9E3 /* QuartzCore.framework in Frameworks */,
-				2C754C9E14B3A1D700105B5E /* SenTestingKit.framework in Frameworks */,
-				2C754C9F14B3A1D700105B5E /* UIKit.framework in Frameworks */,
-				2C754CA014B3A1D700105B5E /* Foundation.framework in Frameworks */,
+				2C35AD6F167E02E000BA5F79 /* SenTestingKit.framework in Frameworks */,
+				2C35AD70167E02E000BA5F79 /* UIKit.framework in Frameworks */,
+				2C35AD71167E02E000BA5F79 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				2C0E15B113589B0B004096C7 /* PDFKitten */,
-				2C754CA114B3A1D700105B5E /* PDFKittenTests */,
+				2C35AD72167E02E000BA5F79 /* PDFKittenTests */,
 				2C0E15AA13589B0B004096C7 /* Frameworks */,
 				2C0E15A813589B0B004096C7 /* Products */,
 			);
@@ -191,7 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				2CE7BC491389674B009784B9 /* PDFKitten.app */,
-				2C754C9C14B3A1D700105B5E /* KittenTest.octest */,
+				2C35AD6E167E02E000BA5F79 /* PDFKittenTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,25 +248,25 @@
 			name = PageViewController;
 			sourceTree = "<group>";
 		};
-		2C754CA114B3A1D700105B5E /* PDFKittenTests */ = {
+		2C35AD72167E02E000BA5F79 /* PDFKittenTests */ = {
 			isa = PBXGroup;
 			children = (
-				2C754CA714B3A1D700105B5E /* KittenTest.h */,
-				2C754CA814B3A1D700105B5E /* KittenTest.m */,
-				2C754CA214B3A1D700105B5E /* Supporting Files */,
+				2C35AD78167E02E000BA5F79 /* PDFKittenTests.h */,
+				2C35AD79167E02E000BA5F79 /* PDFKittenTests.m */,
+				2C35AD81167E055A00BA5F79 /* StringDetectorTest.h */,
+				2C35AD82167E055A00BA5F79 /* StringDetectorTest.m */,
+				2C35AD73167E02E000BA5F79 /* Supporting Files */,
 			);
-			name = PDFKittenTests;
-			path = KittenTest;
+			path = PDFKittenTests;
 			sourceTree = "<group>";
 		};
-		2C754CA214B3A1D700105B5E /* Supporting Files */ = {
+		2C35AD73167E02E000BA5F79 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				2C60BDC114F122E600F0846E /* Sample.cmap */,
-				2CE202EB14C4AFF1006BD9E3 /* Ligatures.pdf */,
-				2C754CA314B3A1D700105B5E /* KittenTest-Info.plist */,
-				2C754CA414B3A1D700105B5E /* InfoPlist.strings */,
-				2C754CAA14B3A1D700105B5E /* KittenTest-Prefix.pch */,
+				2C1BB5CB168B91F50026F266 /* KurtStory.txt */,
+				2C35AD74167E02E000BA5F79 /* PDFKittenTests-Info.plist */,
+				2C35AD75167E02E000BA5F79 /* InfoPlist.strings */,
+				2C35AD7B167E02E000BA5F79 /* PDFKittenTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -427,23 +422,23 @@
 			productReference = 2CE7BC491389674B009784B9 /* PDFKitten.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2C754C9B14B3A1D700105B5E /* KittenTest */ = {
+		2C35AD6D167E02E000BA5F79 /* PDFKittenTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2C754CAB14B3A1D700105B5E /* Build configuration list for PBXNativeTarget "KittenTest" */;
+			buildConfigurationList = 2C35AD7C167E02E000BA5F79 /* Build configuration list for PBXNativeTarget "PDFKittenTests" */;
 			buildPhases = (
-				2C754C9714B3A1D700105B5E /* Sources */,
-				2C754C9814B3A1D700105B5E /* Frameworks */,
-				2C754C9914B3A1D700105B5E /* Resources */,
-				2C754C9A14B3A1D700105B5E /* ShellScript */,
+				2C35AD69167E02E000BA5F79 /* Sources */,
+				2C35AD6A167E02E000BA5F79 /* Frameworks */,
+				2C35AD6B167E02E000BA5F79 /* Resources */,
+				2C35AD6C167E02E000BA5F79 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2C754CAF14B3A1EF00105B5E /* PBXTargetDependency */,
+				2C35AD80167E035B00BA5F79 /* PBXTargetDependency */,
 			);
-			name = KittenTest;
-			productName = KittenTest;
-			productReference = 2C754C9C14B3A1D700105B5E /* KittenTest.octest */;
+			name = PDFKittenTests;
+			productName = PDFKittenTests;
+			productReference = 2C35AD6E167E02E000BA5F79 /* PDFKittenTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -468,7 +463,7 @@
 			projectRoot = "";
 			targets = (
 				2C0E15A613589B0B004096C7 /* PDFKitten */,
-				2C754C9B14B3A1D700105B5E /* KittenTest */,
+				2C35AD6D167E02E000BA5F79 /* PDFKittenTests */,
 			);
 		};
 /* End PBXProject section */
@@ -478,29 +473,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CE202EF14C4B539006BD9E3 /* Ligatures.pdf in Resources */,
 				2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */,
 				2CDC3F81138977C1006CC6FB /* MainWindow.xib in Resources */,
 				2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */,
 				2C77F7B41442381300767E6A /* Kurt the Cat.pdf in Resources */,
-				2C60BDC214F122E600F0846E /* Sample.cmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2C754C9914B3A1D700105B5E /* Resources */ = {
+		2C35AD6B167E02E000BA5F79 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C754CA614B3A1D700105B5E /* InfoPlist.strings in Resources */,
-				2CE202EC14C4AFF1006BD9E3 /* Ligatures.pdf in Resources */,
-				2C60BDC314F122E600F0846E /* Sample.cmap in Resources */,
+				2C1BB5CE168B97960026F266 /* KurtStory.txt in Resources */,
+				2C35AD77167E02E000BA5F79 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2C754C9A14B3A1D700105B5E /* ShellScript */ = {
+		2C35AD6C167E02E000BA5F79 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -552,29 +544,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2C754C9714B3A1D700105B5E /* Sources */ = {
+		2C35AD69167E02E000BA5F79 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C754CA914B3A1D700105B5E /* KittenTest.m in Sources */,
+				2C35AD7A167E02E000BA5F79 /* PDFKittenTests.m in Sources */,
+				2C35AD83167E055A00BA5F79 /* StringDetectorTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2C754CAF14B3A1EF00105B5E /* PBXTargetDependency */ = {
+		2C35AD80167E035B00BA5F79 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2C0E15A613589B0B004096C7 /* PDFKitten */;
-			targetProxy = 2C754CAE14B3A1EF00105B5E /* PBXContainerItemProxy */;
+			targetProxy = 2C35AD7F167E035B00BA5F79 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		2C754CA414B3A1D700105B5E /* InfoPlist.strings */ = {
+		2C35AD75167E02E000BA5F79 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2C754CA514B3A1D700105B5E /* en */,
+				2C35AD76167E02E000BA5F79 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -670,51 +663,56 @@
 			};
 			name = Release;
 		};
-		2C754CAC14B3A1D700105B5E /* Debug */ = {
+		2C35AD7D167E02E000BA5F79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PDFKitten.app/PDFKitten";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "KittenTest/KittenTest-Prefix.pch";
+				GCC_PREFIX_HEADER = "PDFKittenTests/PDFKittenTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				INFOPLIST_FILE = "KittenTest/KittenTest-Info.plist";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "PDFKittenTests/PDFKittenTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
-		2C754CAD14B3A1D700105B5E /* Release */ = {
+		2C35AD7E167E02E000BA5F79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PDFKitten.app/PDFKitten";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "KittenTest/KittenTest-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				INFOPLIST_FILE = "KittenTest/KittenTest-Info.plist";
+				GCC_PREFIX_HEADER = "PDFKittenTests/PDFKittenTests-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "PDFKittenTests/PDFKittenTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = YES;
@@ -743,11 +741,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2C754CAB14B3A1D700105B5E /* Build configuration list for PBXNativeTarget "KittenTest" */ = {
+		2C35AD7C167E02E000BA5F79 /* Build configuration list for PBXNativeTarget "PDFKittenTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2C754CAC14B3A1D700105B5E /* Debug */,
-				2C754CAD14B3A1D700105B5E /* Release */,
+				2C35AD7D167E02E000BA5F79 /* Debug */,
+				2C35AD7E167E02E000BA5F79 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
