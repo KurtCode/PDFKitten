@@ -1,0 +1,13 @@
+//
+//  StringDetectorTest.m
+//  PDFKitten
+//
+//  Created by Marcus Hedenström on 2012-12-16.
+//  Copyright (c) 2012 Chalmers Göteborg. All rights reserved.
+//
+
+#import "StringDetectorTest.h"
+
+@implementation StringDetectorTest
+
+@end
