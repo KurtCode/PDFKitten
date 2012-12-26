@@ -32,16 +32,13 @@
 	id<StringDetectorDelegate> delegate;
 }
 
-/* Initialize with a given needle */
 - (id)initWithKeyword:(NSString *)needle;
 
-/* Feed more charachers into the state machine */
 - (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font;
+- (NSString *)appendString:(NSString *)inputString;
 
-/* Reset the detector state */
-- (void)reset;
+- (void)setKeyword:(NSString *)string;
 
-@property (nonatomic, retain) NSString *keyword;
 @property (nonatomic, assign) id<StringDetectorDelegate> delegate;
-@property (nonatomic, readonly) NSString *unicodeContent;
+@property (nonatomic, retain) NSMutableString *unicodeContent;
 @end
