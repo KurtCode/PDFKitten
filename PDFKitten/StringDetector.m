@@ -4,7 +4,7 @@
 
 - (id)initWithKeyword:(NSString *)string {
 	if (self = [super init]) {
-		keyword = [[string lowercaseString] retain];
+        keyword = [[string lowercaseString] retain];
         self.unicodeContent = [NSMutableString string];
 	}
 
@@ -22,18 +22,20 @@
     while (position < inputString.length) {
 		unichar actualCharacter = [inputString characterAtIndex:position++];
         unichar expectedCharacter = [keyword characterAtIndex:keywordPosition];
- 
+
         if (actualCharacter != expectedCharacter) {
             if (keywordPosition > 0) {
+                // Read character again
                 position--;
             }
 
+            // Reset keyword position
             keywordPosition = 0;
             continue;
         }
 
-        if (keywordPosition == 0 && [delegate respondsToSelector:@selector(detector:didStartMatchingString:)]) {
-            [delegate detector:self didStartMatchingString:keyword];
+        if (keywordPosition == 0 && [delegate respondsToSelector:@selector(detectorDidStartMatching:)]) {
+            [delegate detectorDidStartMatching:self];
         }
 
         if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
@@ -41,15 +43,17 @@
         }
 
         if (++keywordPosition < keyword.length) {
+            // Keep matching keyword
             continue;
         }
 
+        // Reset keyword position
         keywordPosition = 0;
-        if ([delegate respondsToSelector:@selector(detector:foundString:)]) {
-            [delegate detector:self foundString:keyword];
+        if ([delegate respondsToSelector:@selector(detectorFoundString:)]) {
+            [delegate detectorFoundString:self];
         }
     }
-    
+
     return inputString;
 }
 
@@ -57,10 +61,15 @@
     return [self appendString:[font stringWithPDFString:string]];
 }
 
-- (void)setKeyword:(NSString *)string {
+- (void)setKeyword:(NSString *)kword {
     [keyword release];
-    keyword = [[string lowercaseString] retain];
+    keyword = [[kword lowercaseString] retain];
+
     keywordPosition = 0;
+}
+
+- (void)reset {
+//    keywordPosition = 0;
 }
 
 - (void)dealloc {

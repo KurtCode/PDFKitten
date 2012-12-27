@@ -6,24 +6,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Font.h"
+#import "StringDetectorDelegate.h"
 
 @class StringDetector;
-
-@protocol StringDetectorDelegate <NSObject>
-
-@optional
-
-/* Tells the delegate that the first character of the needle was detected */
-- (void)detector:(StringDetector *)detector didStartMatchingString:(NSString *)string;
-
-/* Tells the delegate that the entire needle was detected */
-- (void)detector:(StringDetector *)detector foundString:(NSString *)needle;
-
-/* Tells the delegate that one character was scanned */
-- (void)detector:(StringDetector *)detector didScanCharacter:(unichar)character;
-
-@end
-
 
 @interface StringDetector : NSObject {
 	NSString *keyword;
@@ -33,11 +18,11 @@
 }
 
 - (id)initWithKeyword:(NSString *)needle;
+- (void)setKeyword:(NSString *)kword;
+- (void)reset;
 
 - (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font;
 - (NSString *)appendString:(NSString *)inputString;
-
-- (void)setKeyword:(NSString *)string;
 
 @property (nonatomic, assign) id<StringDetectorDelegate> delegate;
 @property (nonatomic, retain) NSMutableString *unicodeContent;

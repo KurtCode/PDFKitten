@@ -42,11 +42,11 @@
     STAssertEquals(matchCount, 0, @"matches found");
 }
 
-- (void)detector:(StringDetector *)detector didStartMatchingString:(NSString *)string {
+- (void)detectorDidStartMatching:(StringDetector *)stringDetector {
     prefixCount++;
 }
 
-- (void)detector:(StringDetector *)detector foundString:(NSString *)needle {
+- (void)detectorFoundString:(StringDetector *)detector {
     matchCount++;
 }
 
