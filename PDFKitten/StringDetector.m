@@ -12,15 +12,14 @@
 }
 
 - (NSString *)appendString:(NSString *)inputString {
-	inputString = [inputString lowercaseString];
+	NSString *lowercaseString = [inputString lowercaseString];
     int position = 0;
-    assert(inputString != nil);
-    if (inputString) {
-        [unicodeContent appendString:inputString];
+    if (lowercaseString) {
+        [unicodeContent appendString:lowercaseString];
     }
 
     while (position < inputString.length) {
-		unichar actualCharacter = [inputString characterAtIndex:position++];
+		unichar actualCharacter = [lowercaseString characterAtIndex:position++];
         unichar expectedCharacter = [keyword characterAtIndex:keywordPosition];
 
         if (actualCharacter != expectedCharacter) {
@@ -28,9 +27,17 @@
                 // Read character again
                 position--;
             }
+			else {
+				if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
+					unichar inputCharacter = [inputString characterAtIndex:position-1];
+					[delegate detector:self didScanCharacter:inputCharacter];
+				}
+				
+			}
 
             // Reset keyword position
             keywordPosition = 0;
+
             continue;
         }
 
@@ -39,7 +46,7 @@
         }
 
         if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
-            [delegate detector:self didScanCharacter:actualCharacter];
+            [delegate detector:self didScanCharacter:[inputString characterAtIndex:position-1]];
         }
 
         if (++keywordPosition < keyword.length) {
@@ -69,7 +76,7 @@
 }
 
 - (void)reset {
-//    keywordPosition = 0;
+    keywordPosition = 0;
 }
 
 - (void)dealloc {
