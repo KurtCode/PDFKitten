@@ -204,14 +204,14 @@ void cm(CGPDFScannerRef scanner, void *info);
 	[state translateTextPosition:CGSizeMake(width, 0)];
 }
 
-- (void)detector:(StringDetector *)detector didStartMatchingString:(NSString *)string
+- (void)detectorDidStartMatching:(StringDetector *)stringDetector
 {
 	Selection *sel = [[Selection alloc] initWithStartState:self.currentRenderingState];
 	self.currentSelection = sel;
 	[sel release];
 }
 
-- (void)detector:(StringDetector *)detector foundString:(NSString *)needle
+- (void)detectorFoundString:(StringDetector *)detector
 {	
 	RenderingState *state = [[self renderingStateStack] topRenderingState];
 	[self.currentSelection finalizeWithState:state];
