@@ -37,6 +37,7 @@ Finally, scan the page and draw the selections.
 
 The PDF specification is huge, allowing for different fonts, text encodings et cetera. This means strict design is a must, and thorough testing is needed. At this point, this project is not fully compatible with all font types, and especially suppert for non-latin characters will require further development.
 
+Only latin character sets are currently supported.
 
 ### License and Warranty
 
