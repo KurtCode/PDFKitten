@@ -17,6 +17,7 @@
 	id<StringDetectorDelegate> delegate;
 }
 
++ (StringDetector *)detectorWithKeyword:(NSString *)keyword delegate:(id<StringDetectorDelegate>)delegate;
 - (id)initWithKeyword:(NSString *)needle;
 - (void)setKeyword:(NSString *)kword;
 - (void)reset;

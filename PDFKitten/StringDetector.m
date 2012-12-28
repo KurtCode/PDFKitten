@@ -2,6 +2,12 @@
 
 @implementation StringDetector
 
++ (StringDetector *)detectorWithKeyword:(NSString *)keyword delegate:(id<StringDetectorDelegate>)delegate {
+	StringDetector *detector = [[StringDetector alloc] initWithKeyword:keyword];
+	detector.delegate = delegate;
+	return [detector autorelease];
+}
+
 - (id)initWithKeyword:(NSString *)string {
 	if (self = [super init]) {
         keyword = [[string lowercaseString] retain];
@@ -19,6 +25,7 @@
     }
 
     while (position < inputString.length) {
+		unichar inputCharacter = [inputString characterAtIndex:position];
 		unichar actualCharacter = [lowercaseString characterAtIndex:position++];
         unichar expectedCharacter = [keyword characterAtIndex:keywordPosition];
 
@@ -27,17 +34,12 @@
                 // Read character again
                 position--;
             }
-			else {
-				if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
-					unichar inputCharacter = [inputString characterAtIndex:position-1];
-					[delegate detector:self didScanCharacter:inputCharacter];
-				}
-				
+			else if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
+				[delegate detector:self didScanCharacter:inputCharacter];
 			}
 
             // Reset keyword position
             keywordPosition = 0;
-
             continue;
         }
 
@@ -46,7 +48,7 @@
         }
 
         if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
-            [delegate detector:self didScanCharacter:[inputString characterAtIndex:position-1]];
+            [delegate detector:self didScanCharacter:inputCharacter];
         }
 
         if (++keywordPosition < keyword.length) {

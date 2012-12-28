@@ -8,6 +8,8 @@
 	CGRect frame;
 }
 
++ (Selection *)selectionWithState:(RenderingState *)state;
+
 /* Initalize with rendering state (starting marker) */
 - (id)initWithStartState:(RenderingState *)state;
 

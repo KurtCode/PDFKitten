@@ -3,6 +3,10 @@
 
 @implementation RenderingStateStack
 
++ (RenderingStateStack *)stack {
+	return [[[RenderingStateStack alloc] init] autorelease];
+}
+
 - (id)init
 {
 	if ((self = [super init]))

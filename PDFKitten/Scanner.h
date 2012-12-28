@@ -6,34 +6,26 @@
 #import "RenderingStateStack.h"
 
 @interface Scanner : NSObject <StringDetectorDelegate> {
-	NSURL *documentURL;
-	NSString *keyword;
-	CGPDFDocumentRef pdfDocument;
-	CGPDFOperatorTableRef operatorTable;
+	CGPDFPageRef pdfPage;
+	NSMutableArray *selections;
+	
 	StringDetector *stringDetector;
 	FontCollection *fontCollection;
 	RenderingStateStack *renderingStateStack;
-	Selection *currentSelection;
-	NSMutableArray *selections;
 	NSMutableString *content;
 }
 
-/* Initialize with a file path */
-- (id)initWithContentsOfFile:(NSString *)path;
++ (Scanner *)scannerWithPage:(CGPDFPageRef)page;
 
-/* Initialize with a PDF document */
-- (id)initWithDocument:(CGPDFDocumentRef)document;
+- (NSArray *)select:(NSString *)keyword;
 
-/* Start scanning (synchronous) */
-- (void)scanDocumentPage:(NSUInteger)pageNumber;
+@property (nonatomic, readonly) RenderingState *renderingState;
 
-/* Start scanning a particular page */
-- (void)scanPage:(CGPDFPageRef)page;
-
-@property (nonatomic, retain) NSMutableArray *selections;
 @property (nonatomic, retain) RenderingStateStack *renderingStateStack;
 @property (nonatomic, retain) FontCollection *fontCollection;
 @property (nonatomic, retain) StringDetector *stringDetector;
-@property (nonatomic, retain) NSString *keyword;
 @property (nonatomic, retain) NSMutableString *content;
+
+
+@property (nonatomic, retain) NSMutableArray *selections;
 @end

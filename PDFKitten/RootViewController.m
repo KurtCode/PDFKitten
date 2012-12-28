@@ -79,12 +79,6 @@
 /* Return the detailed view corresponding to a page */
 - (PDFPageDetailsView *)pageView:(PageView *)aPageView detailedViewForPage:(NSInteger)page
 {
-	Scanner *scanner = [[Scanner alloc] init];
-	[scanner setKeyword:@""];
-	CGPDFPageRef pdfpage = CGPDFDocumentGetPage(document, page+1);
-	[scanner scanPage:pdfpage];
-	[scanner release];
-
 	FontCollection *collection = [self activeFontCollection];
 	PDFPageDetailsView *detailedView = [[PDFPageDetailsView alloc] initWithFont:collection];
 	return [detailedView autorelease];

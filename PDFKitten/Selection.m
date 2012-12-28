@@ -4,6 +4,10 @@
 
 @implementation Selection
 
++ (Selection *)selectionWithState:(RenderingState *)state {
+	return [[[Selection alloc] initWithStartState:state] autorelease];
+}
+
 /* Rendering state represents opening (left) cap */
 - (id)initWithStartState:(RenderingState *)state
 {

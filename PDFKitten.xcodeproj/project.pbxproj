@@ -28,6 +28,7 @@
 		2CA0FCA113EEB1B80028DCCD /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA013EEB1B80028DCCD /* Page.m */; };
 		2CA0FCA513EEB1C00028DCCD /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA313EEB1C00028DCCD /* PageViewController.m */; };
 		2CA0FCA613EEB1C00028DCCD /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA0FCA413EEB1C00028DCCD /* PageViewController.xib */; };
+		2CB5B24D168CF50E009103E6 /* pdfScannerCallbacks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2CB5B24B168CF50E009103E6 /* pdfScannerCallbacks.mm */; };
 		2CC77EC114560E2E000E9B8E /* PDFPageDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC77EC014560E2E000E9B8E /* PDFPageDetailsView.m */; };
 		2CDC3F65138972E5006CC6FB /* StringDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F64138972E5006CC6FB /* StringDetector.m */; };
 		2CDC3F80138977C1006CC6FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2CDC3F7A138977C0006CC6FB /* InfoPlist.strings */; };
@@ -96,6 +97,7 @@
 		2CA0FCA213EEB1BF0028DCCD /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageViewController.h; path = PDFKitten/PageViewController.h; sourceTree = SOURCE_ROOT; };
 		2CA0FCA313EEB1C00028DCCD /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PageViewController.m; path = PDFKitten/PageViewController.m; sourceTree = SOURCE_ROOT; };
 		2CA0FCA413EEB1C00028DCCD /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PageViewController.xib; path = PDFKitten/PageViewController.xib; sourceTree = SOURCE_ROOT; };
+		2CB5B24B168CF50E009103E6 /* pdfScannerCallbacks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = pdfScannerCallbacks.mm; path = PDFKitten/pdfScannerCallbacks.mm; sourceTree = SOURCE_ROOT; };
 		2CC77EBF14560E2D000E9B8E /* PDFPageDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFPageDetailsView.h; path = PDFKitten/PDFPageDetailsView.h; sourceTree = SOURCE_ROOT; };
 		2CC77EC014560E2E000E9B8E /* PDFPageDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFPageDetailsView.m; path = PDFKitten/PDFPageDetailsView.m; sourceTree = SOURCE_ROOT; };
 		2CDC3F63138972E5006CC6FB /* StringDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringDetector.h; path = PDFKitten/StringDetector.h; sourceTree = SOURCE_ROOT; };
@@ -373,6 +375,7 @@
 		2CE7BCE413897225009784B9 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
+				2CB5B24B168CF50E009103E6 /* pdfScannerCallbacks.mm */,
 				2CE7BCE513897245009784B9 /* Scanner.h */,
 				2CE7BCE613897245009784B9 /* Scanner.m */,
 			);
@@ -538,6 +541,7 @@
 				2C06404314C782DF00A9B33F /* FontFile.m in Sources */,
 				2C265927154D9C3900E11745 /* RenderingStateStack.m in Sources */,
 				2C209A9215C2B36900D4437B /* CIDFont.m in Sources */,
+				2CB5B24D168CF50E009103E6 /* pdfScannerCallbacks.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,6 +684,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "PDFKittenTests/PDFKittenTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -705,6 +710,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PDFKittenTests/PDFKittenTests-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "PDFKittenTests/PDFKittenTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";

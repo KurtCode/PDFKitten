@@ -30,7 +30,6 @@
 	[keyword release];
 	keyword = [str retain];
 	self.selections = nil;
-    self.scanner.selections = nil;
 }
 
 - (NSArray *)selections
@@ -39,9 +38,7 @@
 	{
 		if (!selections)
 		{
-			[self.scanner setKeyword:self.keyword];
-			[self.scanner scanPage:pdfPage];
-			self.selections = [self.scanner selections];
+			self.selections = [self.scanner select:self.keyword];
 		}
 		return selections;
 	}
@@ -93,17 +90,7 @@
 {
     CGPDFPageRelease(pdfPage);
 	pdfPage = CGPDFPageRetain(page);
-}
-
-#pragma mark Memory Management
-
-- (Scanner *)scanner
-{
-	if (!scanner)
-	{
-		scanner = [[Scanner alloc] init];
-	}
-	return scanner;
+	self.scanner = [Scanner scannerWithPage:pdfPage];
 }
 
 - (void)dealloc
