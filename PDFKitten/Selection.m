@@ -1,63 +1,46 @@
 #import "Selection.h"
 #import "RenderingState.h"
 
-
 @implementation Selection
 
 + (Selection *)selectionWithState:(RenderingState *)state {
-	return [[[Selection alloc] initWithStartState:state] autorelease];
+	Selection *selection = [[Selection alloc] init];
+	selection.initialState = state;
+	return [selection autorelease];
 }
 
-/* Rendering state represents opening (left) cap */
-- (id)initWithStartState:(RenderingState *)state
-{
-	if ((self = [super init]))
-	{
-		initialState = [state copy];
-	}
-	return self;
+- (CGAffineTransform)transform {
+	return CGAffineTransformConcat([self.initialState textMatrix], [self.initialState ctm]);
 }
 
-/* Rendering state represents closing (right) cap */
-- (void)finalizeWithState:(RenderingState *)state
-{
-	// Concatenate CTM onto text matrix
-	transform = CGAffineTransformConcat([initialState textMatrix], [initialState ctm]);
-
-	Font *openingFont = [initialState font];
-	Font *closingFont = [state font];
-	
-	// Width (difference between caps) with text transformation removed
-	CGFloat width = [state textMatrix].tx - [initialState textMatrix].tx;	
-	width /= [state textMatrix].a;
-
-	// Use tallest cap for entire selection
-	CGFloat startHeight = [openingFont maxY] - [openingFont minY];
-	CGFloat finishHeight = [closingFont maxY] - [closingFont minY];
-	RenderingState *s = (startHeight > finishHeight) ? initialState : state;
-
-	Font *font = [s font];
-	FontDescriptor *descriptor = [font fontDescriptor];
-	
-	// Height is ascent plus (negative) descent
-	CGFloat height = [s convertToUserSpace:(font.maxY - font.minY)];
-
-	// Descent
-	CGFloat descent = [s convertToUserSpace:descriptor.descent];
-
-	// Selection frame in text space
-	frame = CGRectMake(0, descent, width, height);
-	
-//	[initialState release]; initialState = nil;
+- (CGRect)frame {
+	return CGRectMake(0, self.descent, self.width, self.height);
 }
 
+- (CGFloat)height {
+	return self.ascent - self.descent;
+}
 
-#pragma mark - Memory Management
+- (CGFloat)width {
+	CGFloat maxTx = self.finalState.textMatrix.tx / self.finalState.textMatrix.a;
+	CGFloat minTx = self.initialState.textMatrix.tx / self.initialState.textMatrix.a;
+	return maxTx - minTx;
+}
 
-- (void)dealloc
-{
-	[initialState release];
-	[super dealloc];
+- (CGFloat)ascent {
+	return MAX([self ascentInUserSpace:self.initialState], [self ascentInUserSpace:self.finalState]);
+}
+
+- (CGFloat)descent {
+	return MIN([self descentInUserSpace:self.initialState], [self descentInUserSpace:self.finalState]);
+}
+
+- (CGFloat)ascentInUserSpace:(RenderingState *)state {
+	return state.font.fontDescriptor.ascent * state.fontSize / 1000;
+}
+
+- (CGFloat)descentInUserSpace:(RenderingState *)state {
+	return state.font.fontDescriptor.descent * state.fontSize / 1000;
 }
 
 @synthesize frame, transform;
