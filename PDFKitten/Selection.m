@@ -1,6 +1,10 @@
 #import "Selection.h"
 #import "RenderingState.h"
 
+CGFloat horizontal(CGAffineTransform transform) {
+	return transform.tx / transform.a;
+}
+
 @implementation Selection
 
 + (Selection *)selectionWithState:(RenderingState *)state {
@@ -22,9 +26,7 @@
 }
 
 - (CGFloat)width {
-	CGFloat maxTx = self.finalState.textMatrix.tx / self.finalState.textMatrix.a;
-	CGFloat minTx = self.initialState.textMatrix.tx / self.initialState.textMatrix.a;
-	return maxTx - minTx;
+	return horizontal(self.finalState.textMatrix) - horizontal(self.initialState.textMatrix);
 }
 
 - (CGFloat)ascent {
