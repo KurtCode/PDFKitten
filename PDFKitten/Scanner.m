@@ -112,7 +112,8 @@
 }
 
 - (void)detectorFoundString:(StringDetector *)detector {
-	[[self.selections lastObject] finalizeWithState:self.renderingState];
+	Selection *selection = [self.selections lastObject];
+	selection.finalState = self.renderingState;
 }
 
 - (RenderingState *)renderingState {
