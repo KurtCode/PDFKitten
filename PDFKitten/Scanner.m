@@ -31,6 +31,9 @@
 	CGPDFContentStreamRelease(contentStream);
 	CGPDFOperatorTableRelease(operatorTable);
 	
+    self.stringDetector.delegate = nil;
+    self.stringDetector = nil;
+    
 	return self.selections;
 }
 
@@ -126,7 +129,6 @@
 	[renderingStateStack release];
 	[stringDetector release];
 	[content release];
-    [selections release];
 	[super dealloc];
 }
 
