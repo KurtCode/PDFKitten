@@ -91,11 +91,11 @@ const char *kFontFileKey = "FontFile";
 		{
 			CGPDFDataFormat format;
 			NSData *data = (NSData *) CGPDFStreamCopyData(fontFileStream, &format);
-			
+			/*
 	 		NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 			path = [path stringByAppendingPathComponent:@"fontfile"];
 			[data writeToFile:path atomically:YES];
-			
+			  */
 			fontFile = [[FontFile alloc] initWithData:data];
 			[data release];
 		}

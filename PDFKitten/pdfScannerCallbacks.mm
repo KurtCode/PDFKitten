@@ -17,8 +17,11 @@ void didScanString(CGPDFStringRef pdfString, void *info) {
 	Scanner *scanner = (Scanner *) info;
 	StringDetector *stringDetector = scanner.stringDetector;
 	Font *font = scanner.renderingState.font;
-	NSString *string = [stringDetector appendPDFString:pdfString withFont:font];
-	[scanner.content appendString:string];
+    NSString *string =  [font stringWithPDFString:pdfString];
+    if (string) {
+        [stringDetector appendString:string];
+        [scanner.content appendString:string];
+    }
 }
 
 void didScanNewLine(CGPDFScannerRef pdfScanner, Scanner *scanner, BOOL persistLeading) {

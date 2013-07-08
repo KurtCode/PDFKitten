@@ -13,21 +13,20 @@ This project is meant to facilitate this by implementing a complete workflow, ta
 First, create a new instance of the scanner.
 
 ```
-	Scanner *scanner = [[Scanner alloc] init];
+	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
+	Scanner *scanner = [Scanner scannerWithPage:page];
 ```
 
 Set a keyword (case-insensitive) and scan a page.
 
 ```
-	scanner.keyword = @"happiness";
-	CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
-	[scanner scanPage:page];
+	NSArray *selections = [scanner select:@"happiness"];
 ```
 
 Finally, scan the page and draw the selections.
 
 ```
-	for (Selection *selection in scanner.selections)
+	for (Selection *selection in selections)
 	{
 		// draw selection
 	}

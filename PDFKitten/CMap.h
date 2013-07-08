@@ -10,10 +10,7 @@ extern NSValue *rangeValue(unsigned int from, unsigned int to);
 @end
 
 @interface CMap : NSObject {
-	NSMutableArray *offsets;
-    NSMutableDictionary *chars;
 	NSMutableDictionary *context;
-	NSString *currentEndToken;
 
 	/* CMap ranges */
 	NSMutableArray *codeSpaceRanges;

@@ -66,10 +66,6 @@
     return inputString;
 }
 
-- (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font {
-    return [self appendString:[font stringWithPDFString:string]];
-}
-
 - (void)setKeyword:(NSString *)kword {
     [keyword release];
     keyword = [[kword lowercaseString] retain];

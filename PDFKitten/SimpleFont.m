@@ -48,31 +48,29 @@
 - (NSString *)stringWithPDFString:(CGPDFStringRef)pdfString
 {
 	const unsigned char *bytes = CGPDFStringGetBytePtr(pdfString);
-	NSInteger length = CGPDFStringGetLength(pdfString);
-	NSData *rawBytes = [NSData dataWithBytes:bytes length:length];
+	NSUInteger length = CGPDFStringGetLength(pdfString);
 	if (!self.encoding && self.toUnicode)
 	{
 		// Use ToUnicode map
-		NSString *str = (NSString *) CGPDFStringCopyTextString(pdfString);
 		NSMutableString *unicodeString = [NSMutableString string];
 
 		// Translate to Unicode
-		for (int i = 0; i < [str length]; i++)
+		for (int i = 0; i < length; i++)
 		{
-			unichar cid = [str characterAtIndex:i];
-		 	[unicodeString appendFormat:@"%C", [self.toUnicode unicodeCharacter:cid]];
+			unichar cid = bytes[i];
+            unichar uni = [self.toUnicode unicodeCharacter:cid];
+            //NSLog(@"(%hu) %C -> (%hu) %C", cid, cid, uni, uni);
+            [unicodeString appendFormat:@"%C", uni];
 		}
 		
-		[str release];
 		return unicodeString;
 	}
 	else if (!self.encoding)
 	{
 		return [super stringWithPDFString:pdfString];
-//		NSString *string = [[NSString alloc] initWithData:rawBytes encoding:NSMacOSRomanStringEncoding];
-//		return [string autorelease];
 	}
-	NSString *string = [[NSString alloc] initWithData:rawBytes encoding:self.encoding];
+    NSData *rawBytes = [NSData dataWithBytes:bytes length:length];
+	NSString *string = [[NSString alloc] initWithData:rawBytes encoding:nativeEncoding(self.encoding)];
                     
 	return [string autorelease];
 }
@@ -120,5 +118,16 @@
 //{
 //	return [NSString stringWithCString:characters encoding:encoding];
 //}
+
+- (CGFloat)widthOfSpace
+{
+    unichar c = 0x20;
+    if (self.toUnicode) {
+        c = [self.toUnicode cidCharacter:c];
+        if (c == NSNotFound)
+            return 0;
+    }
+    return [self widthOfCharacter:c withFontSize:1.0];
+}
 
 @end

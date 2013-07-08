@@ -21,6 +21,14 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	return op;
 }
 
+- (void)dealloc
+{
+    [start release];
+    [end release];
+
+    [super dealloc];
+}
+
 @synthesize start, end, handler;
 @end
 
@@ -29,10 +37,10 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 - (void)handleCharacter:(NSString *)string;
 - (void)handleCharacterRange:(NSString *)string;
 - (void)parse:(NSString *)cMapString;
-@property (readonly) NSCharacterSet *tokenDelimiterSet;
-@property (nonatomic, retain) NSMutableDictionary *context;
-@property (nonatomic, readonly) NSCharacterSet *tagSet;
-@property (nonatomic, readonly) NSSet *operators;
+@property(nonatomic, retain) NSMutableDictionary *context;
+@property(readonly) NSCharacterSet *tokenDelimiterSet;
+@property(readonly) NSCharacterSet *tagSet;
+@property(readonly) NSSet *operators;
 @end
 
 @implementation CMap
@@ -69,12 +77,14 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	return NO;
 }
 
+#pragma mark - Public methods
+
 /**!
  * Returns the unicode value mapped by the given character ID
  */
 - (unichar)unicodeCharacter:(unichar)cid
 {
-	if (![self isInCodeSpaceRange:cid]) return 0;
+	if (![self isInCodeSpaceRange:cid]) return (unichar) NSNotFound;
 
 	NSArray	*mappedRanges = [self.characterRangeMappings allKeys];
 	for (NSValue *rangeValue in mappedRanges)
@@ -86,89 +96,66 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 			return cid + [offsetValue intValue];
 		}
 	}
-	
-	NSArray *mappedValues = [self.characterMappings allKeys];
-	for (NSNumber *from in mappedValues)
-	{
-		if ([from intValue] == cid)
-		{
-			return [[self.characterMappings objectForKey:from] intValue];
-		}
-	}
-	
-	return (unichar) NSNotFound;
+
+    NSNumber *result = [self.characterMappings objectForKey:[NSNumber numberWithInt:cid]];
+    if (result) {
+        return [result intValue];
+    }
+
+    return (unichar) NSNotFound;
 }
 
-- (NSSet *)operators
-{
-	@synchronized (self)
+- (unichar)cidCharacter:(unichar)unicode {
+    __block unichar result = NSNotFound;
+
+    [self.characterRangeMappings enumerateKeysAndObjectsUsingBlock:^(NSValue *rangeValue, NSNumber *offset, BOOL *stop) {
+        NSRange range = [rangeValue rangeValue];
+        range.location += [offset intValue];
+        if (unicode >= range.location && unicode <= NSMaxRange(range)) {
+            result = unicode - [offset intValue];
+            *stop = YES;
+        }
+    }];
+    if (result != NSNotFound)
+        return result;
+
+    NSArray *keys = [self.characterMappings allKeysForObject:[NSNumber numberWithInt:unicode]];
+    if (keys.count) {
+        if (keys.count > 1) {
+            NSLog(@"more keys for character %C keys = %@", unicode, keys);
+        }
+        return [[keys lastObject]intValue];
+    } else {
+        return NSNotFound;
+    }
+/*
+    // Look up the offsets dictionary for this unicode
+    for (NSDictionary *dict in offsets)
 	{
-		if (!sharedOperators)
-		{
-			sharedOperators = [[NSMutableSet alloc] initWithObjects:
-							   [Operator operatorWithStart:@"begincodespacerange" 
-														end:@"endcodespacerange"
-													handler:@selector(handleCodeSpaceRange:)],
-							   [Operator operatorWithStart:@"beginbfchar" 
-													   end:@"endbfchar" 
-												   handler:@selector(handleCharacter:)],
-							   [Operator operatorWithStart:@"beginbfrange" 
-													   end:@"endbfrange" 
-												   handler:@selector(handleCharacterRange:)],
-			nil];
-		}
-		return sharedOperators;
-	}
+        int firstChar = [[dict objectForKey:@"First"] intValue];
+        int lastChar = [[dict objectForKey:@"Last"] intValue];
+        int offset = [[dict objectForKey:@"Offset"] intValue];
+
+        for (int i = 0 ; i <= lastChar-firstChar ; i++) {
+            unichar dictUnicode = offset+i;
+            if (dictUnicode == unicode) {
+                return i;
+            }
+        }
+	} */
 }
 
 #pragma mark -
 #pragma mark Scanner
 
 - (Operator *)operatorWithStartingToken:(NSString *)token {
-	NSString *content = nil;
-    NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
-    NSCharacterSet *tagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
-    NSString *separatorString = @"> <";
-    
-    chars = [[NSMutableDictionary alloc] init];    
-    NSScanner *rangeScanner = [NSScanner scannerWithString:content];
-    while (![rangeScanner isAtEnd])
-    {
-        NSString *line = nil;
-        [rangeScanner scanUpToCharactersFromSet:newLineSet intoString:&line];
-        line = [line stringByTrimmingCharactersInSet:tagSet];
-        NSArray *parts = [line componentsSeparatedByString:separatorString];
-        
-        NSUInteger from, to;
-        NSScanner *scanner = [NSScanner scannerWithString:[parts objectAtIndex:0]];
-        [scanner scanHexInt:&from];
-        NSNumber *fromNumber = [NSNumber numberWithInt:from];
-        
-        NSString *toString = [parts objectAtIndex:1];
-        int charLen = 4;
-        if ([toString length] > charLen) {
-            NSMutableArray *toArray = [NSMutableArray arrayWithCapacity: [toString length]/4 + ([toString length]%4 > 0 ? 1 : 0)];
-            NSRange range;
-            NSString *nextTo;
-            for (int offset = 0; offset < [toString length]/4; offset++) {
-                range = NSMakeRange(offset * charLen, charLen);
-                nextTo = [toString substringWithRange: range];
-                scanner = [NSScanner scannerWithString: nextTo];
-                [scanner scanHexInt: &to];
-                [toArray addObject: [NSNumber numberWithInt:to]];
+	if (token) {
+        for (Operator *op in self.operators) {
+            if ([op.start isEqualToString:token]) {
+                return op;
             }
-            [chars setObject: toArray forKey:fromNumber];
-        }
-        else 
-        {
-            scanner = [NSScanner scannerWithString:[parts objectAtIndex:1]];
-            [scanner scanHexInt:&to];
-            NSNumber *toNumber = [NSNumber numberWithInt:to];
-            [chars setObject:toNumber forKey:fromNumber];
-        
         }
     }
-
     return nil;
 }
 
@@ -320,6 +307,23 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 #pragma mark -
 #pragma mark Accessor methods
 
+- (NSSet *)operators {
+    if (!sharedOperators) {
+        sharedOperators = [[NSMutableSet alloc] initWithObjects:
+                [Operator operatorWithStart:@"begincodespacerange"
+                        end:@"endcodespacerange"
+                        handler:@selector(handleCodeSpaceRange:)],
+                [Operator operatorWithStart:@"beginbfchar"
+                        end:@"endbfchar"
+                        handler:@selector(handleCharacter:)],
+                [Operator operatorWithStart:@"beginbfrange"
+                        end:@"endbfrange"
+                        handler:@selector(handleCharacterRange:)],
+                nil];
+    }
+    return sharedOperators;
+}
+
 - (NSCharacterSet *)tagSet {
 	if (!sharedTagSet) {
 		sharedTagSet = [[NSCharacterSet characterSetWithCharactersInString:@"<>"] retain];
@@ -355,48 +359,15 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	return characterRangeMappings;
 }
 
-- (unichar)cidCharacter:(unichar)unicode 
-{
-    //TODO: search in range dictionary
-        
-    // Look up the offsets dictionary for this unicode
-    for (NSDictionary *dict in offsets)
-	{
-        int firstChar = [[dict objectForKey:@"First"] intValue];
-        int lastChar = [[dict objectForKey:@"Last"] intValue];
-        int offset = [[dict objectForKey:@"Offset"] intValue];
-        
-        for (int i = 0 ; i <= lastChar-firstChar ; i++) {
-            unichar dictUnicode = offset+i;
-            if (dictUnicode == unicode) {
-                return i;
-            }
-        }
-	}
-    
-    if (chars) {
-        NSEnumerator *keys = [chars keyEnumerator];
-        NSObject *value;
-        NSObject *key;
-        while (key = [keys nextObject]) {
-            value = [chars objectForKey: key];
-            if ([value isKindOfClass: [NSNumber class]]) {
-                if ([(NSNumber *)value intValue] == unicode) {
-                    return [(NSNumber *)key intValue];
-                }
-            }
-        }        
-    }
-    return unicode;
-}
-
 - (void)dealloc
 {
-	[offsets release];
+    [context release];
+    [characterMappings release];
+    [characterRangeMappings release];
 	[codeSpaceRanges release];
 	[super dealloc];
 }
 
-@synthesize operators, context;
+@synthesize context;
 @synthesize codeSpaceRanges, characterMappings, characterRangeMappings;
 @end

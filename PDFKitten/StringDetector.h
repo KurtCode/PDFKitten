@@ -22,7 +22,6 @@
 - (void)setKeyword:(NSString *)kword;
 - (void)reset;
 
-- (NSString *)appendPDFString:(CGPDFStringRef)string withFont:(Font *)font;
 - (NSString *)appendString:(NSString *)inputString;
 
 @property (nonatomic, assign) id<StringDetectorDelegate> delegate;

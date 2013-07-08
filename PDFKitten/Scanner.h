@@ -8,6 +8,7 @@
 @interface Scanner : NSObject <StringDetectorDelegate> {
 	CGPDFPageRef pdfPage;
 	NSMutableArray *selections;
+    Selection *possibleSelection;
 	
 	StringDetector *stringDetector;
 	FontCollection *fontCollection;
