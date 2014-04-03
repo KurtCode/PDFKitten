@@ -42,4 +42,4 @@ Only latin character sets are currently supported.
 
 ### License and Warranty
 
-This software is provided as is, meaning that we are not responsible for the results of its use.
+This software is provided under the MIT license, see License.txt.
