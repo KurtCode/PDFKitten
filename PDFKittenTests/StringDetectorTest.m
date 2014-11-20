@@ -13,12 +13,15 @@
     [stringDetector setDelegate:self];
 }
 
-- (void)appendString:(NSString *)string {
+- (void)appendString:(NSString *)string
+{
     int position = 0;
-    while (position < kurtStory.length) {
+    
+    while (position < kurtStory.length)
+    {
         NSRange range = NSMakeRange(position, MIN(INPUT_SEGMENT_LENGTH, kurtStory.length - position));
         [stringDetector appendString:[kurtStory substringWithRange:range]];
-        position = NSMaxRange(range);
+        position = (int)NSMaxRange(range);
     }
 }
 
