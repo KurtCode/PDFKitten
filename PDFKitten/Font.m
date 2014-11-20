@@ -69,7 +69,7 @@ typedef const unsigned char CharacterCode;
 		font = [CIDType2Font alloc];
 	}
 	
-	[[font initWithFontDictionary:dictionary] autorelease];
+	[font initWithFontDictionary:dictionary];
 	return font;
 }
 
@@ -139,7 +139,6 @@ typedef const unsigned char CharacterCode;
 	if (!CGPDFDictionaryGetDictionary(dict, kFontDescriptorKey, &descriptor)) return;
 	FontDescriptor *desc = [[FontDescriptor alloc] initWithPDFDictionary:descriptor];
 	self.fontDescriptor = desc;
-	[desc release];
 }
 
 /* Populate the widths array given font dictionary */
@@ -155,7 +154,6 @@ typedef const unsigned char CharacterCode;
 	if (!CGPDFDictionaryGetStream(dict, kToUnicodeKey, &stream)) return;
 	CMap *map = [[CMap alloc] initWithPDFStream:stream];
 	self.toUnicode = map;
-	[map release];
 }
 
 #pragma mark Font Property Accessors
@@ -212,27 +210,31 @@ typedef const unsigned char CharacterCode;
 	return [NSString stringWithString:string];
 }
 
-- (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString {
+- (NSString *)cidWithPDFString:(CGPDFStringRef)pdfString
+{
     // Copy PDFString to NSString
-    NSString *string = (NSString *) CGPDFStringCopyTextString(pdfString);
-	return [string autorelease];
+    NSString *string = (__bridge NSString *) CGPDFStringCopyTextString(pdfString);
+	return string;
 }
 
 - (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString
 {
 	const unsigned char *bytes = CGPDFStringGetBytePtr(pdfString);
 	NSInteger length = CGPDFStringGetLength(pdfString);
-	if (self.toUnicode)
+	
+    if (self.toUnicode)
 	{
 		NSMutableString *unicodeString = [NSMutableString string];
-		for (int i = 0; i < length; i++)
+	
+        for (int i = 0; i < length; i++)
 		{
             const unsigned char cid = bytes[i];
 		 	[unicodeString appendFormat:@"%C", [self.toUnicode unicodeCharacter:cid]];
 		}
 		return unicodeString;
 	}
-    else {
+    else
+    {
         return [self stringWithPDFString:pdfString];
     }
 }
@@ -287,9 +289,12 @@ typedef const unsigned char CharacterCode;
 	[string appendFormat:@"\ttype = %@\n", [self classForKeyedArchiver]];
 	[string appendFormat:@"\tcharacter widths = %d\n", [self.widths count]];
 	[string appendFormat:@"\ttoUnicode = %d\n", (self.toUnicode != nil)];
-	if (self.descendantFonts) {
+	
+    if (self.descendantFonts)
+    {
 		[string appendFormat:@"\tdescendant fonts = %d\n", [self.descendantFonts count]];
 	}
+    
 	[string appendFormat:@"}\n"];
 	return string;
 }
@@ -298,25 +303,17 @@ typedef const unsigned char CharacterCode;
 - (NSString *)stringByExpandingLigatures:(NSString *)string
 {
 	NSString *replacement = nil;
-	for (NSString *ligature in self.ligatures)
+	
+    for (NSString *ligature in self.ligatures)
 	{
 		replacement = [self.ligatures objectForKey:ligature];
 		if (!replacement) continue;
 		string = [string stringByReplacingOccurrencesOfString:ligature withString:replacement];
 	}
-	return string;
-}
-
-#pragma mark Memory Management
-
-- (void)dealloc
-{
-	[toUnicode release];
-	[widths release];
-	[fontDescriptor release];
-	[baseFont release];
-	[super dealloc];
+	
+    return string;
 }
 
 @synthesize fontDescriptor, widths, toUnicode, widthsRange, baseFont, baseFontName, encoding, descendantFonts;
+
 @end

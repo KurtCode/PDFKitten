@@ -72,7 +72,7 @@
     NSData *rawBytes = [NSData dataWithBytes:bytes length:length];
 	NSString *string = [[NSString alloc] initWithData:rawBytes encoding:nativeEncoding(self.encoding)];
                     
-	return [string autorelease];
+	return string;
 }
 
 /* Set encoding with name or dictionary */
@@ -122,11 +122,17 @@
 - (CGFloat)widthOfSpace
 {
     unichar c = 0x20;
-    if (self.toUnicode) {
+    
+    if (self.toUnicode)
+    {
         c = [self.toUnicode cidCharacter:c];
+        
         if (c == NSNotFound)
+        {
             return 0;
+        }
     }
+    
     return [self widthOfCharacter:c withFontSize:1.0];
 }
 

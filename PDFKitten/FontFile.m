@@ -17,19 +17,23 @@ static NSDictionary *charactersByName = nil;
 	{
 		if (!someData)
 		{
-			[self release];
 			return nil;
 		}
-		data = [someData retain];
+        
+		data = someData;
 		NSScanner *scanner = [NSScanner scannerWithString:self.text];
 		NSCharacterSet *delimiterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 		NSCharacterSet *newlineCharacterSet = [NSCharacterSet newlineCharacterSet];
 		
 		names = [NSMutableDictionary dictionary];
 		NSString *buffer;
-		while (![scanner isAtEnd])
+		
+        while (![scanner isAtEnd])
 		{
-			if (![scanner scanUpToCharactersFromSet:delimiterSet intoString:&buffer]) break;
+			if (![scanner scanUpToCharactersFromSet:delimiterSet intoString:&buffer])
+            {
+                break;
+            }
 			
 			if ([buffer hasPrefix:@"%"])
 			{
@@ -43,7 +47,11 @@ static NSDictionary *charactersByName = nil;
 				NSString *name;
 				[scanner scanInt:&code];
 				[scanner scanUpToCharactersFromSet:delimiterSet intoString:&name];
-				if (name) [names setObject:name forKey:[NSNumber numberWithInt:code]];
+				
+                if (name)
+                {
+                    [names setObject:name forKey:[NSNumber numberWithInt:code]];
+                }
 			}
 		}
 	}
@@ -106,7 +114,6 @@ static NSDictionary *charactersByName = nil;
 			asciiTextLength = bytes[2] | bytes[3] << 8 | bytes[4] << 16 | bytes[5] << 24;
 			NSData *textData = [[NSData alloc] initWithBytes:bytes+kHeaderLength length:asciiTextLength];
 			text = [[NSString alloc] initWithData:textData encoding:NSASCIIStringEncoding];
-			[textData release];
 		}
 		else
 		{
@@ -116,12 +123,6 @@ static NSDictionary *charactersByName = nil;
 	return text;
 }
 
-- (void)dealloc
-{
-	[text release];
-	[data release];
-	[super dealloc];
-}
-
 @synthesize data, text, names;
+
 @end

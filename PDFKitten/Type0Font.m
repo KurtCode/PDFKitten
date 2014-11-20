@@ -32,14 +32,12 @@
 					// Add descendant font of type 0
 					CIDType0Font *font = [[CIDType0Font alloc] initWithFontDictionary:fontDict];
 					if (font) [self.descendantFonts addObject:font];
-					[font release];
 				}
 				else if (strcmp(subtype, "CIDFontType2") == 0)
 				{
 					// Add descendant font of type 2
 					CIDType2Font *font = [[CIDType2Font alloc] initWithFontDictionary:fontDict];
 					if (font) [self.descendantFonts addObject:font];
-					[font release];
 				}
 			}
 		}
@@ -105,19 +103,27 @@
 	return @"";
 }
 
-- (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString {
+- (NSString *)unicodeWithPDFString:(CGPDFStringRef)pdfString
+{
     NSMutableString *result;
 	Font *descendantFont = [self.descendantFonts lastObject];
     NSString *descendantResult = [descendantFont stringWithPDFString: pdfString];
-    if (self.toUnicode) {
-        result = [[[NSMutableString alloc] initWithCapacity: [descendantResult length]] autorelease];
-        for (int i = 0; i < [descendantResult length]; i++) {
+    
+    if (self.toUnicode)
+    {
+        result = [[NSMutableString alloc] initWithCapacity: [descendantResult length]];
+        
+        for (int i = 0; i < [descendantResult length]; i++)
+        {
             unichar character = [self.toUnicode unicodeCharacter:[descendantResult characterAtIndex:i]];
 		 	[result appendFormat:@"%C", character];
         }        
-    } else {
+    }
+    else
+    {
         result = [NSMutableString stringWithString: descendantResult];
     }
+    
     return result;
 }
 
@@ -126,7 +132,6 @@
     return [descendantFont stringWithPDFString: pdfString];
 }
 
-#pragma mark -
 #pragma mark Memory Management
 
 - (NSMutableArray *)descendantFonts
@@ -135,13 +140,8 @@
 	{
 		descendantFonts = [[NSMutableArray alloc] init];
 	}
+    
 	return descendantFonts;
-}
-
-- (void)dealloc
-{
-	[descendantFonts release];
-	[super dealloc];
 }
 
 @end

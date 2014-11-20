@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
 
-@interface DocumentsView : UINavigationController <UITableViewDelegate, UITableViewDataSource> {
+@interface DocumentsView : UINavigationController <UITableViewDelegate, UITableViewDataSource>
+{
 	UITableViewController *tableViewController;
 	NSArray *documents;
 	NSDictionary *urlsByName;
 	
-	id delegate;
+	__weak id delegate;
 }
 
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, weak) id delegate;
+
 @end

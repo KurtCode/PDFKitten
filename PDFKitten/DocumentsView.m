@@ -43,7 +43,6 @@
 	tableViewController.navigationItem.title = @"Library";
 
 	[self loadDocuments];
-	
 	[self pushViewController:tableViewController animated:NO];
 }
 
@@ -64,13 +63,16 @@
 {
 	static NSString *identifier = @"CellIdentifier";
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-	if (!cell)
+	
+    if (!cell)
 	{
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 	}
+    
 	NSString *title = [documents objectAtIndex:indexPath.row];
 	cell.textLabel.text = title;
 	cell.detailTextLabel.text = [[urlsByName objectForKey:title] relativePath];
+    
 	return cell;
 }
 
@@ -85,15 +87,6 @@
 	}
 }
 
-
-#pragma mark Memory Management
-
-- (void)dealloc
-{
-	[tableViewController release];
-	[documents release];
-	[super dealloc];
-}
-
 @synthesize delegate;
+
 @end

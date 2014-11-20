@@ -5,7 +5,7 @@ BOOL isSpace(float width, Scanner *scanner) {
 }
 
 void didScanSpace(float value, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
     float width = [scanner.renderingState convertToUserSpace:value];
     [scanner.renderingState translateTextPosition:CGSizeMake(-width, 0)];
     if (isSpace(value, scanner)) {
@@ -14,7 +14,7 @@ void didScanSpace(float value, void *info) {
 }
 
 void didScanString(CGPDFStringRef pdfString, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	StringDetector *stringDetector = scanner.stringDetector;
 	Font *font = scanner.renderingState.font;
     NSString *string =  [font stringWithPDFString:pdfString];
@@ -90,12 +90,12 @@ CGAffineTransform getTransform(CGPDFScannerRef pdfScanner) {
 #pragma mark Text parameters
 
 void setHorizontalScale(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setHorizontalScaling:getNumber(pdfScanner)];
 }
 
 void setTextLeading(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setLeadning:getNumber(pdfScanner)];
 }
 
@@ -105,7 +105,7 @@ void setFont(CGPDFScannerRef pdfScanner, void *info) {
 	CGPDFScannerPopNumber(pdfScanner, &fontSize);
 	CGPDFScannerPopName(pdfScanner, &fontName);
 	
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	RenderingState *state = scanner.renderingState;
 	Font *font = [scanner.fontCollection fontNamed:[NSString stringWithUTF8String:fontName]];
 	[state setFont:font];
@@ -113,17 +113,17 @@ void setFont(CGPDFScannerRef pdfScanner, void *info) {
 }
 
 void setTextRise(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setTextRise:getNumber(pdfScanner)];
 }
 
 void setCharacterSpacing(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setCharacterSpacing:getNumber(pdfScanner)];
 }
 
 void setWordSpacing(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setWordSpacing:getNumber(pdfScanner)];
 }
 
@@ -131,25 +131,25 @@ void setWordSpacing(CGPDFScannerRef pdfScanner, void *info) {
 #pragma mark Set position
 
 void newLine(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState newLine];
 }
 
 void newLineWithLeading(CGPDFScannerRef pdfScanner, void *info) {
-	didScanNewLine(pdfScanner, (Scanner *) info, NO);
+	didScanNewLine(pdfScanner, (__bridge Scanner *) info, NO);
 }
 
 void newLineSetLeading(CGPDFScannerRef pdfScanner, void *info) {
-	didScanNewLine(pdfScanner, (Scanner *) info, YES);
+	didScanNewLine(pdfScanner, (__bridge Scanner *) info, YES);
 }
 
 void newParagraph(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setTextMatrix:CGAffineTransformIdentity replaceLineMatrix:YES];
 }
 
 void setTextMatrix(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingState setTextMatrix:getTransform(pdfScanner) replaceLineMatrix:YES];
 }
 
@@ -189,21 +189,23 @@ void printStringsAndSpaces(CGPDFScannerRef pdfScanner, void *info) {
 
 #pragma mark Graphics state operators
 
-void pushRenderingState(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+void pushRenderingState(CGPDFScannerRef pdfScanner, void *info)
+{
+	Scanner *scanner = (__bridge Scanner *) info;
 	RenderingState *state = [scanner.renderingState copy];
 	[scanner.renderingStateStack pushRenderingState:state];
-	[state release];
 }
 
-void popRenderingState(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+void popRenderingState(CGPDFScannerRef pdfScanner, void *info)
+{
+	Scanner *scanner = (__bridge Scanner *) info;
 	[scanner.renderingStateStack popRenderingState];
 }
 
 /* Update CTM */
-void applyTransformation(CGPDFScannerRef pdfScanner, void *info) {
-	Scanner *scanner = (Scanner *) info;
+void applyTransformation(CGPDFScannerRef pdfScanner, void *info)
+{
+	Scanner *scanner = (__bridge Scanner *) info;
 	RenderingState *state = scanner.renderingState;
 	state.ctm = CGAffineTransformConcat(getTransform(pdfScanner), state.ctm);
 }

@@ -14,7 +14,7 @@
 	NSString *keyword;
 	NSUInteger keywordPosition;
 	NSMutableString *unicodeContent;
-	id<StringDetectorDelegate> delegate;
+	__weak id<StringDetectorDelegate> delegate;
 }
 
 + (StringDetector *)detectorWithKeyword:(NSString *)keyword delegate:(id<StringDetectorDelegate>)delegate;
@@ -24,6 +24,7 @@
 
 - (NSString *)appendString:(NSString *)inputString;
 
-@property (nonatomic, assign) id<StringDetectorDelegate> delegate;
+@property (nonatomic, weak) id<StringDetectorDelegate> delegate;
 @property (nonatomic, retain) NSMutableString *unicodeContent;
+
 @end

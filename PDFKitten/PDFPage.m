@@ -27,8 +27,7 @@
 
 - (void)setKeyword:(NSString *)str
 {
-	[keyword release];
-	keyword = [str retain];
+	keyword = str;
 	self.selections = nil;
 }
 
@@ -95,9 +94,7 @@
 
 - (void)dealloc
 {
-	[scanner release];
     CGPDFPageRelease(pdfPage);
-    [super dealloc];
 }
 
 @synthesize keyword, selections, scanner;

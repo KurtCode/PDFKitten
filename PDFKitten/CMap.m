@@ -14,25 +14,19 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 
 + (Operator *)operatorWithStart:(NSString *)start end:(NSString *)end handler:(SEL)handler
 {
-	Operator *op = [[[Operator alloc] init] autorelease];
+	Operator *op = [[Operator alloc] init];
 	op.start = start;
 	op.end = end;
 	op.handler = handler;
 	return op;
 }
 
-- (void)dealloc
-{
-    [start release];
-    [end release];
-
-    [super dealloc];
-}
-
 @synthesize start, end, handler;
+
 @end
 
 @interface CMap ()
+
 - (void)handleCodeSpaceRange:(NSString *)string;
 - (void)handleCharacter:(NSString *)string;
 - (void)handleCharacterRange:(NSString *)string;
@@ -41,6 +35,7 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 @property(readonly) NSCharacterSet *tokenDelimiterSet;
 @property(readonly) NSCharacterSet *tagSet;
 @property(readonly) NSSet *operators;
+
 @end
 
 @implementation CMap
@@ -56,11 +51,9 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 
 - (id)initWithPDFStream:(CGPDFStreamRef)stream
 {
-	NSData *data = (NSData *) CGPDFStreamCopyData(stream, nil);
-	NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSData *data = (__bridge NSData *) CGPDFStreamCopyData(stream, nil);
+    NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     id obj = [self initWithString:text];
-    [text release];
-    [data release];
     return obj;
 }
 
@@ -268,11 +261,13 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	NSNumber *value = [NSNumber numberWithInt:[self valueOfTag:character]];
 	static NSString *origin = @"Origin";
 	NSNumber *from = [self.context valueForKey:origin];
-	if (!from)
+	
+    if (!from)
 	{
 		[self.context setValue:value forKey:origin];
 		return;
 	}
+    
 	[self.characterMappings setObject:value forKey:from];
 	[self.context removeObjectForKey:origin];
 }
@@ -288,7 +283,8 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	static NSString *to = @"To";
 	NSNumber *fromValue = [self.context valueForKey:from];
 	NSNumber *toValue = [self.context valueForKey:to];
-	if (!fromValue)
+	
+    if (!fromValue)
 	{
 		[self.context setValue:value forKey:from];
 		return;
@@ -298,8 +294,10 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 		[self.context setValue:value forKey:to];
 		return;
 	}
+    
 	NSValue *range = rangeValue([fromValue intValue], [toValue intValue]);
-	[self.characterRangeMappings setObject:value forKey:range];
+	
+    [self.characterRangeMappings setObject:value forKey:range];
 	[self.context removeObjectForKey:from];
 	[self.context removeObjectForKey:to];
 }
@@ -324,50 +322,57 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
     return sharedOperators;
 }
 
-- (NSCharacterSet *)tagSet {
-	if (!sharedTagSet) {
-		sharedTagSet = [[NSCharacterSet characterSetWithCharactersInString:@"<>"] retain];
+- (NSCharacterSet *)tagSet
+{
+	if (!sharedTagSet)
+    {
+		sharedTagSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
 	}
+    
 	return sharedTagSet;
 }
 
-- (NSCharacterSet *)tokenDelimiterSet {
-	if (!sharedTokenDelimimerSet) {
-		sharedTokenDelimimerSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] retain];
+- (NSCharacterSet *)tokenDelimiterSet
+{
+	if (!sharedTokenDelimimerSet)
+    {
+		sharedTokenDelimimerSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 	}
+    
 	return sharedTokenDelimimerSet;
 }
 
-- (NSMutableArray *)codeSpaceRanges {
-	if (!codeSpaceRanges) {
+- (NSMutableArray *)codeSpaceRanges
+{
+	if (!codeSpaceRanges)
+    {
 		codeSpaceRanges = [[NSMutableArray alloc] init];
 	}
+    
 	return codeSpaceRanges;
 }
 
-- (NSMutableDictionary *)characterMappings {
-	if (!characterMappings) {
+- (NSMutableDictionary *)characterMappings
+{
+	if (!characterMappings)
+    {
 		characterMappings = [[NSMutableDictionary alloc] init];
 	}
+    
 	return characterMappings;
 }
 
-- (NSMutableDictionary *)characterRangeMappings {
-	if (!characterRangeMappings) {
+- (NSMutableDictionary *)characterRangeMappings
+{
+	if (!characterRangeMappings)
+    {
 		self.characterRangeMappings = [NSMutableDictionary dictionary];
 	}
+    
 	return characterRangeMappings;
-}
-
-- (void)dealloc
-{
-    [context release];
-    [characterMappings release];
-    [characterRangeMappings release];
-	[codeSpaceRanges release];
-	[super dealloc];
 }
 
 @synthesize context;
 @synthesize codeSpaceRanges, characterMappings, characterRangeMappings;
+
 @end
