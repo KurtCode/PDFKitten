@@ -171,6 +171,16 @@ NSValue *rangeValue(unsigned int from, unsigned int to)
 	NSString *token = nil;
 	[scanner scanUpToCharactersFromSet:self.tokenDelimiterSet intoString:&token];
 
+	if ( !token )
+	{
+		// There's no token delimiters left in the scanner, so we need to scan to the end.
+		
+		// Get the remainder of the scanner's string
+		token = [[scanner string] substringFromIndex:[scanner scanLocation]];
+		// Advance the scanner to the end of the string
+		[scanner scanString:token intoString:nil];
+	}
+	
 	static NSString *commentMarker = @"%%";
 	NSRange commentMarkerRange = [token rangeOfString:commentMarker];
 	if (commentMarkerRange.location != NSNotFound)
