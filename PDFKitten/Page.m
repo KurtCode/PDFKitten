@@ -25,7 +25,6 @@
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didDoubleTap:)];
         doubleTap.numberOfTapsRequired = 2;
         [self addGestureRecognizer:doubleTap];
-        [doubleTap release];
     }
     return self;
 }
@@ -88,11 +87,6 @@
 	[self setMinimumZoomScale:MIN(hScale, vScale)];
 }
 
-- (void)dealloc
-{
-	[super dealloc];
-	[detailedView release];
-}
-
 @synthesize pageNumber, contentView, detailedView;
+
 @end

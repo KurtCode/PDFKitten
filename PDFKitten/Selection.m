@@ -7,43 +7,53 @@ CGFloat horizontal(CGAffineTransform transform) {
 
 @implementation Selection
 
-+ (Selection *)selectionWithState:(RenderingState *)state {
++ (Selection *)selectionWithState:(RenderingState *)state
+{
 	Selection *selection = [[Selection alloc] init];
 	selection.initialState = state;
-	return [selection autorelease];
+	return selection;
 }
 
-- (CGAffineTransform)transform {
+- (CGAffineTransform)transform
+{
 	return CGAffineTransformConcat([self.initialState textMatrix], [self.initialState ctm]);
 }
 
-- (CGRect)frame {
+- (CGRect)frame
+{
 	return CGRectMake(0, self.descent, self.width, self.height);
 }
 
-- (CGFloat)height {
+- (CGFloat)height
+{
 	return self.ascent - self.descent;
 }
 
-- (CGFloat)width {
+- (CGFloat)width
+{
 	return horizontal(self.finalState.textMatrix) - horizontal(self.initialState.textMatrix);
 }
 
-- (CGFloat)ascent {
+- (CGFloat)ascent
+{
 	return MAX([self ascentInUserSpace:self.initialState], [self ascentInUserSpace:self.finalState]);
 }
 
-- (CGFloat)descent {
+- (CGFloat)descent
+{
 	return MIN([self descentInUserSpace:self.initialState], [self descentInUserSpace:self.finalState]);
 }
 
-- (CGFloat)ascentInUserSpace:(RenderingState *)state {
+- (CGFloat)ascentInUserSpace:(RenderingState *)state
+{
 	return state.font.fontDescriptor.ascent * state.fontSize / 1000;
 }
 
-- (CGFloat)descentInUserSpace:(RenderingState *)state {
+- (CGFloat)descentInUserSpace:(RenderingState *)state
+{
 	return state.font.fontDescriptor.descent * state.fontSize / 1000;
 }
 
 @synthesize frame, transform;
+
 @end

@@ -93,25 +93,28 @@
 	@synchronized (self)
 	{
 		UIView *p = [recycledPages anyObject];
-		if (p)
+		
+        if (p)
 		{
-			[[p retain] autorelease];
 			[recycledPages removeObject:p];
 		}
+        
 		return p;
 	}
 }
 
 - (Page *)pageAtIndex:(NSInteger)index
 {
-	NSSet *pages = [[visiblePages copy] autorelease];
-	for (Page *p in pages)
+	NSSet *pages = [visiblePages copy];
+	
+    for (Page *p in pages)
 	{
 		if (p.pageNumber == index)
 		{
 			return p;
 		}
 	}
+    
 	return nil;
 }
 
@@ -173,8 +176,8 @@
 
 - (void)setKeyword:(NSString *)str
 {
-	[keyword release];
-	keyword = [str retain];
+	keyword = str;
+    
 	for (PDFPage *p in visiblePages)
 	{
 		p.keyword = str;
@@ -218,16 +221,6 @@
 	[UIView transitionFromView:currentPage toView:detailedView duration:1.0 options:UIViewAnimationOptionTransitionFlipFromLeft completion:nil];
 }
 
-#pragma mark - Memory Management
-
-- (void)dealloc
-{
-    [detailedViewController release];
-	[keyword release];
-	[recycledPages release];
-	[visiblePages release];
-	[super dealloc];
-}
-
 @synthesize page, dataSource, keyword, detailViewController;
+
 @end

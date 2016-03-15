@@ -13,33 +13,36 @@
     [stringDetector setDelegate:self];
 }
 
-- (void)appendString:(NSString *)string {
+- (void)appendString:(NSString *)string
+{
     int position = 0;
-    while (position < kurtStory.length) {
+    
+    while (position < kurtStory.length)
+    {
         NSRange range = NSMakeRange(position, MIN(INPUT_SEGMENT_LENGTH, kurtStory.length - position));
         [stringDetector appendString:[kurtStory substringWithRange:range]];
-        position = NSMaxRange(range);
+        position = (int)NSMaxRange(range);
     }
 }
 
 - (void)testDetectStrings {
     [self appendString:kurtStory];
-    STAssertEquals(matchCount, 6, @"incorrect number of matches");
-    STAssertEquals(prefixCount, 11, @"incorrect number of prefixes matched");
+    XCTAssertEqual(matchCount, 6, @"incorrect number of matches");
+    XCTAssertEqual(prefixCount, 11, @"incorrect number of prefixes matched");
 }
 
 - (void)testIgnorePrefixes {
     [stringDetector appendString:@"KuKuKu"];
-    STAssertEquals(prefixCount, 3, @"incorrect number of prefixes matched");
+    XCTAssertEqual(prefixCount, 3, @"incorrect number of prefixes matched");
 
     [stringDetector appendString:@"KuKurtKurt"];
-    STAssertEquals(matchCount, 2, @"incorrect number of matches");
+    XCTAssertEqual(matchCount, 2, @"incorrect number of matches");
 }
 
 - (void)testNoMatch {
     [stringDetector setKeyword:@"foobar"];
     [self appendString:kurtStory];
-    STAssertEquals(matchCount, 0, @"matches found");
+    XCTAssertEqual(matchCount, 0, @"matches found");
 }
 
 - (void)detectorDidStartMatching:(StringDetector *)stringDetector {

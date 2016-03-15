@@ -4,7 +4,7 @@
 @implementation Scanner
 
 + (Scanner *)scannerWithPage:(CGPDFPageRef)page {
-	return [[[Scanner alloc] initWithPage:page] autorelease];
+	return [[Scanner alloc] initWithPage:page];
 }
 
 - (id)initWithPage:(CGPDFPageRef)page {
@@ -25,7 +25,7 @@
     
  	CGPDFOperatorTableRef operatorTable = [self newOperatorTable];
 	CGPDFContentStreamRef contentStream = CGPDFContentStreamCreateWithPage(pdfPage);
-	CGPDFScannerRef scanner = CGPDFScannerCreate(contentStream, operatorTable, self);
+	CGPDFScannerRef scanner = CGPDFScannerCreate(contentStream, operatorTable, (__bridge void *)(self));
 	CGPDFScannerScan(scanner);
 	
 	CGPDFScannerRelease(scanner);
@@ -91,52 +91,50 @@
 	}
 
 	FontCollection *collection = [[FontCollection alloc] initWithFontDictionary:fonts];
-	return [collection autorelease];
+	return collection;
 }
 
 - (void)detector:(StringDetector *)detector didScanCharacter:(unichar)character {
     Font *font = self.renderingState.font;
     unichar cid = character;
-    if (font.toUnicode) {
+
+    if (font.toUnicode)
+    {
         cid = [font.toUnicode cidCharacter:character];
     }
 
 	CGFloat width = [font widthOfCharacter:cid withFontSize:self.renderingState.fontSize];
 	width /= 1000;
 	width += self.renderingState.characterSpacing;
-	if (character == 32) {
+	
+    if (character == 32)
+    {
 		width += self.renderingState.wordSpacing;
 	}
 
 	[self.renderingState translateTextPosition:CGSizeMake(width, 0)];
 }
 
-- (void)detectorDidStartMatching:(StringDetector *)detector {
-    possibleSelection = [[Selection selectionWithState:self.renderingState] retain];
+- (void)detectorDidStartMatching:(StringDetector *)detector
+{
+    possibleSelection = [Selection selectionWithState:self.renderingState];
 }
 
-- (void)detectorFoundString:(StringDetector *)detector {
-    if (possibleSelection) {
+- (void)detectorFoundString:(StringDetector *)detector
+{
+    if (possibleSelection)
+    {
 	    possibleSelection.finalState = self.renderingState;
         [self.selections addObject:possibleSelection];
-        [possibleSelection release];
         possibleSelection = nil;
     }
 }
 
-- (RenderingState *)renderingState {
+- (RenderingState *)renderingState
+{
 	return [self.renderingStateStack topRenderingState];
 }
 
-- (void)dealloc {
-    [possibleSelection release];
-	[fontCollection release];
-	[selections release];
-	[renderingStateStack release];
-	[stringDetector release];
-	[content release];
-	[super dealloc];
-}
-
 @synthesize stringDetector, fontCollection, renderingStateStack, content, selections, renderingState;
+
 @end

@@ -1,7 +1,7 @@
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "StringDetector.h"
 
-@interface StringDetectorTest : SenTestCase <StringDetectorDelegate> {
+@interface StringDetectorTest : XCTestCase <StringDetectorDelegate> {
     int matchCount;
     int prefixCount;
     NSString *kurtStory;

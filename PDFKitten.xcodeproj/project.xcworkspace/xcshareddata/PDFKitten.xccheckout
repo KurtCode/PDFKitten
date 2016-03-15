@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B8CCD77E-B758-4A95-9C30-A9D34704B18A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PDFKitten</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DD37BB420EBB61E23BECC947958601C145484998</key>
+		<string>https://github.com/battatech/PDFKitten.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PDFKitten.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DD37BB420EBB61E23BECC947958601C145484998</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/battatech/PDFKitten.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DD37BB420EBB61E23BECC947958601C145484998</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DD37BB420EBB61E23BECC947958601C145484998</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PDFKitten</string>
+		</dict>
+	</array>
+</dict>
+</plist>

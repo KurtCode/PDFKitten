@@ -25,9 +25,10 @@ const char *kFontFileKey = "FontFile";
 {
 	const char *type = nil;
 	CGPDFDictionaryGetName(dict, kTypeKey, &type);
-	if (!type || strcmp(type, kFontDescriptorKey) != 0)
+	
+    if (!type || strcmp(type, kFontDescriptorKey) != 0)
 	{
-		[self release]; return nil;
+		return nil;
 	}
 
 	if ((self = [super init]))
@@ -87,50 +88,16 @@ const char *kFontFileKey = "FontFile";
 		}
 		
 		CGPDFStreamRef fontFileStream;
+        
 		if (CGPDFDictionaryGetStream(dict, kFontFileKey, &fontFileStream))
 		{
 			CGPDFDataFormat format;
-			NSData *data = (NSData *) CGPDFStreamCopyData(fontFileStream, &format);
-			/*
-	 		NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-			path = [path stringByAppendingPathComponent:@"fontfile"];
-			[data writeToFile:path atomically:YES];
-			  */
+			NSData *data = (__bridge NSData *) CGPDFStreamCopyData(fontFileStream, &format);
 			fontFile = [[FontFile alloc] initWithData:data];
-			[data release];
 		}
-
 	}
+    
 	return self;
-}
-
-+ (void)parseFontFile:(NSData *)data
-{
-//	CGPDFDictionaryRef dict = CGPDFStreamGetDictionary(text);
-//	
-//	CGPDFInteger cleartextLength, decryptedLength, fixedLength;
-//	CGPDFInteger totalLength;
-//	CGPDFDictionaryGetInteger(dict, "Length1", &cleartextLength);
-//	CGPDFDictionaryGetInteger(dict, "Length2", &decryptedLength);
-//	CGPDFDictionaryGetInteger(dict, "Length3", &fixedLength);
-//	CGPDFDictionaryGetInteger(dict, "Length", &totalLength);
-//	
-//	NSLog(@"Lengths: %ld, %ld, %ld", cleartextLength, decryptedLength, fixedLength);
-//	NSLog(@"Total: %ld", totalLength);
-//	
-//	CGPDFDataFormat format;
-//	CFDataRef data = CGPDFStreamCopyData(text, &format);
-//	const uint8_t *ptr = CFDataGetBytePtr(data);
-//	size_t length = CFDataGetLength(data);
-//	NSData *fontData = [NSData dataWithBytes:ptr length:length];
-//
-//	size_t digestStringLength = CC_MD5_DIGEST_LENGTH * sizeof(unsigned char);
-//	unsigned char *digest = malloc(digestStringLength);
-//	bzero(digest, digestStringLength);
-//	CC_MD5(data, length, digest);
-
-	// Get first header
-	
 }
 
 /* True if a font is symbolic */
@@ -139,15 +106,7 @@ const char *kFontFileKey = "FontFile";
 	return ((self.flags & FontSymbolic) > 0) && ((self.flags & FontNonSymbolic) == 0);
 }
 
-#pragma mark Memory Management
-
-- (void)dealloc
-{
-	[fontFile release];
-	[fontName release];
-	[super dealloc];
-}
-
 @synthesize ascent, descent, bounds, leading, capHeight, averageWidth, maxWidth, missingWidth, xHeight, flags, verticalStemWidth, horizontalStemWidth, italicAngle, fontName;
 @synthesize fontFile;
+
 @end

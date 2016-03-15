@@ -2,39 +2,49 @@
 
 @implementation StringDetector
 
-+ (StringDetector *)detectorWithKeyword:(NSString *)keyword delegate:(id<StringDetectorDelegate>)delegate {
++ (StringDetector *)detectorWithKeyword:(NSString *)keyword delegate:(id<StringDetectorDelegate>)delegate
+{
 	StringDetector *detector = [[StringDetector alloc] initWithKeyword:keyword];
 	detector.delegate = delegate;
-	return [detector autorelease];
+	return detector;
 }
 
-- (id)initWithKeyword:(NSString *)string {
-	if (self = [super init]) {
-        keyword = [[string lowercaseString] retain];
+- (id)initWithKeyword:(NSString *)string
+{
+	if (self = [super init])
+    {
+        keyword = [string lowercaseString];
         self.unicodeContent = [NSMutableString string];
 	}
 
 	return self;
 }
 
-- (NSString *)appendString:(NSString *)inputString {
+- (NSString *)appendString:(NSString *)inputString
+{
 	NSString *lowercaseString = [inputString lowercaseString];
     int position = 0;
-    if (lowercaseString) {
+    
+    if (lowercaseString)
+    {
         [unicodeContent appendString:lowercaseString];
     }
 
-    while (position < inputString.length) {
+    while (position < inputString.length)
+    {
 		unichar inputCharacter = [inputString characterAtIndex:position];
 		unichar actualCharacter = [lowercaseString characterAtIndex:position++];
         unichar expectedCharacter = [keyword characterAtIndex:keywordPosition];
 
-        if (actualCharacter != expectedCharacter) {
-            if (keywordPosition > 0) {
+        if (actualCharacter != expectedCharacter)
+        {
+            if (keywordPosition > 0)
+            {
                 // Read character again
                 position--;
             }
-			else if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
+			else if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)])
+            {
 				[delegate detector:self didScanCharacter:inputCharacter];
 			}
 
@@ -43,22 +53,27 @@
             continue;
         }
 
-        if (keywordPosition == 0 && [delegate respondsToSelector:@selector(detectorDidStartMatching:)]) {
+        if (keywordPosition == 0 && [delegate respondsToSelector:@selector(detectorDidStartMatching:)])
+        {
             [delegate detectorDidStartMatching:self];
         }
 
-        if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)]) {
+        if ([delegate respondsToSelector:@selector(detector:didScanCharacter:)])
+        {
             [delegate detector:self didScanCharacter:inputCharacter];
         }
 
-        if (++keywordPosition < keyword.length) {
+        if (++keywordPosition < keyword.length)
+        {
             // Keep matching keyword
             continue;
         }
 
         // Reset keyword position
         keywordPosition = 0;
-        if ([delegate respondsToSelector:@selector(detectorFoundString:)]) {
+        
+        if ([delegate respondsToSelector:@selector(detectorFoundString:)])
+        {
             [delegate detectorFoundString:self];
         }
     }
@@ -66,22 +81,17 @@
     return inputString;
 }
 
-- (void)setKeyword:(NSString *)kword {
-    [keyword release];
-    keyword = [[kword lowercaseString] retain];
-
+- (void)setKeyword:(NSString *)kword
+{
+    keyword = [kword lowercaseString];
     keywordPosition = 0;
 }
 
-- (void)reset {
+- (void)reset
+{
     keywordPosition = 0;
-}
-
-- (void)dealloc {
-    [unicodeContent release];
-	[keyword release];
-	[super dealloc];
 }
 
 @synthesize delegate, unicodeContent;
+
 @end
