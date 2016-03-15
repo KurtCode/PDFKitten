@@ -38,7 +38,7 @@ Finally, scan the page and draw the selections.
 
 ### Limitations
 
-The PDF specification is huge, allowing for different fonts, text encodings et cetera. This means strict design is a must, and thorough testing is needed. At this point, this project is not fully compatible with all font types, and especially suppert for non-latin characters will require further development.
+The PDF specification is huge, allowing for different fonts, text encodings et cetera. This means strict design is a must, and thorough testing is needed. At this point, this project is not fully compatible with all font types, and especially support for non-latin characters will require further development.
 
 Offering a complete solution for processing any PDF document would apparently require the inclusion of a complete library of font files. We currently do not intend to include more than the bare essentials for a proof-of-concept application. 
 
