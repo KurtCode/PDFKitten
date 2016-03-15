@@ -1,6 +1,10 @@
 # Kurt the PDFKitten
 
-A framework for searching PDF documents on iOS.
+A Proof-of-Concept framework for searching PDF documents on iOS.
+
+PLEASE NOTE THAT THIS SOFTWARE IS EXPERIMENTAL AND WILL MOST LIKELY NEVER BE FINISHED.
+
+It was created to show how PDF search and highlighting could be done in third-party apps. Alas, it will likely never reach completeness or cover all usecases.
 
 ### Why?
 
